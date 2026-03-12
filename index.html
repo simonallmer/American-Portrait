@@ -26,7 +26,7 @@
             <a href="#about" class="enter-btn secondary-btn">ABOUT</a>
             <a href="https://simonallmer.com" target="_top" class="enter-btn secondary-btn">BACK TO SA</a>
         </div>
-        <div class="copyright-footer">© 2026 SIMON ALLMER ENTERTAINMENT</div>
+        <div class="copyright-footer">© 2026 Simon Allmer Entertainment</div>
     </section>
 
     <!-- About Section -->
@@ -153,7 +153,8 @@
     <section id="journals" class="view">
         <a href="#menu" class="back-abs">BACK TO MENU</a>
         <div class="chronicle-container">
-            <h2 style="margin-bottom: 0;">American Chronicle<br><span style="font-size: 1.5rem; color: #888;">1776 - 2025</span></h2>
+            <h2 style="margin-bottom: 0.5rem;">American Chronicle<br><span style="font-size: 1.5rem; color: #888;">1776 - 2026</span></h2>
+            <h3 style="color: #bbb; font-size: 1.1rem; margin-bottom: 2rem; font-weight: normal; text-transform: none;">Published by <a href="https://simonallmer.com/chronicle" target="_blank" style="color: inherit; text-decoration: underline;">Chronicle</a></h3>
             
             <div style="display: flex; gap: 2rem; margin: 2rem 0;">
                 <a href="#library-kissinger" class="enter-btn" style="margin-top: 0;">KISSINGER LIBRARY</a>
@@ -161,11 +162,27 @@
             </div>
 
             <div id="chronicle-grid" class="periodic-grid">
-                <!-- 250 years generated via app.js -->
+                <!-- 251 years generated via app.js -->
             </div>
-            <div id="chronicle-info" class="chronicle-info-panel">
-                <h3 id="chronicle-year-title">Year</h3>
-                <p id="chronicle-year-info">Select a year.</p>
+        </div>
+
+        <!-- Chronicle Year Popup -->
+        <div id="chronicle-popup" class="chronicle-popup">
+            <div class="popup-overlay" onclick="closeChroniclePopup()"></div>
+            <div class="popup-content">
+                <button class="popup-close" onclick="closeChroniclePopup()">×</button>
+                <div class="popup-nav-container">
+                    <button class="nav-arrow nav-up" onclick="changeChronicleYear(-10)" title="Back 10 Years">↑</button>
+                    <div class="nav-mid-row">
+                        <button class="nav-arrow nav-left" onclick="changeChronicleYear(-1)" title="Back 1 Year">←</button>
+                        <div class="popup-body">
+                            <h2 id="popup-year-title">Year</h2>
+                            <div id="popup-year-info" class="popup-info-text">Select a year.</div>
+                        </div>
+                        <button class="nav-arrow nav-right" onclick="changeChronicleYear(1)" title="Forward 1 Year">→</button>
+                    </div>
+                    <button class="nav-arrow nav-down" onclick="changeChronicleYear(10)" title="Forward 10 Years">↓</button>
+                </div>
             </div>
         </div>
     </section>
@@ -176,18 +193,22 @@
         <div class="games-container">
             <h2 class="section-title">Games</h2>
             <div class="games-list">
-                <a href="https://simonallmer.com/skyscraper" target="_top" style="text-decoration: none; color: inherit;">
-                    <div class="game-card">
-                        <h3>Skyscraper</h3>
-                        <p>To light up the New York skyline, you must start at the ground floor.</p>
+                <div class="game-card">
+                    <h3>Skyscraper</h3>
+                    <p>To light up the New York skyline, you must start at the ground floor.</p>
+                    <div class="game-actions">
+                        <a href="https://simonallmer.com/skyscraper" target="_top" class="game-btn">More Information</a>
+                        <a href="https://simonallmer.com/sevenwondersarcade" target="_top" class="game-btn">Play on Arcade</a>
                     </div>
-                </a>
-                <a href="https://simonallmer.com/camino" target="_top" style="text-decoration: none; color: inherit;">
-                    <div class="game-card">
-                        <h3>American Playing Cards</h3>
-                        <p>No Kings on these Cards</p>
+                </div>
+                <div class="game-card">
+                    <h3>Frontier</h3>
+                    <p>No Kings on American Playing Cards.</p>
+                    <div class="game-actions">
+                        <a href="https://simonallmer.com/camino" target="_top" class="game-btn">More Information</a>
+                        <a href="https://simonallmer.com/casinocaminoarcade" target="_top" class="game-btn">Play on Arcade</a>
                     </div>
-                </a>
+                </div>
                 <div class="game-card" style="cursor: default;">
                     <h3>Equilibrium</h3>
                     <p>What if the Cold War turns Hot?<br><span style="color: var(--red-accent);">More information coming soon</span></p>
