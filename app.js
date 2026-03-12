@@ -405,3 +405,64 @@ function initLibraries() {
         });
     }
 }
+
+// ===== QUOTES SYSTEM =====
+const quotesData = {
+    kissinger: [
+        { text: "Where there are no absolute values, there is spiritual emptiness. The worst thing about a loss of faith is not that someone has stopped believing something, but that they are ready to believe anything.", author: "Fritz Kraemer" },
+        { text: "Thousands of the most modern tanks will be of no use for the defense of a country, if the men in there are unwilling to fight, and here I say it, to die for the cause.", author: "Fritz Kraemer" },
+        { text: "Without your German accent, you would just be a regular prisoner of war rotting in the cell. But now you are a deserter. We have a wall for cases like that.", author: "August Weber" },
+        { text: "That is humanity in the 20th century. People reach such a stupor of suffering that life and death, animation or immobility can't be differentiated anymore. And then, who is dead and who is alive? The man whose agonized face stares at me from the cot or the man who stands with a bowed head and emaciated body?", author: "Henry Kissinger" },
+        { text: "When I went into the army I was a refugee and when I got out I was an immigrant.", author: "Henry Kissinger" },
+        { text: "Never namedrop. Rockefeller told me that.", author: "Henry Kissinger" },
+        { text: "One does not remain in power through unscrupulousness alone. It also takes cynicism.", author: "Henry Kissinger" },
+        { text: "I always thought the right thing to do with accusations was to ignore or deny them. But then I realized something. The media is just like my dog Checkers. When neglected, they keep sniffing around the house, digging up old bones. And worst of all, they start barking until everyone watches from the street. But give them some attention, pat them on the back, and in no time even the crooked media can become a man’s best friend.", author: "Henry Kissinger" },
+        { text: "A man is not finished when he is defeated. He is finished when he quits.", author: "Richard Nixon" },
+        { text: "You leave, and my wish is that you and your country will find happiness under this sky. But, mark it well, that if I shall die here on the spot and in my country that I love, it is too bad, because we all are born and must die one day. I have only committed this mistake of believing in you, the Americans.", author: "Sirik Matak" }
+    ],
+    carter: [
+        { text: "To me, faith is not just a noun, but also a verb.", author: "Jimmy Carter" },
+        { text: "God always answers prayers. Sometimes it's 'yes.' Sometimes it’s 'no.' Sometimes it's 'you gotta be kidding.'", author: "Jimmy Carter" }
+    ]
+};
+
+let currentQuoteSet = [];
+let currentQuoteIndex = 0;
+
+function openQuotes(character) {
+    currentQuoteSet = quotesData[character];
+    currentQuoteIndex = 0;
+    renderQuote();
+    document.getElementById('quotes-overlay').classList.add('active');
+}
+
+function nextQuote() {
+    currentQuoteIndex++;
+    if (currentQuoteIndex >= currentQuoteSet.length) {
+        currentQuoteIndex = 0; // Loop back
+    }
+    renderQuote();
+}
+
+function renderQuote() {
+    const quote = currentQuoteSet[currentQuoteIndex];
+    document.getElementById('quote-text').innerText = `"${quote.text}"`;
+    document.getElementById('quote-author').innerText = quote.author;
+    document.getElementById('quote-counter').innerText = `${currentQuoteIndex + 1} / ${currentQuoteSet.length}`;
+}
+
+function closeQuotes() {
+    document.getElementById('quotes-overlay').classList.remove('active');
+}
+
+function handleMobileBack() {
+    const hash = window.location.hash;
+    if (hash === '' || hash === '#start' || hash === '#start-page') {
+        return;
+    } else if (hash === '#menu') {
+        window.location.hash = '#start';
+    } else {
+        window.location.hash = '#menu';
+    }
+}
+
