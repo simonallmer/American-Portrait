@@ -44,7 +44,26 @@ body {
 }
 
 /* Global Nav Button */
-/* Global navigation button removed for contextual placement */
+.back-to-sa {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 300 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.back-to-sa:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
 
 /* ===== ROUTING VIEWS ===== */
 .view {
@@ -242,44 +261,24 @@ body {
     background-color: var(--bg-color);
 }
 
-.nav-controls {
-    position: fixed;
+.close-menu-btn {
+    position: absolute;
     top: 2rem;
     left: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    z-index: 1000;
-}
-
-.close-menu-btn, .back-abs {
-    position: static; /* Let container handle positioning */
     font-size: 1.2rem;
     color: var(--text-color);
     text-decoration: none;
     font-weight: 300 !important;
     text-transform: uppercase;
+    z-index: 50;
     padding: 0.5rem 1rem;
     border: 1px solid rgba(255,255,255,0.2);
     transition: all 0.3s ease;
-    display: inline-block;
 }
 
-.close-menu-btn:hover, .back-abs:hover {
+.close-menu-btn:hover {
     background: var(--text-color);
     color: var(--bg-color);
-}
-
-.back-abs.secondary-btn, .close-menu-btn.secondary-btn {
-    border-color: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.5);
-    font-size: 1rem;
-}
-
-.back-abs.secondary-btn:hover, .close-menu-btn.secondary-btn:hover {
-    border-color: var(--text-color);
-    color: var(--text-color);
-    background: transparent;
 }
 
 .menu-nav {
@@ -453,7 +452,25 @@ body {
     color: #ccc;
 }
 
-/* back-abs styling moved to nav-controls */
+.back-abs {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 300 !important;
+    text-transform: uppercase;
+    z-index: 50;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.back-abs:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
 
 /* ===== JOURNALS: AMERICAN CHRONICLE ===== */
 .chronicle-container {
@@ -1081,3 +1098,32 @@ body {
     background: var(--text-color);
     color: var(--bg-color);
 }
+
+/* ===== ABOUT SECTION ===== */
+.about-container {
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.about-content {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: #ccc;
+    text-align: left;
+}
+
+.about-content p {
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        margin: 60px auto;
+    }
+    .about-content {
+        font-size: 1.1rem;
+    }
+}
+
