@@ -199,19 +199,19 @@
             <h2 class="section-title">Games</h2>
             <div class="games-list">
                 <div class="game-card">
-                    <h3>Skyscraper</h3>
-                    <p>To light up the New York skyline, you must start at the ground floor.</p>
-                    <div class="game-actions">
-                        <a href="https://simonallmer.com/skyscraper" target="_top" class="game-btn">More Information</a>
-                        <a href="https://simonallmer.com/sevenwondersarcade" target="_top" class="game-btn">Play on Arcade</a>
-                    </div>
-                </div>
-                <div class="game-card">
                     <h3>Frontier</h3>
                     <p>No Kings on American Playing Cards.</p>
                     <div class="game-actions">
                         <a href="https://simonallmer.com/camino" target="_top" class="game-btn">More Information</a>
                         <a href="https://simonallmer.com/casinocaminoarcade" target="_top" class="game-btn">Play on Arcade</a>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <h3>Skyscraper</h3>
+                    <p>To light up the New York skyline, you must start at the ground floor.</p>
+                    <div class="game-actions">
+                        <a href="https://simonallmer.com/skyscraper" target="_top" class="game-btn">More Information</a>
+                        <a href="https://simonallmer.com/sevenwondersarcade" target="_top" class="game-btn">Play on Arcade</a>
                     </div>
                 </div>
                 <div class="game-card" style="cursor: default;">
@@ -432,6 +432,19 @@
             </div>
         </div>
     </section>
+
+    <!-- Quotes Overlay -->
+    <div id="quotes-overlay" class="quotes-overlay">
+        <button class="close-quotes-btn" onclick="closeQuotes()">×</button>
+        <div class="quote-container">
+            <div id="quote-text" class="quote-text">"Quote text goes here."</div>
+            <div id="quote-author" class="quote-author">Author Name</div>
+            <div class="quote-controls">
+                <div id="quote-counter" class="quote-counter">1 / 10</div>
+                <button class="quote-next-btn" onclick="nextQuote()">Next Quote</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Mobile Navigation Bar -->
     <nav class="mobile-nav-bar">

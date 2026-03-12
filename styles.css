@@ -660,8 +660,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100%;
+    justify-content: flex-start; /* Better for scrolling content */
+    min-height: 100%;
+    padding: 100px 2rem 50px 2rem;
     text-align: center;
 }
 
