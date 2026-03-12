@@ -75,6 +75,8 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 1s ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .view.active {
@@ -89,6 +91,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden !important;
 }
 
 .bg-container {
