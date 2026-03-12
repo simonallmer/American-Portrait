@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Global Navigation -->
-    <a href="https://simonallmer.com" target="_top" class="back-to-sa">BACK TO SA</a>
+    <!-- Global Navigation Removed - Moved to contextual placement -->
 
     <!-- Start Page -->
     <section id="start-page" class="view active">
@@ -30,7 +29,10 @@
 
     <!-- Main Menu / Hub -->
     <section id="main-menu" class="view">
-        <a href="#start" class="close-menu-btn">CLOSE</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#start" class="close-menu-btn">CLOSE</a>
+            <a href="https://simonallmer.com" target="_top" class="close-menu-btn secondary-btn">BACK TO SA</a>
+        </div>
         <nav class="menu-nav">
             <a href="#comics" class="menu-link">Comics</a>
             <a href="#films" class="menu-link">Films</a>
@@ -42,7 +44,10 @@
 
     <!-- Comics View (Formerly Gallery) -->
     <section id="comics" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#menu" class="back-abs">BACK TO MENU</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="gallery-container">
             
             <div class="portrait-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; scroll-snap-align: center; flex: 0 0 auto;">
@@ -91,7 +96,10 @@
 
     <!-- Films View -->
     <section id="films" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#menu" class="back-abs">BACK TO MENU</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="cinema-container">
             <div class="cinema-screen">
                 <h2>Kissinger will be playing in 2028.</h2>
@@ -101,7 +109,10 @@
 
     <!-- Music View -->
     <section id="music" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#menu" class="back-abs">BACK TO MENU</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="container" style="text-align: center; margin-top: 10rem;">
             <h2>American Portrait Music</h2>
             <div id="audio-player-container" class="audio-container">
@@ -112,7 +123,10 @@
 
     <!-- Kissinger Library View -->
     <section id="library-kissinger" class="view">
-        <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="library-container">
             <h2 class="library-title">Kissinger Library</h2>
             <p class="library-subtitle" style="max-width: 600px; text-align: center; line-height: 1.4; margin-bottom: 3rem; text-transform: none;">To paint a complete American Portrait, Simon Allmer is in the process of reviewing all of Henry Kissinger's published works since 1950.</p>
@@ -124,7 +138,10 @@
 
     <!-- Carter Library View -->
     <section id="library-carter" class="view">
-        <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="library-container">
             <h2 class="library-title">Carter Library</h2>
             <p class="library-subtitle" style="max-width: 600px; text-align: center; line-height: 1.4; margin-bottom: 3rem; text-transform: none;">To paint a complete American Portrait, Simon Allmer is in the process of reviewing all of Jimmy Carter's published works since 1975.</p>
@@ -136,7 +153,10 @@
 
     <!-- Journals View -->
     <section id="journals" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#menu" class="back-abs">BACK TO MENU</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="chronicle-container">
             <h2 style="margin-bottom: 0;">American Chronicle<br><span style="font-size: 1.5rem; color: #888;">1776 - 2025</span></h2>
             
@@ -157,7 +177,10 @@
 
     <!-- Games View -->
     <section id="games" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#menu" class="back-abs">BACK TO MENU</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="games-container">
             <h2 class="section-title">Games</h2>
             <div class="games-list">
@@ -183,7 +206,10 @@
 
     <!-- Review: Nuclear Weapons -->
     <section id="review-nuclear" class="view" style="overflow-y: auto;">
-        <a href="#library-kissinger" class="back-abs" style="position: fixed; top: 1rem; left: 1rem; background: var(--bg-color);">BACK TO LIBRARY</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#library-kissinger" class="back-abs">BACK TO LIBRARY</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="review-container" style="padding: 6rem 2rem; width: 100%;">
             <div class="review-content">
                 <h2 style="color: var(--red-accent); font-size: 2.5rem; margin-bottom: 0.5rem; line-height: 1.2;">Nuclear Weapons and Foreign Policy</h2>
@@ -239,7 +265,10 @@
 
     <!-- Review: Genesis -->
     <section id="review-genesis" class="view" style="overflow-y: auto;">
-        <a href="#library-kissinger" class="back-abs" style="position: fixed; top: 1rem; left: 1rem; background: var(--bg-color);">BACK TO LIBRARY</a>
+        <div class="nav-controls sticky-controls">
+            <a href="#library-kissinger" class="back-abs">BACK TO LIBRARY</a>
+            <a href="https://simonallmer.com" target="_top" class="back-abs secondary-btn">BACK TO SA</a>
+        </div>
         <div class="review-container" style="padding: 6rem 2rem; width: 100%;">
             <div class="review-content">
                 <h2 style="color: var(--red-accent); font-size: 2.5rem; margin-bottom: 0.5rem; line-height: 1.2;">Genesis: Artificial Intelligence, Hope, and the Human Spirit</h2>
