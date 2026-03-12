@@ -67,6 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Priority 2: Close Quotes overlay if open
+            if (document.getElementById('quotes-overlay').classList.contains('active')) {
+                closeQuotes();
+                return;
+            }
+
             const hash = window.location.hash;
             if (hash === '' || hash === '#start' || hash === '#start-page') {
                 return; // Already at home
@@ -743,6 +749,14 @@ function nextQuote() {
     renderQuote();
 }
 
+function prevQuote() {
+    currentQuoteIndex--;
+    if (currentQuoteIndex < 0) {
+        currentQuoteIndex = currentQuoteSet.length - 1; // Loop back
+    }
+    renderQuote();
+}
+
 function renderQuote() {
     const quote = currentQuoteSet[currentQuoteIndex];
     document.getElementById('quote-text').innerText = `"${quote.text}"`;
@@ -764,4 +778,16 @@ function handleMobileBack() {
         window.location.hash = '#menu';
     }
 }
+
+// Keyboard navigation for Quotes
+document.addEventListener('keydown', (e) => {
+    const overlay = document.getElementById('quotes-overlay');
+    if (!overlay.classList.contains('active')) return;
+
+    if (e.key === 'ArrowLeft') {
+        prevQuote();
+    } else if (e.key === 'ArrowRight') {
+        nextQuote();
+    }
+});
 

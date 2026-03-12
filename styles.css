@@ -1237,9 +1237,39 @@ body {
     display: flex;
 }
 
+.quote-nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    max-width: 1200px;
+    gap: 3rem;
+}
+
+.quote-nav-arrow {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text-color);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.quote-nav-arrow:hover {
+    background: var(--red-accent);
+    border-color: var(--red-accent);
+    color: white;
+}
+
 .quote-container {
+    flex-grow: 1;
     max-width: 800px;
-    width: 90%;
 }
 
 .quote-text {

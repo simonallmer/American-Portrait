@@ -436,13 +436,17 @@
     <!-- Quotes Overlay -->
     <div id="quotes-overlay" class="quotes-overlay">
         <button class="close-quotes-btn" onclick="closeQuotes()">×</button>
-        <div class="quote-container">
-            <div id="quote-text" class="quote-text">"Quote text goes here."</div>
-            <div id="quote-author" class="quote-author">Author Name</div>
-            <div class="quote-controls">
-                <div id="quote-counter" class="quote-counter">1 / 10</div>
-                <button class="quote-next-btn" onclick="nextQuote()">Next Quote</button>
+        <div class="quote-nav-container">
+            <button class="quote-nav-arrow quote-prev" onclick="prevQuote()">←</button>
+            <div class="quote-container">
+                <div id="quote-text" class="quote-text">"Quote text goes here."</div>
+                <div id="quote-author" class="quote-author">Author Name</div>
+                <div class="quote-controls">
+                    <div id="quote-counter" class="quote-counter">1 / 10</div>
+                    <button class="quote-next-btn" onclick="nextQuote()">Next Quote</button>
+                </div>
             </div>
+            <button class="quote-nav-arrow quote-next" onclick="nextQuote()">→</button>
         </div>
     </div>
 
