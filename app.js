@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#films': 'films',
         '#games': 'games',
         '#music': 'music',
+        '#about': 'about',
         '#review-nuclear': 'review-nuclear',
         '#review-genesis': 'review-genesis',
         '#review-leadership': 'review-leadership',
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash;
             if (hash === '' || hash === '#start' || hash === '#start-page') {
                 return; // Already at home
-            } else if (hash === '#menu') {
+            } else if (hash === '#menu' || hash === '#about') {
                 window.location.hash = '#start';
             } else {
                 // Any other view goes back to menu
@@ -459,7 +460,7 @@ function handleMobileBack() {
     const hash = window.location.hash;
     if (hash === '' || hash === '#start' || hash === '#start-page') {
         return;
-    } else if (hash === '#menu') {
+    } else if (hash === '#menu' || hash === '#about') {
         window.location.hash = '#start';
     } else {
         window.location.hash = '#menu';

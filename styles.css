@@ -219,21 +219,23 @@ body {
 
 .landing-actions {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
     margin-top: 2.5rem;
+    width: clamp(280px, 40vw, 500px);
     z-index: 10;
+}
+
+.landing-actions .enter-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: 0;
 }
 
 @media (max-width: 768px) {
     .landing-actions {
-        flex-direction: column;
-        gap: 1rem;
         width: 80vw;
-    }
-    
-    .enter-btn {
-        width: 100%;
-        text-align: center;
     }
 }
 
