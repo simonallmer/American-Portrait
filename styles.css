@@ -197,9 +197,8 @@ body {
 
 .enter-btn {
     display: inline-block;
-    margin-top: 2rem;
-    padding: 1rem 3rem;
-    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
     font-family: inherit;
     font-weight: 300 !important;
     text-transform: uppercase;
@@ -211,6 +210,31 @@ body {
     cursor: pointer;
     z-index: 10;
     letter-spacing: 0.1em;
+}
+
+.secondary-btn {
+    border-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+}
+
+.landing-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .landing-actions {
+        flex-direction: column;
+        gap: 1rem;
+        width: 80vw;
+    }
+    
+    .enter-btn {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .enter-btn:hover {
