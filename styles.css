@@ -1013,8 +1013,8 @@ body {
         justify-content: flex-start;
         padding-top: 3rem;
         overflow-y: auto !important;
-        height: auto;
-        min-height: 100vh;
+        height: 100%;
+        display: flex;
     }
 
     .title-container {
