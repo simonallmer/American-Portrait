@@ -115,14 +115,14 @@ body {
 }
 
 .bg-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: -10;
     overflow: hidden;
-    background-color: var(--bg-color);
+    background-color: #000;
 }
 
 .oil-paint-bg {
@@ -134,8 +134,8 @@ body {
     background-image: url('American Portrait Resources/pexels-mark-henry-rood-531347415-16556295.jpg');
     background-size: cover;
     background-position: center;
-    filter: brightness(0.65); /* Atmospheric blues slightly lightened */
-    z-index: 1;
+    background-attachment: fixed;
+    filter: brightness(0.65);
 }
 
 .overlay {
@@ -144,7 +144,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.35); /* Reduced tint for clarity */
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
     z-index: 2;
     pointer-events: none;
 }
