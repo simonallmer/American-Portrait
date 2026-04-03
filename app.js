@@ -119,16 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function navigate() {
-        const hash = window.location.hash;
-        const targetId = routes[hash] || 'start-page';
-
-        document.querySelectorAll('.view').forEach(view => {
-            if (view.id === targetId) {
-                view.classList.add('active');
-            } else {
-                view.classList.remove('active');
+        const hash = window.location.hash || '#start';
+        // Try to finding a route in mapping, then try direct ID, then fallback to start
+        let targetId = routes[hash];
+        
+        if (!targetId && hash.startsWith('#')) {
+            const potentialId = hash.substring(1);
+            if (document.getElementById(potentialId)) {
+                targetId = potentialId;
             }
+        }
+        
+        if (!targetId) targetId = 'start-page';
+
+        // Hide current
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+            view.style.opacity = '0';
+            view.style.pointerEvents = 'none';
         });
+
+        // Show target
+        const target = document.getElementById(targetId);
+        if (target) {
+            target.classList.add('active');
+            setTimeout(() => {
+                target.style.opacity = '1';
+                target.style.pointerEvents = 'all';
+                target.scrollTop = 0; // Scroll to top on load
+            }, 10);
+        }
     }
 
     // Initial load
