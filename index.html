@@ -13,20 +13,28 @@
     <!-- Start Page -->
     <section id="start-page" class="view active">
         <div class="bg-container">
-            <div class="color-dance-blob red-blob"></div>
-            <div class="color-dance-blob blue-blob"></div>
-            <div class="color-dance-blob white-blob"></div>
+            <div class="oil-paint-bg"></div>
             <div class="overlay"></div>
         </div>
         <div class="title-container">
             <img src="American Portrait Title Design/AmericanPortraitWhite.png" alt="American Portrait" class="landing-logo">
         </div>
-        <div class="landing-actions">
-            <a href="#menu" class="enter-btn">ENTER GALLERY</a>
-            <a href="#about" class="enter-btn secondary-btn">ABOUT</a>
-            <a href="https://simonallmer.com" target="_top" class="enter-btn secondary-btn">BACK TO SA</a>
+        <div class="landing-actions main-nav">
+            <a href="#comics" class="enter-btn">COMICS [TBA]</a>
+            <a href="#films" class="enter-btn">FILMS [TBA]</a>
+            <a href="#music" class="enter-btn">MUSIC</a>
+            <a href="#games" class="enter-btn">GAMES</a>
+            <a href="#journals" class="enter-btn">JOURNALS</a>
+            
+            <div class="split-actions-row">
+                <a href="#about" class="enter-btn secondary-btn">ABOUT</a>
+                <a href="https://simonallmer.com" target="_top" class="enter-btn secondary-btn">BACK TO SA</a>
+            </div>
         </div>
-        <div class="copyright-footer">© 2026 Simon Allmer Entertainment</div>
+        <div class="copyright-footer">
+            <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
+            © 2026 Simon Allmer Entertainment
+        </div>
     </section>
 
     <!-- About Section -->
@@ -39,25 +47,14 @@
                 <p>American Portrait is a canvas stretched across the centuries, painted with the dark hues of Henry Kissinger’s realism and the bright strokes of Jimmy Carter’s idealism. The interplay of their tones creates a tapestry in which their philosophies collide and blend like colors meeting at twilight.</p>
                 <p>The frame, measuring 100 years in each direction, both anchors and magnifies the composition. Yet within its borders, the painting transcends chronology. It invites the viewer to linger, to see beyond contrasts and find the moments in which brushstrokes converge into something even more profound - a portrait not just of two individuals, but of a nation’s struggle for freedom.</p>
             </div>
-            <a href="#menu" class="enter-btn" style="margin-top: 3rem;">ENTER GALLERY</a>
+            <a href="#start" class="enter-btn" style="margin-top: 3rem;">BACK TO HOME</a>
         </div>
     </section>
 
-    <!-- Main Menu / Hub -->
-    <section id="main-menu" class="view">
-        <a href="#start" class="close-menu-btn">CLOSE</a>
-        <nav class="menu-nav">
-            <a href="#comics" class="menu-link">Comics</a>
-            <a href="#films" class="menu-link">Films</a>
-            <a href="#music" class="menu-link">Music</a>
-            <a href="#games" class="menu-link">Games</a>
-            <a href="#journals" class="menu-link">Journals</a>
-        </nav>
-    </section>
 
     <!-- Comics View (Formerly Gallery) -->
     <section id="comics" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <a href="#start" class="back-abs">BACK TO HOME</a>
         <div class="gallery-container">
             
             <div class="portrait-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; scroll-snap-align: center; flex: 0 0 auto;">
@@ -106,7 +103,7 @@
 
     <!-- Films View -->
     <section id="films" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <a href="#start" class="back-abs">BACK TO HOME</a>
         <div class="cinema-container">
             <div class="cinema-screen">
                 <div class="screen-glow"></div>
@@ -121,7 +118,7 @@
 
     <!-- Music View -->
     <section id="music" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <a href="#start" class="back-abs">BACK TO HOME</a>
         <div class="container" style="text-align: center; margin-top: 10rem;">
             <h2>American Portrait Music</h2>
             <div id="audio-player-container" class="audio-container">
@@ -154,21 +151,101 @@
         </div>
     </section>
 
-    <!-- Journals View -->
+    <!-- Journals Gallery Hub -->
     <section id="journals" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <a href="#start" class="back-abs">BACK TO HOME</a>
+        <div class="journals-gallery-container">
+            <h2 class="section-title">Journals</h2>
+            <div class="journals-gallery">
+                <!-- American Chronicle -->
+                <a href="#chronicle" class="journal-card">
+                    <div class="journal-cover">
+                        <img src="American Chronicle Resources/American Chronicle Unfinished Cover.png" alt="American Chronicle" class="cover-img">
+                        <div class="cover-overlay"></div>
+                    </div>
+                    <div class="journal-info">
+                        <h3>American Chronicle</h3>
+                        <p>1776 - 2026</p>
+                    </div>
+                </a>
+
+                <!-- Kissinger Library -->
+                <a href="#library-kissinger" class="journal-card">
+                    <div class="journal-cover kissinger-placeholder">
+                        <div class="cover-content">
+                            <div class="library-tag">LIBRARY</div>
+                            <h4 class="cover-title">Kissinger</h4>
+                            <div class="library-accent"></div>
+                        </div>
+                        <div class="cover-overlay"></div>
+                    </div>
+                    <div class="journal-info">
+                        <h3>Kissinger Library</h3>
+                        <p>Published Works since 1950</p>
+                    </div>
+                </a>
+
+                <!-- Carter Library -->
+                <a href="#library-carter" class="journal-card">
+                    <div class="journal-cover carter-placeholder">
+                        <div class="cover-content">
+                            <div class="library-tag">LIBRARY</div>
+                            <h4 class="cover-title">Carter</h4>
+                            <div class="library-accent"></div>
+                        </div>
+                        <div class="cover-overlay"></div>
+                    </div>
+                    <div class="journal-info">
+                        <h3>Carter Library</h3>
+                        <p>Published Works since 1975</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- American Chronicle View (Grid) -->
+    <section id="chronicle-view" class="view">
+        <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
         <div class="chronicle-container">
-            <h2 style="margin-bottom: 0.5rem;">American Chronicle<br><span style="font-size: 1.5rem; color: #888;">1776 - 2026</span></h2>
-            <h3 style="color: #bbb; font-size: 1.1rem; margin-bottom: 2rem; font-weight: normal; text-transform: none;">Published by <a href="https://simonallmer.com/chronicle" target="_blank" style="color: inherit; text-decoration: underline;">Chronicle</a></h3>
+            <h2>American Chronicle<br><span class="chronicle-subtitle">THE ASCENT</span><span class="chronicle-subtitle">1776—2026</span></h2>
+            
+            <div class="chronicle-preface">
+                <p>The greatest art makes of seemingly unrelated pieces a unified whole.</p>
+                <p>From the writer come characters that break free of black and white pages to live in the imagination of readers in full color, seeming more flesh and blood than their closest neighbors. From the painter flow brushstrokes of lived experience — familiar yet sublime — that no eye nor memory could capture. And from the pianist rise melodies that play on long after the musician has departed, untranslatable into any tongue yet understood by all.</p>
+                <p>That unified whole does not simply stand in a library to gather dust, hang in a gallery to be glanced at, or dissolve into silence when the last note fades. No — it lives and breathes to stir what reason cannot reach.</p>
+                <p>Yet art is not the only maker of such things.</p>
+                <p>When thirteen colonies, each sovereign in temper and tradition, came together beneath a single shared dream of liberty, they did not merely sign a document or fire a musket in common cause. They composed something novel. Out of grievance, they fashioned principle. Out of difference, they forged covenant. Out of the blood and argument of a long and uncertain struggle, they made — against all odds — a nation.</p>
+                <p>This American Chronicle is the attempt to set down that composition whilst its music still lingers in living memory. For we stand now at the early edge of an American story whose full measure no man alive shall see concluded. Let the reader, then, not seek in these pages a monument to the past, but a mirror held to the present — a lantern, however dim, pointed toward what we may yet become.</p>
+                <div class="preface-signature">— Simon Allmer</div>
+            </div>
             
             <div id="chronicle-grid" class="periodic-grid">
                 <!-- 251 years generated via app.js -->
             </div>
+            
+            <div class="chronicle-coming-soon">
+                <div class="coming-soon-header" style="color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; display: inline-block;">IN DEVELOPMENT</div>
+                
+                <div class="coming-soon-grid">
+                    <div class="coming-soon-item">
+                        <h4>Topic Lenses</h4>
+                        <p>View the sweep of American history through specialized lenses—Culture, Industry, Warfare, Science, and more. A dynamic thematic design that reveals hidden patterns in the national story.</p>
+                    </div>
 
-            <div style="display: flex; gap: 2rem; margin: 3rem 0;">
-                <a href="#library-kissinger" class="enter-btn" style="margin-top: 0;">KISSINGER LIBRARY</a>
-                <a href="#library-carter" class="enter-btn" style="margin-top: 0;">CARTER LIBRARY</a>
+                    <div class="coming-soon-item">
+                        <h4>Connector</h4>
+                        <p>An intuitive visual journey mapping the evolution of individuals, companies, and ideas. Follow your chosen subjects across the centuries via a living Chronicle Map of interconnected narratives.</p>
+                    </div>
+
+                    <div class="coming-soon-item">
+                        <h4>The Book</h4>
+                        <p>The definitive distillation of the American Chronicle. Once the narrative is complete, this permanent record will be balanced by the unique perspectives and accuracy checks of expert historians for a lasting, printed experience.</p>
+                    </div>
+                </div>
             </div>
+            
+            <a href="https://simonallmer.com/chronicle" class="enter-btn" style="margin-top: 6rem;">CHRONICLE</a>
         </div>
 
         <!-- Chronicle Year Popup -->
@@ -194,7 +271,7 @@
 
     <!-- Games View -->
     <section id="games" class="view">
-        <a href="#menu" class="back-abs">BACK TO MENU</a>
+        <a href="#start" class="back-abs">BACK TO HOME</a>
         <div class="games-container">
             <h2 class="section-title">Games</h2>
             <div class="games-list">

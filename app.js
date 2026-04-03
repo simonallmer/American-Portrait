@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const routes = {
         '': 'start-page',
         '#start': 'start-page',
-        '#menu': 'main-menu',
+        '#start': 'start-page',
         '#comics': 'comics',
         '#journals': 'journals',
+        '#chronicle': 'chronicle-view',
         '#library-kissinger': 'library-kissinger',
         '#library-carter': 'library-carter',
         '#films': 'films',
@@ -17,6 +18,105 @@ document.addEventListener('DOMContentLoaded', () => {
         '#review-leadership': 'review-leadership',
         '#review-ageofai': 'review-ageofai'
     };
+
+    // Keyboard Navigation logic
+    document.addEventListener('keydown', (e) => {
+        const key = e.key;
+        const activeView = document.querySelector('.view.active');
+        if (!activeView) return;
+
+        // Escape/Return key hierarchical back navigation
+        if (key === 'Escape' || key === 'Enter') {
+            const currentHash = window.location.hash || '#start';
+            const backMap = {
+                '#chronicle': '#journals',
+                '#library-kissinger': '#journals',
+                '#library-carter': '#journals',
+                '#comics': '#start',
+                '#journals': '#start',
+                '#films': '#start',
+                '#about': '#start',
+                '#music': '#start',
+                '#games': '#start'
+            };
+            if (backMap[currentHash]) {
+                window.location.hash = backMap[currentHash];
+                return;
+            }
+        }
+
+        if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== ' ') return;
+
+        // Focusable items: links, cards, years, tracks, books
+        const selectors = 'a.enter-btn, a.back-abs, a.back-to-sa, .portrait-card, .journal-card, .periodic-year, .game-card, .library-book, .custom-audio, .bookstore-item';
+        const focusable = Array.from(activeView.querySelectorAll(selectors))
+            .filter(el => el.offsetParent !== null);
+
+        if (focusable.length === 0) return;
+
+        let index = focusable.indexOf(document.activeElement);
+        let lastInRowIndex = -1; 
+        if (window.lastNavIndex !== undefined) lastInRowIndex = window.lastNavIndex;
+
+        if (key === 'ArrowDown' || key === 'ArrowRight' || key === 'ArrowUp' || key === 'ArrowLeft') {
+            e.preventDefault();
+            
+            const current = document.activeElement;
+            // Record row index memory if in split row
+            if (current && current.parentElement.classList.contains('split-actions-row')) {
+                const subItems = Array.from(current.parentElement.querySelectorAll('a'));
+                window.lastSplitIndex = subItems.indexOf(current);
+            }
+
+            // Grid logic for Music View (2 columns)
+            if (activeView.id === 'music') {
+                const isVertical = (key === 'ArrowDown' || key === 'ArrowUp');
+                const step = isVertical ? 2 : 1;
+                const dir = (key === 'ArrowDown' || key === 'ArrowRight') ? 1 : -1;
+                
+                index = (index + (step * dir) + focusable.length) % focusable.length;
+                
+                // Edge case: if we were at the end and step*dir goes beyond, ensure we loop correctly
+                // (Already handled by modulo, but ensures jump feels vertical)
+            } else if (key === 'ArrowDown' || key === 'ArrowRight') {
+                // Special logic for down from journals back to split row
+                if (key === 'ArrowDown' && current && current.getAttribute('href') === '#journals') {
+                    const splitActions = activeView.querySelector('.split-actions-row');
+                    if (splitActions) {
+                        const splitRowItems = Array.from(splitActions.querySelectorAll('a'));
+                        const targetSubIndex = (window.lastSplitIndex !== undefined) ? window.lastSplitIndex : 0;
+                        index = focusable.indexOf(splitRowItems[targetSubIndex]);
+                    } else {
+                        index = (index + 1) % focusable.length;
+                    }
+                } else {
+                    index = (index + 1) % focusable.length;
+                }
+            } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+                // Special logic for split rows: UP from any child of split row goes to the item before the row
+                if (key === 'ArrowUp' && current && current.parentElement.classList.contains('split-actions-row')) {
+                    const firstInRow = current.parentElement.querySelector('a');
+                    index = (focusable.indexOf(firstInRow) - 1 + focusable.length) % focusable.length;
+                } else {
+                    index = (index - 1 + focusable.length) % focusable.length;
+                }
+            }
+            
+            focusable[index].focus();
+            focusable[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        } else if (key === ' ') {
+            e.preventDefault();
+            const current = document.activeElement;
+            if (current && focusable.includes(current)) {
+                if (current.tagName === 'AUDIO') {
+                    if (current.paused) current.play();
+                    else current.pause();
+                } else {
+                    current.click();
+                }
+            }
+        }
+    });
 
     function navigate() {
         const hash = window.location.hash;
@@ -252,7 +352,7 @@ function initChronicleGrid() {
             (year >= 1898 && year <= 1898) || (year >= 1917 && year <= 1918) || 
             (year >= 1941 && year <= 1945) || (year >= 1950 && year <= 1953) || 
             (year >= 1965 && year <= 1973) || (year >= 1990 && year <= 1991) || 
-            (year >= 2001 && year <= 2021)) {
+            (year >= 2001 && year <= 2021) || year === 2026) {
             div.classList.add('symbol-war');
         }
         if (year >= 1789 && (year - 1789) % 4 === 0) {
@@ -538,7 +638,7 @@ const chronicleEntries = {
     2023: "Innovation in Artificial Intelligence reached a fever pitch as generative AI tools became mainstream, sparking both wonder and existential dread about the future of work and truth. In Congress, history was made when <strong>Kevin McCarthy</strong> was ousted as Speaker of the House in a mid-term rebellion, reflecting the deep fractures within the Republican majority.",
     2024: "Litigation and electioneering merged into a single narrative as <strong>Donald Trump</strong> campaigned for a return to the White House while simultaneously facing multiple criminal trials. The election cycle was further stunned by President <strong>Biden</strong>'s late withdrawal from the race, leading to <strong>Kamala Harris</strong> assuming the mantle as the Democratic nominee in a whirlwind summer of political realignment.",
     2025: "Restoration or transformation began as the newly inaugurated administration moved to address high inflation and solidify domestic energy production. The year was marked by a renewed focus on the Pacific theater, as trade tensions and naval posturing between the United States and China became the primary focus of American grand strategy in a rapidly changing multipolar world.",
-    2026: "Commemoration of the United States Semiquincentennial—the nation's 250th birthday—brings a period of profound reflection on the durability of the American experiment. As the nation celebrates its bicentennial-plus-fifty, it grapples with the integration of AI into daily governance, the continued challenges of a divided electorate, and its enduring role as a beacon of liberty in a volatile new century."
+    2026: "Commemoration of the United States Semiquincentennial—the nation's 250th birthday—was marked by a profound juxtaposition of earthly conflict and celestial breakthrough. While the outbreak of the <strong>Iran War</strong> presented the most significant strategic challenge to the Western alliance in decades, the successful return of the <strong>Artemis II</strong> mission captured the global imagination. As the first crewed spacecraft to reach the vicinity of the Moon since the conclusion of the Apollo program 54 years prior, the mission’s triumph stood as a testament to American technological resilience."
 };
 
 function updateChroniclePopup() {
