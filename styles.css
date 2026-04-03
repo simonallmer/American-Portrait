@@ -110,7 +110,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden !important;
 }
 
 .bg-container {
@@ -1009,8 +1008,34 @@ body {
 
 /* ===== MOBILE RESPONSIVENESS ===== */
 @media (max-width: 768px) {
+    #start-page {
+        justify-content: flex-start;
+        padding-top: 3rem;
+        overflow-y: auto !important;
+        height: auto;
+        min-height: 100vh;
+    }
+
     .title-container {
-        width: 80vw;
+        width: 65vw;
+        margin-bottom: 2rem;
+        flex-shrink: 0;
+    }
+
+    .landing-actions {
+        padding: 1rem 1.5rem 8rem 1.5rem;
+        gap: 1.2rem;
+    }
+
+    .split-actions-row {
+        flex-direction: column;
+        gap: 1rem;
+        padding-top: 2rem;
+    }
+
+    .split-actions-row .enter-btn {
+        width: 100%;
+        min-width: unset;
     }
 
     .menu-link {
