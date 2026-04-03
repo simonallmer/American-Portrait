@@ -1277,18 +1277,26 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.98); /* Near total black for quotes */
     z-index: 1000;
     display: none; /* Toggled by JS */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 6rem 2rem 2rem 2rem;
     text-align: center;
+    overflow-y: auto;
 }
 
 .quotes-overlay.active {
     display: flex;
+}
+
+@media (max-width: 768px) {
+    .quotes-overlay {
+        justify-content: flex-start;
+        padding-top: 8rem;
+    }
 }
 
 .quote-nav-container {
@@ -1298,6 +1306,13 @@ body {
     width: 95%;
     max-width: 1200px;
     gap: 3rem;
+}
+
+@media (max-width: 768px) {
+    .quote-nav-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
 }
 
 .quote-nav-arrow {
@@ -1326,10 +1341,18 @@ body {
     max-width: 800px;
 }
 
+@media (max-width: 768px) {
+    .quote-container {
+        width: 100%;
+        order: -1; /* Move quote text above arrows on mobile */
+        margin-bottom: 2rem;
+    }
+}
+
 .quote-text {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     line-height: 1.4;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-style: italic;
     color: #f0f0f0;
 }
@@ -1373,15 +1396,17 @@ body {
 }
 
 .close-quotes-btn {
-    position: absolute;
+    position: fixed;
     top: 2rem;
     right: 2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text-color);
     text-decoration: none;
     border: 1px solid rgba(255,255,255,0.2);
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 1.2rem;
     cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    z-index: 1100;
 }
 
 .close-quotes-btn:hover {
