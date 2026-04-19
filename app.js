@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#library-carter': 'library-carter',
         '#films': 'films',
         '#games': 'games',
+        '#frontier': 'frontier',
         '#music': 'music',
         '#about': 'about',
         '#review-nuclear': 'review-nuclear',
@@ -37,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#films': '#start',
                 '#about': '#start',
                 '#music': '#start',
-                '#games': '#start'
+                '#games': '#start',
+                '#frontier': '#games'
             };
             if (backMap[currentHash]) {
                 window.location.hash = backMap[currentHash];
