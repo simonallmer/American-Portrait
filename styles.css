@@ -1856,15 +1856,17 @@ body:has(#frontier.active) .back-to-sa {
             .card {
                 width: 55px;
                 height: 80px;
-                padding: 4px;
+                padding: 6px;
             }
 
             .card-val {
-                font-size: 1.5rem !important;
+                font-size: 1.2rem !important;
+                border: none !important;
             }
 
             .card-corner {
-                font-size: 0.8rem !important;
+                font-size: 0.7rem !important;
+                padding: 1px 2px !important;
             }
 
             #player-status-grid {
@@ -2007,6 +2009,69 @@ body:has(#frontier.active) .back-to-sa {
             margin: 5px;
         }
 
+        .frontier-input {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .frontier-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold-dim);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .frontier-input.is-default {
+            color: #666;
+            opacity: 0.7;
+        }
+
+        .toggle-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.7rem;
+            color: #666;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--gold-dim);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .ai-tag {
+            font-size: 0.6rem;
+            background: #444;
+            color: #fff;
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
         .action-btn:hover {
             border-color: #888;
             color: #fff;
@@ -2071,7 +2136,7 @@ body:has(#frontier.active) .back-to-sa {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 10px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             user-select: none;
@@ -2096,10 +2161,13 @@ body:has(#frontier.active) .back-to-sa {
         }
 
         .card-corner {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             line-height: 1;
-            text-align: center;
+            text-align: left;
             width: 100%;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            padding: 2px 4px; /* Slight offset from edges */
         }
 
         .card-corner.bottom {
@@ -2116,14 +2184,14 @@ body:has(#frontier.active) .back-to-sa {
 
         .card-val {
             font-size: 3rem;
-            font-weight: 800;
-            font-family: 'Playfair Display', serif;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             width: 100%;
             text-align: center;
-            padding: 10px 0;
-            margin: 5px 0;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.95;
         }
 
         .card-suit-name {

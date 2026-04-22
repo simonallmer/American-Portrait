@@ -1,10 +1,10 @@
 // --- Constants & Data ---
 const SUITS = {
-    DEEP_SOUTH: { id: 'DEEP_SOUTH', name: 'Deep South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg>', color: 'var(--deep-south-text)', bg: 'var(--deep-south-bg)', border: 'var(--deep-south-border)', align: 'Confederacy' },
-    UPPER_SOUTH: { id: 'UPPER_SOUTH', name: 'Upper/Western South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg>', color: 'var(--upper-south-text)', bg: 'var(--upper-south-bg)', border: 'var(--upper-south-border)', align: 'Confederacy' },
-    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg>', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
+    DEEP_SOUTH: { id: 'DEEP_SOUTH', name: 'Deep South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 18 C 60 8, 78 10, 78 25 C 78 40, 54 35, 54 50 C 54 65, 78 60, 78 75 C 78 90, 60 92, 50 82 C 40 92, 22 90, 22 75 C 22 60, 46 65, 46 50 C 46 35, 22 40, 22 25 C 22 10, 40 8, 50 18 Z" fill="currentColor"/></svg>', color: 'var(--deep-south-text)', bg: 'var(--deep-south-bg)', border: 'var(--deep-south-border)', align: 'Confederacy' },
+    UPPER_SOUTH: { id: 'UPPER_SOUTH', name: 'Upper/Western South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 8 A 65 65 0 0 0 78 50 A 65 65 0 0 0 50 92 A 65 65 0 0 0 22 50 A 65 65 0 0 0 50 8 Z" fill="currentColor"/></svg>', color: 'var(--upper-south-text)', bg: 'var(--upper-south-bg)', border: 'var(--upper-south-border)', align: 'Confederacy' },
+    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 50 C 48 48, 35 40, 35 28 C 35 15, 45 10, 50 5 C 55 10, 65 15, 65 28 C 65 40, 52 48, 50 50 C 52 48, 60 35, 72 35 C 85 35, 90 45, 95 50 C 90 55, 85 65, 72 65 C 60 65, 52 52, 50 50 C 52 52, 65 60, 65 72 C 65 85, 55 90, 50 95 C 45 90, 35 85, 35 72 C 35 60, 48 52, 50 50 C 48 52, 40 65, 28 65 C 15 65, 10 55, 5 50 C 10 45, 15 35, 28 35 C 40 35, 48 48, 50 50 Z" fill="currentColor"/></svg>', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
     WEST_FRONTIER: { id: 'WEST_FRONTIER', name: 'Western Frontier', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg>', color: 'var(--west-frontier-text)', bg: 'var(--west-frontier-bg)', border: 'var(--west-frontier-border)', align: 'Union' },
-    BORDER: { id: 'BORDER', name: 'Border States', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg>', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
+    BORDER: { id: 'BORDER', name: 'Border States', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="6" fill="currentColor"/><circle cx="83" cy="31" r="6" fill="currentColor"/><circle cx="83" cy="69" r="6" fill="currentColor"/><circle cx="50" cy="88" r="6" fill="currentColor"/><circle cx="17" cy="69" r="6" fill="currentColor"/><circle cx="17" cy="31" r="6" fill="currentColor"/></svg>', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
 };
 
 const BASE_BET_UNIT = 1;
@@ -226,20 +226,8 @@ class FrontierGame {
 
         // this.loadGlobalPlayers(); // Removed as we now use showSetup()
 
-        // Global listeners for modals
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (this.els.rulesModal.classList.contains('visible') || 
-                    this.els.allCardsModal.classList.contains('visible') || 
-                    this.els.menuDropdown.classList.contains('active')) {
-                    this.closeAllModals();
-                    e.stopImmediatePropagation(); // Prevent global app escape
-                } else if (!this.els.overlay.classList.contains('visible')) {
-                    this.showSetup();
-                    e.stopImmediatePropagation(); // Prevent global app escape
-                }
-            }
-        });
+        // window.addEventListener('keydown', (e) => { ... }) // Removed to consolidate in app.js
+
 
         window.addEventListener('click', (e) => {
             // Close modals if backdrop (the .modal shell) is clicked
@@ -296,11 +284,11 @@ class FrontierGame {
                 div.style.cursor = "default";
                 
                 div.innerHTML = `
-                    <div class="card-corner" style="font-size: 1rem;">${card.suit.symbol}</div>
+                    <div class="card-corner">${card.val}</div>
                     <div class="card-center">
-                        <div class="card-val" style="font-size: 1.8rem;">${card.val}</div>
+                        <div class="card-val">${card.suit.symbol}</div>
                     </div>
-                    <div class="card-corner bottom" style="font-size: 1rem;">${card.suit.symbol}</div>
+                    <div class="card-corner bottom">${card.val}</div>
                 `;
                 this.els.allCardsGrid.appendChild(div);
             }
@@ -326,12 +314,13 @@ class FrontierGame {
 
         this.els.overlayTitle.innerText = "FRONTIER";
         this.els.overlayTitle.style.color = "var(--gold-bright)";
-        this.els.overlayDesc.innerHTML = "A high-stakes tactical card game played with standard <strong>American Playing Cards</strong>.<br/><br/>Select Commander count:";
+        this.els.overlayDesc.innerHTML = "A high-stakes tactical card game played with <strong>American Playing Cards</strong>.<br/><br/>Select Commander count:";
 
         const actions = document.getElementById('overlay-actions');
         actions.innerHTML = '';
         
         const wrapper = document.createElement('div');
+        wrapper.id = "setup-wrapper";
         wrapper.style.display = 'flex';
         wrapper.style.flexDirection = 'column';
         wrapper.style.alignItems = 'center';
@@ -347,7 +336,7 @@ class FrontierGame {
             btn.style.padding = "10px 20px";
             btn.style.minWidth = "60px";
             btn.innerText = count;
-            btn.onclick = () => this.initGame(count);
+            btn.onclick = () => this.preparePlayerNames(count);
             countRow.appendChild(btn);
         });
         
@@ -364,16 +353,156 @@ class FrontierGame {
         rulesBtn.onmouseover = () => rulesBtn.style.color = "var(--gold-bright)";
         rulesBtn.onmouseout = () => rulesBtn.style.color = "var(--gold)";
         rulesBtn.onclick = () => this.showRules();
+
+        const credit = document.createElement('div');
+        credit.innerText = "GAME DESIGN: SIMON ALLMER";
+        credit.style.color = "var(--text-color)";
+        credit.style.fontSize = "0.6rem";
+        credit.style.opacity = "0.4";
+        credit.style.letterSpacing = "2px";
+        credit.style.marginTop = "30px";
         
         wrapper.appendChild(countRow);
         wrapper.appendChild(rulesBtn);
+        wrapper.appendChild(credit);
         actions.appendChild(wrapper);
 
         this.els.overlay.classList.add('visible');
         document.getElementById('overlay-main-btn').style.display = 'none';
     }
 
-    initGame(playerCount) {
+    preparePlayerNames(count) {
+        this.els.overlayDesc.innerHTML = "Enter Commander Names:";
+        const wrapper = document.getElementById('setup-wrapper');
+        wrapper.innerHTML = '';
+        
+        const namesContainer = document.createElement('div');
+        namesContainer.style.display = 'flex';
+        namesContainer.style.flexDirection = 'column';
+        namesContainer.style.gap = '20px';
+        namesContainer.style.width = '100%';
+        namesContainer.style.maxWidth = '300px';
+
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
+        const playerConfigs = [];
+
+        for (let i = 0; i < count; i++) {
+            const playerGroup = document.createElement('div');
+            playerGroup.style.display = 'flex';
+            playerGroup.style.flexDirection = 'column';
+            playerGroup.style.gap = '6px';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'frontier-input is-default';
+            const defaultName = `Player ${i + 1}`;
+            input.value = defaultName;
+            input.dataset.isDefault = 'true';
+            input.style.borderLeft = `4px solid ${colors[i]}`;
+            
+            const config = { isAI: false, input: input };
+            playerConfigs.push(config);
+
+            input.onfocus = () => {
+                if (input.dataset.isDefault === 'true') {
+                    setTimeout(() => input.setSelectionRange(0, 0), 0);
+                }
+            };
+
+            input.onkeydown = (e) => {
+                if (input.dataset.isDefault === 'true' && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    input.value = '';
+                    input.dataset.isDefault = 'false';
+                    input.classList.remove('is-default');
+                }
+            };
+
+            input.onblur = () => {
+                if (input.value.trim() === '') {
+                    this.updateAIPresence(playerConfigs);
+                }
+            };
+
+            playerGroup.appendChild(input);
+
+            // AI Toggle for players 2+
+            if (i > 0) {
+                const toggle = document.createElement('div');
+                toggle.className = 'toggle-container';
+                
+                const humanBtn = document.createElement('button');
+                humanBtn.className = 'toggle-btn active';
+                humanBtn.innerText = 'Human';
+                
+                const aiBtn = document.createElement('button');
+                aiBtn.className = 'toggle-btn';
+                aiBtn.innerText = 'Computer';
+                
+                humanBtn.onclick = () => {
+                    config.isAI = false;
+                    humanBtn.classList.add('active');
+                    aiBtn.classList.remove('active');
+                    this.updateAIPresence(playerConfigs);
+                };
+                
+                aiBtn.onclick = () => {
+                    config.isAI = true;
+                    aiBtn.classList.add('active');
+                    humanBtn.classList.remove('active');
+                    this.updateAIPresence(playerConfigs);
+                };
+                
+                toggle.appendChild(humanBtn);
+                toggle.appendChild(aiBtn);
+                playerGroup.appendChild(toggle);
+            }
+
+            namesContainer.appendChild(playerGroup);
+        }
+
+        const beginBtn = document.createElement('button');
+        beginBtn.className = "primary-btn";
+        beginBtn.style.marginTop = "10px";
+        beginBtn.style.padding = "15px 40px";
+        beginBtn.innerText = "BEGIN GAME";
+        beginBtn.onclick = () => {
+            const finalPlayers = playerConfigs.map(c => ({
+                name: c.input.value.trim(),
+                isAI: c.isAI
+            }));
+            this.initGame(count, finalPlayers);
+        };
+
+        wrapper.appendChild(namesContainer);
+        wrapper.appendChild(beginBtn);
+    }
+
+    updateAIPresence(configs) {
+        let aiCount = 0;
+        configs.forEach((c, idx) => {
+            const currentVal = c.input.value.trim();
+            // A name is "default" if it's empty, "Player X", or "Computer X"
+            const isDefault = currentVal === '' || currentVal === `Player ${idx + 1}` || /^Computer \d+$/.test(currentVal);
+            
+            if (c.isAI) {
+                aiCount++;
+                if (isDefault) {
+                    c.input.value = `Computer ${aiCount}`;
+                    c.input.dataset.isDefault = 'false';
+                    c.input.classList.remove('is-default');
+                }
+            } else {
+                // If it was an auto-generated Computer name, revert to Player default
+                if (/^Computer \d+$/.test(currentVal) || currentVal === '') {
+                    c.input.value = `Player ${idx + 1}`;
+                    c.input.dataset.isDefault = 'true';
+                    c.input.classList.add('is-default');
+                }
+            }
+        });
+    }
+
+    initGame(playerCount, customPlayerConfigs) {
         if (playerCount === undefined) {
             playerCount = this.lastPlayerCount || 2;
         }
@@ -387,27 +516,22 @@ class FrontierGame {
         
         this.els.overlay.classList.remove('visible');
 
-        const allAvailablePlayers = [
-            { id: 1, name: 'Lincoln', cash: 10, color: { hex: '#3b82f6' } },
-            { id: 2, name: 'Davis', cash: 10, color: { hex: '#ef4444' } },
-            { id: 3, name: 'Sherman', cash: 10, color: { hex: '#10b981' } },
-            { id: 4, name: 'Jackson', cash: 10, color: { hex: '#8b5cf6' } },
-            { id: 5, name: 'Grant', cash: 10, color: { hex: '#f59e0b' } },
-            { id: 6, name: 'Lee', cash: 10, color: { hex: '#06b6d4' } }
-        ];
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
 
-        this.allGlobalPlayers = allAvailablePlayers.slice(0, playerCount);
-
-        // Filter players who can afford at least 1 round (need > 0 technically, but let's just take all active)
-        this.players = this.allGlobalPlayers.map(p => ({
-            globalId: p.id,
-            name: p.name,
-            cash: p.cash,
-            color: p.color,
-            hand: [],
-            canMulligan: true,
-            status: p.cash > 0 ? 'ACTIVE' : 'BANKRUPT'
-        }));
+        this.players = [];
+        for (let i = 0; i < playerCount; i++) {
+            const config = (customPlayerConfigs && customPlayerConfigs[i]) ? customPlayerConfigs[i] : { name: `Player ${i+1}`, isAI: false };
+            this.players.push({
+                globalId: i + 1,
+                name: config.name,
+                isAI: config.isAI,
+                cash: 10,
+                color: { hex: colors[i] },
+                hand: [],
+                canMulligan: true,
+                status: 'ACTIVE'
+            });
+        }
 
         if (this.players.length < 2) {
             alert("Need at least 2 players to play Frontier!");
@@ -459,16 +583,140 @@ class FrontierGame {
         this.els.historyPanel.style.display = 'none';
         this.els.mulliganBtn.style.display = 'none';
 
+        if (player.isAI) {
+            this.executeAITurn();
+            return;
+        }
+
         this.els.overlayTitle.innerText = `PASS TO ${player.name.toUpperCase()}`;
         this.els.overlayTitle.style.color = player.color.hex || 'var(--gold)';
         this.els.overlayDesc.innerText = `When ready, click below to reveal Round ${this.currentRoundNum} hand.`;
 
         const btn = document.getElementById('overlay-main-btn');
+        btn.style.display = 'block';
         btn.innerText = "REVEAL CARDS";
         btn.onclick = () => this.startTurn();
 
         this.els.overlay.classList.add('visible');
         this.setMessage("");
+    }
+
+    executeAITurn() {
+        const player = this.players[this.activePlayerId];
+        this.els.overlayTitle.innerText = `${player.name.toUpperCase()} IS THINKING...`;
+        this.els.overlayTitle.style.color = player.color.hex;
+        this.els.overlayDesc.innerText = "Analyzing current tactical landscape...";
+        this.els.overlay.classList.add('visible');
+        document.getElementById('overlay-main-btn').style.display = 'none';
+
+        // Phase 1: Analyzing Hand
+        setTimeout(() => {
+            this.els.overlayDesc.innerText = "Evaluating hand strength and alliance potential...";
+            
+            setTimeout(() => {
+                // Phase 2: Selecting Cards
+                const bestSelection = this.getAISelection(player);
+                this.selectedCardIndices = bestSelection.indices;
+                this.els.overlayDesc.innerText = `Selecting ${bestSelection.indices.length} card${bestSelection.indices.length > 1 ? 's' : ''} for the engagement...`;
+
+                setTimeout(() => {
+                    // Phase 3: Deciding Action
+                    const isFirstPlayer = this.roundPlays.length === 0;
+                    const decision = this.getAIBettingDecision(player, bestSelection.eval);
+                    
+                    let actionMsg = "";
+                    let type = "";
+                    if (decision.action === 'FOLD') {
+                        actionMsg = "Decided to retreat from the current round.";
+                        type = "Folds";
+                    } else {
+                        type = isFirstPlayer ? 'Bets' : (decision.action === 'RAISE' ? 'Raises to' : 'Calls');
+                        actionMsg = `${type} $${decision.amount} with ${bestSelection.eval.tier}.`;
+                    }
+                    this.els.overlayDesc.innerText = actionMsg;
+
+                    setTimeout(() => {
+                        this.els.overlay.classList.remove('visible');
+                        if (decision.action === 'FOLD') {
+                            this.executeFold();
+                        } else {
+                            this.executePlay(decision.amount);
+                        }
+                        
+                        // Show a quick announcement message in the main UI
+                        this.setMessage(`<div style="color: ${player.color.hex}; font-weight: bold;">${player.name} ${type} $${decision.amount || 0}.</div>`);
+                    }, 800);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    }
+
+    getAISelection(player) {
+        // Simple logic: return all cards if they form a good hand, 
+        // or find the subset with highest score.
+        // For AI, we'll just check the full hand first, then pairs.
+        const fullEval = evaluateHand(player.hand);
+        let bestIndices = player.hand.map((_, i) => i);
+        let bestEval = fullEval;
+
+        // For simplicity in this 'average' AI, it plays its whole hand if it's better than Tier 5
+        // Otherwise it plays its highest card.
+        if (fullEval.tier === 'Tier 5') {
+            const highCardIdx = player.hand.reduce((maxIdx, card, idx, arr) => 
+                card.val > arr[maxIdx].val ? idx : maxIdx, 0);
+            bestIndices = [highCardIdx];
+            bestEval = evaluateHand([player.hand[highCardIdx]]);
+        }
+
+        return { indices: bestIndices, eval: bestEval };
+    }
+
+    getAIBettingDecision(player, handEval) {
+        const isFirstPlayer = this.roundPlays.length === 0;
+        
+        const otherActiveIds = this.roundActivePlayers.filter(idx => idx !== this.activePlayerId);
+        const maxOtherCash = otherActiveIds.length > 0 
+            ? Math.max(...otherActiveIds.map(idx => this.players[idx].cash)) 
+            : 0;
+        const maxBetAllowed = Math.min(5, maxOtherCash);
+
+        // Average risk-averse logic
+        if (isFirstPlayer) {
+            if (handEval.tier === 'Tier 1' || handEval.tier === 'Tier 2') {
+                return { action: 'BET', amount: Math.min(player.cash, 3) };
+            }
+            if (handEval.tier === 'Tier 3' || handEval.tier === 'Tier 4') {
+                return { action: 'BET', amount: Math.min(player.cash, 1) };
+            }
+            return { action: 'BET', amount: Math.min(player.cash, 1) };
+        } else {
+            const callAmount = Math.min(player.cash, this.roundBet);
+            
+            // Confidence based on Tier
+            let confidence = 0;
+            if (handEval.tier === 'Tier 1') confidence = 1.0;
+            else if (handEval.tier === 'Tier 2') confidence = 0.9;
+            else if (handEval.tier === 'Tier 3') confidence = 0.7;
+            else if (handEval.tier === 'Tier 4') confidence = 0.4;
+            else confidence = 0.1;
+
+            // Decision
+            if (confidence > 0.8) {
+                // High confidence: Call and maybe Raise
+                if (this.roundBet < maxBetAllowed && Math.random() > 0.5) {
+                    return { action: 'RAISE', amount: Math.min(player.cash, this.roundBet + 1) };
+                }
+                return { action: 'CALL', amount: callAmount };
+            } else if (confidence > 0.3) {
+                // Medium confidence: Call small bets
+                if (this.roundBet <= 2) return { action: 'CALL', amount: callAmount };
+                return { action: 'FOLD' };
+            } else {
+                // Low confidence: Fold unless it's cheap
+                if (this.roundBet <= 1) return { action: 'CALL', amount: callAmount };
+                return { action: 'FOLD' };
+            }
+        }
     }
 
     startTurn() {
@@ -488,11 +736,11 @@ class FrontierGame {
             if (this.selectedCardIndices.includes(idx)) div.classList.add('selected');
 
             div.innerHTML = `
-                <div class="card-corner">${card.suit.symbol}</div>
+                <div class="card-corner">${card.val}</div>
                 <div class="card-center">
-                    <div class="card-val">${card.val}</div>
+                    <div class="card-val">${card.suit.symbol}</div>
                 </div>
-                <div class="card-corner bottom">${card.suit.symbol}</div>
+                <div class="card-corner bottom">${card.val}</div>
             `;
 
             if (isClickable) {
@@ -635,17 +883,21 @@ class FrontierGame {
         if (this.roundActivePlayers.length <= 1 || this.roundPlays.length === this.roundActivePlayers.length) {
             // Showdown
             let evaluatedPlays = this.roundPlays.map(p => ({ ...p, result: evaluateHand(p.cards) }));
-            let winnerId = -1;
+            let winners = [];
             let isDefault = false;
 
             if (this.roundActivePlayers.length <= 1) {
-                winnerId = this.roundActivePlayers.length === 1 ? this.roundActivePlayers[0] : (this.roundPlays[0] ? this.roundPlays[0].playerId : 0);
+                const winnerId = this.roundActivePlayers.length === 1 ? this.roundActivePlayers[0] : (this.roundPlays[0] ? this.roundPlays[0].playerId : 0);
+                winners = [winnerId];
                 isDefault = true;
             } else {
                 evaluatedPlays.sort((a, b) => b.result.score - a.result.score);
-                winnerId = evaluatedPlays[0].playerId;
+                const topScore = evaluatedPlays[0].result.score;
+                winners = evaluatedPlays
+                    .filter(p => p.result.score === topScore)
+                    .map(p => p.playerId);
             }
-            this.concludeRound(winnerId, evaluatedPlays, isDefault);
+            this.concludeRound(winners, evaluatedPlays, isDefault);
         } else {
             // Next Player
             let nextIndexObj = -1;
@@ -662,15 +914,19 @@ class FrontierGame {
         }
     }
 
-    concludeRound(winnerId, finalPlays, isDefault) {
-        const winner = this.players[winnerId];
+    concludeRound(winnerIds, finalPlays, isDefault) {
         const finalPot = this.pot;
-        winner.cash += finalPot;
-        // Removed obsolete save call
+        const share = Math.floor(finalPot / winnerIds.length);
+        const remainder = finalPot % winnerIds.length;
+
+        winnerIds.forEach((id, idx) => {
+            const winner = this.players[id];
+            winner.cash += share + (idx === 0 ? remainder : 0);
+        });
 
         const roundResult = {
             roundNum: this.currentRoundNum,
-            winnerId,
+            winnerIds,
             isDefault,
             plays: finalPlays,
             potWon: finalPot
@@ -689,10 +945,10 @@ class FrontierGame {
         this.updatePlayerPods();
 
         const roundResult = this.gameHistory[this.gameHistory.length - 1];
-        const winnerObj = this.players[roundResult.winnerId];
+        const winnerNames = roundResult.winnerIds.map(id => this.players[id].name).join(' & ');
         const isFinal = this.currentRoundNum === 5;
 
-        this.setMessage(`${winnerObj.name} wins Round ${this.currentRoundNum}! (Pot: $${roundResult.potWon})`);
+        this.setMessage(`${winnerNames} win${roundResult.winnerIds.length === 1 ? 's' : ''} Round ${this.currentRoundNum}! (Pot: $${roundResult.potWon})`);
 
         // Build History Panel
         this.els.historyContent.innerHTML = '';
@@ -702,7 +958,7 @@ class FrontierGame {
             roundResult.plays.forEach(p => {
                 const pObj = this.players[p.playerId];
                 const res = p.result;
-                const isWinner = p.playerId === roundResult.winnerId;
+                const isWinner = roundResult.winnerIds.includes(p.playerId);
 
                 let cardsHtml = p.cards.map(c => `<div class="card-mini suit-${c.suit.id}"><span class="card-val" style="color:${c.suit.color}">${c.val}</span></div>`).join('');
 
@@ -873,7 +1129,7 @@ class FrontierGame {
             if (isBankrupt) div.style.opacity = "0.3";
 
             div.innerHTML = `
-                <div class="pod-name" style="color: ${p.color.hex}">${p.name}</div>
+                <div class="pod-name" style="color: ${p.color.hex}">${p.name}${p.isAI ? '<span class="ai-tag">AI</span>' : ''}</div>
                 <div class="pod-cash">$${p.cash}</div>
                 <div class="pod-action">${actionStr}</div>
             `;

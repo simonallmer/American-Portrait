@@ -26,26 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeView = document.querySelector('.view.active');
         if (!activeView) return;
 
-        // Escape/Return key hierarchical back navigation
-        if (key === 'Escape' || key === 'Enter') {
-            const currentHash = window.location.hash || '#start';
-            const backMap = {
-                '#chronicle': '#journals',
-                '#library-kissinger': '#journals',
-                '#library-carter': '#journals',
-                '#comics': '#start',
-                '#journals': '#start',
-                '#films': '#start',
-                '#about': '#start',
-                '#music': '#start',
-                '#games': '#start',
-                '#frontier': '#games'
-            };
-            if (backMap[currentHash]) {
-                window.location.hash = backMap[currentHash];
-                return;
-            }
-        }
+        // Enterprise navigation logic handled in global listener below
 
         if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== ' ') return;
 
@@ -150,6 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 target.style.pointerEvents = 'all';
                 target.scrollTop = 0; // Scroll to top on load
             }, 10);
+
+            // Frontier Initialization Fix: Ensure setup is shown on reload
+            if (targetId === 'frontier' && typeof frontierGame !== 'undefined') {
+                if (frontierGame.phase === 'SETUP' || !frontierGame.players.length) {
+                    frontierGame.showSetup();
+                }
+            }
         }
     }
 
@@ -180,29 +168,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listen for hash changes
     window.addEventListener('hashchange', navigate);
 
-    // Escape key navigation
+    // Consolidated Global Escape Key Navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            // Priority 1: Close Chronicle popup if open
+            // Priority 1: Frontier Specific Modals/Menus
+            if (typeof frontierGame !== 'undefined' && window.location.hash === '#frontier') {
+                const els = frontierGame.els;
+                const isModalOpen = els.rulesModal.classList.contains('visible') || 
+                                   els.allCardsModal.classList.contains('visible') || 
+                                   els.menuDropdown.classList.contains('active');
+                
+                if (isModalOpen) {
+                    frontierGame.closeAllModals();
+                    return;
+                }
+                
+                // If in game but not setup overlay, show setup/quit
+                if (!els.overlay.classList.contains('visible')) {
+                    frontierGame.showSetup();
+                    return;
+                }
+            }
+
+            // Priority 2: General Overlays
             if (document.getElementById('chronicle-popup').classList.contains('active')) {
                 closeChroniclePopup();
                 return;
             }
-
-            // Priority 2: Close Quotes overlay if open
             if (document.getElementById('quotes-overlay').classList.contains('active')) {
                 closeQuotes();
                 return;
             }
 
-            const hash = window.location.hash;
-            if (hash === '' || hash === '#start' || hash === '#start-page') {
-                return; // Already at home
-            } else if (hash === '#menu' || hash === '#about') {
-                window.location.hash = '#start';
-            } else {
-                // Any other view goes back to menu
-                window.location.hash = '#menu';
+            // Priority 3: View Hierarchical Navigation
+            const currentHash = window.location.hash || '#start';
+            const backMap = {
+                '#chronicle': '#journals',
+                '#library-kissinger': '#journals',
+                '#library-carter': '#journals',
+                '#comics': '#start',
+                '#journals': '#start',
+                '#films': '#start',
+                '#about': '#start',
+                '#music': '#start',
+                '#games': '#start',
+                '#frontier': '#games'
+            };
+
+            if (backMap[currentHash]) {
+                window.location.hash = backMap[currentHash];
+                return;
             }
         }
     });
