@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#frontier': 'frontier',
         '#music': 'music',
         '#about': 'about',
+        '#skyscraper': 'skyscraper',
         '#review-nuclear': 'review-nuclear',
         '#review-genesis': 'review-genesis',
         '#review-leadership': 'review-leadership',
@@ -138,6 +139,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     frontierGame.showSetup();
                 }
             }
+
+            // Skyscraper Initialization Fix: Ensure resize is triggered
+            if (targetId === 'skyscraper' && typeof skyscraperV3D !== 'undefined') {
+                setTimeout(() => {
+                    skyscraperV3D.resize();
+                    if (skyscraperV2D) skyscraperV2D.resize();
+                }, 100);
+            }
         }
     }
 
@@ -190,9 +199,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Priority 1.5: Skyscraper Specific
+            if (window.location.hash === '#skyscraper') {
+                const rulesModal = document.getElementById('skyscraper-rules-modal');
+                const msgModal = document.getElementById('skyscraper-message-modal');
+                const trigger = document.getElementById('skyscraper-menu-trigger');
+                const header = document.getElementById('skyscraper-main-header');
+                const hud = document.getElementById('skyscraper-hud');
+
+                if (rulesModal && rulesModal.style.display === 'flex') {
+                    rulesModal.style.display = 'none';
+                    return;
+                }
+                if (msgModal && msgModal.style.display === 'flex') {
+                    msgModal.style.display = 'none';
+                    return;
+                }
+                if (header && header.classList.contains('visible')) {
+                    if (trigger) trigger.classList.remove('active');
+                    header.classList.remove('visible');
+                    if (hud) hud.classList.remove('visible');
+                    return;
+                }
+            }
+
             // Priority 2: General Overlays
             if (document.getElementById('chronicle-popup').classList.contains('active')) {
                 closeChroniclePopup();
+                return;
+            }
+            if (document.getElementById('president-popup').classList.contains('active')) {
+                closePresidentPopup();
                 return;
             }
             if (document.getElementById('quotes-overlay').classList.contains('active')) {
@@ -212,7 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#about': '#start',
                 '#music': '#start',
                 '#games': '#start',
-                '#frontier': '#games'
+                '#frontier': '#games',
+                '#skyscraper': '#games'
             };
 
             if (backMap[currentHash]) {
@@ -399,6 +437,109 @@ function initChronicleGrid() {
         div.addEventListener('click', () => openChronicleYear(year));
         grid.appendChild(div);
     }
+    
+    initPresidentsTimeline();
+}
+
+function initPresidentsTimeline() {
+    const timeline = document.getElementById('presidents-timeline');
+    if (!timeline) return;
+    timeline.innerHTML = '';
+    
+    const yearScale = 20; // 20px per year
+    
+    presidentsData.forEach(pres => {
+        let yearsInOffice = (pres.endYear || 2025) - pres.startYear;
+        if (pres.endYear === pres.startYear) yearsInOffice = 0.5; // For those who died very quickly
+        
+        const box = document.createElement('div');
+        box.className = `president-box party-${pres.partyColor}`;
+        box.style.height = `${Math.max(yearsInOffice * yearScale, 40)}px`;
+        
+        box.innerHTML = `
+            <span class="president-name">${pres.name}</span>
+            <span class="president-years">${pres.years}</span>
+        `;
+        
+        box.onclick = () => openPresidentInfo(pres.id);
+        timeline.appendChild(box);
+    });
+}
+
+function openPresidentInfo(id) {
+    const pres = presidentsData.find(p => p.id === id);
+    if (!pres) return;
+    
+    const popup = document.getElementById('president-popup');
+    const body = document.getElementById('president-popup-body');
+    
+    let eventsHtml = pres.events.map(e => `<li>${e}</li>`).join('');
+    
+    body.innerHTML = `
+        <div class="president-info-header">
+            <h2 style="font-family:'Cinzel', serif; margin:0;">${pres.name}</h2>
+            <div style="color:var(--accent-gold); font-size:0.8rem; letter-spacing:0.1rem;">PRESIDENT OF THE UNITED STATES</div>
+        </div>
+        
+        <div class="president-meta">
+            <div class="meta-item">
+                <label>Lifespan</label>
+                <span>${pres.lifespan}</span>
+            </div>
+            <div class="meta-item">
+                <label>In Office</label>
+                <span>${pres.years}</span>
+            </div>
+            <div class="meta-item">
+                <label>Affiliation</label>
+                <span style="color:${pres.partyColor === 'red' ? '#ff4d4d' : (pres.partyColor === 'blue' ? '#0077ff' : '#fff')}">${pres.party}</span>
+            </div>
+            <div class="meta-item">
+                <label>Notable Events</label>
+                <div class="notable-events">
+                    <ul>${eventsHtml}</ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chronicle-text" style="font-size:1.1rem; line-height:1.8;">
+            <p>${pres.summary}</p>
+        </div>
+    `;
+    
+    popup.classList.add('active');
+    // document.body.style.overflow = 'hidden'; // Removed to allow scrolling
+
+    highlightPresidentYears(pres.startYear, pres.endYear || 2025, pres.partyColor);
+}
+
+function closePresidentPopup() {
+    document.getElementById('president-popup').classList.remove('active');
+    // document.body.style.overflow = '';
+    clearPresidentHighlights();
+}
+
+function highlightPresidentYears(start, end, partyColor) {
+    clearPresidentHighlights();
+    const grid = document.getElementById('chronicle-grid');
+    if (!grid) return;
+    
+    const years = grid.querySelectorAll('.chronicle-year');
+    years.forEach(div => {
+        const year = parseInt(div.innerText);
+        if (year >= start && year <= end) {
+            div.classList.add(`highlight-${partyColor}`);
+        }
+    });
+}
+
+function clearPresidentHighlights() {
+    const grid = document.getElementById('chronicle-grid');
+    if (!grid) return;
+    const years = grid.querySelectorAll('.chronicle-year');
+    years.forEach(div => {
+        div.classList.remove('highlight-rep', 'highlight-dem', 'highlight-white');
+    });
 }
 
 function openChronicleYear(year) {

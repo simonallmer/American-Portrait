@@ -1,10 +1,10 @@
 // --- Constants & Data ---
 const SUITS = {
-    DEEP_SOUTH: { id: 'DEEP_SOUTH', name: 'Deep South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 18 C 60 8, 78 10, 78 25 C 78 40, 54 35, 54 50 C 54 65, 78 60, 78 75 C 78 90, 60 92, 50 82 C 40 92, 22 90, 22 75 C 22 60, 46 65, 46 50 C 46 35, 22 40, 22 25 C 22 10, 40 8, 50 18 Z" fill="currentColor"/></svg>', color: 'var(--deep-south-text)', bg: 'var(--deep-south-bg)', border: 'var(--deep-south-border)', align: 'Confederacy' },
-    UPPER_SOUTH: { id: 'UPPER_SOUTH', name: 'Upper/Western South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 8 A 120 120 0 0 0 78 50 A 120 120 0 0 0 50 92 A 120 120 0 0 0 22 50 A 120 120 0 0 0 50 8 Z" fill="currentColor"/></svg>', color: 'var(--upper-south-text)', bg: 'var(--upper-south-bg)', border: 'var(--upper-south-border)', align: 'Confederacy' },
-    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 50 C 48 48, 35 40, 35 28 C 35 15, 45 10, 50 5 C 55 10, 65 15, 65 28 C 65 40, 52 48, 50 50 C 52 48, 60 35, 72 35 C 85 35, 90 45, 95 50 C 90 55, 85 65, 72 65 C 60 65, 52 52, 50 50 C 52 52, 65 60, 65 72 C 65 85, 55 90, 50 95 C 45 90, 35 85, 35 72 C 35 60, 48 52, 50 50 C 48 52, 40 65, 28 65 C 15 65, 10 55, 5 50 C 10 45, 15 35, 28 35 C 40 35, 48 48, 50 50 Z" fill="currentColor"/></svg>', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
-    WEST_FRONTIER: { id: 'WEST_FRONTIER', name: 'Western Frontier', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg>', color: 'var(--west-frontier-text)', bg: 'var(--west-frontier-bg)', border: 'var(--west-frontier-border)', align: 'Union' },
-    BORDER: { id: 'BORDER', name: 'Border States', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="6" fill="currentColor"/><circle cx="83" cy="31" r="6" fill="currentColor"/><circle cx="83" cy="69" r="6" fill="currentColor"/><circle cx="50" cy="88" r="6" fill="currentColor"/><circle cx="17" cy="69" r="6" fill="currentColor"/><circle cx="17" cy="31" r="6" fill="currentColor"/></svg>', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
+    DEEP_SOUTH: { id: 'DEEP_SOUTH', name: 'Deep South', symbol: '♥', color: 'var(--deep-south-text)', bg: 'var(--deep-south-bg)', border: 'var(--deep-south-border)', align: 'Confederacy' },
+    UPPER_SOUTH: { id: 'UPPER_SOUTH', name: 'Upper/Western South', symbol: '♦', color: 'var(--upper-south-text)', bg: 'var(--upper-south-bg)', border: 'var(--upper-south-border)', align: 'Confederacy' },
+    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '♠', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
+    WEST_FRONTIER: { id: 'WEST_FRONTIER', name: 'Western Frontier', symbol: '♣', color: 'var(--west-frontier-text)', bg: 'var(--west-frontier-bg)', border: 'var(--west-frontier-border)', align: 'Union' },
+    BORDER: { id: 'BORDER', name: 'Border States', symbol: '★', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
 };
 
 const BASE_BET_UNIT = 1;
@@ -155,25 +155,20 @@ function evaluateHand(cards) {
     let skirmishName = "";
     let style = "color: #a8a29e;";
 
-    // Rank 1 Imitation: 1 imitates the highest card in the skirmish
-    const maxVal = Math.max(...cards.map(c => c.val));
-    const effectiveValues = cards.map(c => c.val === 1 ? maxVal : c.val);
-    const hasOne = cards.some(c => c.val === 1 && maxVal > 1);
-
     if (cards.length === 1) {
         skirmishScore = cards[0].val;
         skirmishName = `Solo Force: Rank ${cards[0].val}`;
     } else if (isPureFlush) {
-        skirmishScore = effectiveValues.reduce((acc, val) => acc * val, 1) * 2;
-        skirmishName = `Pure Skirmish (${cards.length})${hasOne ? ' [Imitation]' : ''}`;
+        skirmishScore = cards.reduce((acc, c) => acc * c.val, 1) * 2;
+        skirmishName = `Pure Skirmish (${cards.length})`;
         style = "color: #10b981; font-weight: bold;";
     } else if (hasAllegiance) {
-        skirmishScore = effectiveValues.reduce((acc, val) => acc * val, 1);
-        skirmishName = `Coalition Skirmish (${cards.length})${purityTag}${hasOne ? ' [Imitation]' : ''}`;
+        skirmishScore = cards.reduce((acc, c) => acc * c.val, 1);
+        skirmishName = `Coalition Skirmish (${cards.length})${purityTag}`;
         style = "color: #84cc16; font-weight: bold;";
     } else {
-        skirmishScore = effectiveValues.reduce((acc, val) => acc + val, 0);
-        skirmishName = `Divided Skirmish (${cards.length})${hasOne ? ' [Imitation]' : ''}`;
+        skirmishScore = cards.reduce((acc, c) => acc + c.val, 0);
+        skirmishName = `Divided Skirmish (${cards.length})`;
         style = "color: #f87171; font-weight: bold;";
     }
 
@@ -218,320 +213,51 @@ class FrontierGame {
             msgArea: document.getElementById('message-area'),
             historyPanel: document.getElementById('history-panel'),
             historyContent: document.getElementById('history-content'),
-            mulliganBtn: document.getElementById('mulligan-btn'),
-            menuDropdown: document.getElementById('frontier-menu-dropdown'),
-            allCardsModal: document.getElementById('all-cards-modal'),
-            allCardsGrid: document.getElementById('all-cards-grid')
+            mulliganBtn: document.getElementById('mulligan-btn')
         };
 
-        // this.loadGlobalPlayers(); // Removed as we now use showSetup()
+        this.loadGlobalPlayers();
+    }
 
-        // window.addEventListener('keydown', (e) => { ... }) // Removed to consolidate in app.js
+    loadGlobalPlayers() {
+        const saved = localStorage.getItem('casino_camino_players');
+        if (saved) {
+            this.allGlobalPlayers = JSON.parse(saved);
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
 
-
-        window.addEventListener('click', (e) => {
-            // Close modals if backdrop (the .modal shell) is clicked
-            if (e.target.classList.contains('modal')) {
-                this.closeAllModals();
-            }
-
-            // Close menu dropdown if clicking outside
-            if (this.els.menuDropdown.classList.contains('active')) {
-                const isMenuBtn = document.getElementById('frontier-menu-btn').contains(e.target);
-                const isInsideMenu = this.els.menuDropdown.contains(e.target);
-                if (!isMenuBtn && !isInsideMenu) {
-                    this.els.menuDropdown.classList.remove('active');
-                }
+    saveGlobalPlayers() {
+        // Map local player cash back to global
+        this.players.forEach(p => {
+            const masterIdx = this.allGlobalPlayers.findIndex(mp => mp.id === p.globalId);
+            if (masterIdx > -1) {
+                this.allGlobalPlayers[masterIdx].cash = p.cash;
             }
         });
+        localStorage.setItem('casino_camino_players', JSON.stringify(this.allGlobalPlayers));
     }
-
-    closeAllModals() {
-        this.els.rulesModal.classList.remove('visible');
-        this.els.allCardsModal.classList.remove('visible');
-        this.els.menuDropdown.classList.remove('active');
-    }
-
-    /* loadGlobalPlayers & saveGlobalPlayers removed (absorbed into initGame) */
 
     toggleRules() {
         this.els.rulesModal.classList.toggle('visible');
-        this.els.menuDropdown.classList.remove('active');
-    }
-
-    toggleMenu() {
-        this.els.menuDropdown.classList.toggle('active');
-    }
-
-    showRules() {
-        this.toggleRules();
-    }
-
-    showAllCards() {
-        this.els.menuDropdown.classList.remove('active');
-        this.els.allCardsGrid.innerHTML = '';
-        
-        // Generate all 50 cards
-        Object.keys(SUITS).forEach(suitKey => {
-            const suit = SUITS[suitKey];
-            for (let val = 1; val <= 10; val++) {
-                const card = { suit, val };
-                const div = document.createElement('div');
-                div.className = `card suit-${card.suit.id}`;
-                div.style.width = "90px";
-                div.style.height = "135px";
-                div.style.fontSize = "0.7rem";
-                div.style.cursor = "default";
-                
-                div.innerHTML = `
-                    <div class="card-corner">${card.val}</div>
-                    <div class="card-center">
-                        <div class="card-val">${card.suit.symbol}</div>
-                    </div>
-                    <div class="card-corner bottom">${card.val}</div>
-                `;
-                this.els.allCardsGrid.appendChild(div);
-            }
-        });
-        
-        this.els.allCardsModal.classList.add('visible');
-    }
-
-    hideAllCards() {
-        this.els.allCardsModal.classList.remove('visible');
     }
 
     setMessage(msg) {
         this.els.msgArea.innerHTML = msg;
     }
 
-    showSetup() {
-        this.els.mainHud.style.display = 'none';
-        this.els.playerStatusGrid.innerHTML = '';
-        this.els.cardsContainer.innerHTML = '';
-        this.els.controlsArea.innerHTML = '';
-        this.els.mulliganBtn.style.display = 'none';
-
-        this.els.overlayTitle.innerText = "FRONTIER";
-        this.els.overlayTitle.style.color = "var(--gold-bright)";
-        this.els.overlayDesc.innerHTML = "A high-stakes tactical card game played with <strong>American Playing Cards</strong>.<br/><br/>Select Commander count:";
-
-        const actions = document.getElementById('overlay-actions');
-        actions.innerHTML = '';
-        
-        const wrapper = document.createElement('div');
-        wrapper.id = "setup-wrapper";
-        wrapper.style.display = 'flex';
-        wrapper.style.flexDirection = 'column';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.gap = '20px';
-        
-        const countRow = document.createElement('div');
-        countRow.style.display = 'flex';
-        countRow.style.gap = '10px';
-        
-        [2, 3, 4, 5, 6].forEach(count => {
-            const btn = document.createElement('button');
-            btn.className = "primary-btn";
-            btn.style.padding = "10px 20px";
-            btn.style.minWidth = "60px";
-            btn.innerText = count;
-            btn.onclick = () => this.preparePlayerNames(count);
-            countRow.appendChild(btn);
-        });
-        
-        const rulesBtn = document.createElement('div');
-        rulesBtn.innerText = "RULES";
-        rulesBtn.style.color = "var(--gold)";
-        rulesBtn.style.letterSpacing = "4px";
-        rulesBtn.style.fontSize = "0.9rem";
-        rulesBtn.style.cursor = "pointer";
-        rulesBtn.style.marginTop = "20px";
-        rulesBtn.style.borderBottom = "1px solid rgba(212, 175, 55, 0.3)";
-        rulesBtn.style.paddingBottom = "5px";
-        rulesBtn.style.transition = "color 0.3s";
-        rulesBtn.onmouseover = () => rulesBtn.style.color = "var(--gold-bright)";
-        rulesBtn.onmouseout = () => rulesBtn.style.color = "var(--gold)";
-        rulesBtn.onclick = () => this.showRules();
-
-        const credit = document.createElement('div');
-        credit.innerText = "GAME DESIGN: SIMON ALLMER";
-        credit.style.color = "var(--text-color)";
-        credit.style.fontSize = "0.6rem";
-        credit.style.opacity = "0.4";
-        credit.style.letterSpacing = "2px";
-        credit.style.marginTop = "30px";
-        
-        wrapper.appendChild(countRow);
-        wrapper.appendChild(rulesBtn);
-        wrapper.appendChild(credit);
-        actions.appendChild(wrapper);
-
-        this.els.overlay.classList.add('visible');
-        document.getElementById('overlay-main-btn').style.display = 'none';
-    }
-
-    preparePlayerNames(count) {
-        this.els.overlayDesc.innerHTML = "Enter Commander Names:";
-        const wrapper = document.getElementById('setup-wrapper');
-        wrapper.innerHTML = '';
-        
-        const namesContainer = document.createElement('div');
-        namesContainer.style.display = 'flex';
-        namesContainer.style.flexDirection = 'column';
-        namesContainer.style.gap = '20px';
-        namesContainer.style.width = '100%';
-        namesContainer.style.maxWidth = '300px';
-
-        const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
-        const playerConfigs = [];
-
-        for (let i = 0; i < count; i++) {
-            const playerGroup = document.createElement('div');
-            playerGroup.style.display = 'flex';
-            playerGroup.style.flexDirection = 'column';
-            playerGroup.style.gap = '6px';
-            
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'frontier-input is-default';
-            const defaultName = `Player ${i + 1}`;
-            input.value = defaultName;
-            input.dataset.isDefault = 'true';
-            input.style.borderLeft = `4px solid ${colors[i]}`;
-            
-            const config = { isAI: false, input: input };
-            playerConfigs.push(config);
-
-            input.onfocus = () => {
-                if (input.dataset.isDefault === 'true') {
-                    setTimeout(() => input.setSelectionRange(0, 0), 0);
-                }
-            };
-
-            input.onkeydown = (e) => {
-                if (input.dataset.isDefault === 'true' && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                    input.value = '';
-                    input.dataset.isDefault = 'false';
-                    input.classList.remove('is-default');
-                }
-            };
-
-            input.onblur = () => {
-                if (input.value.trim() === '') {
-                    this.updateAIPresence(playerConfigs);
-                }
-            };
-
-            playerGroup.appendChild(input);
-
-            // AI Toggle for players 2+
-            if (i > 0) {
-                const toggle = document.createElement('div');
-                toggle.className = 'toggle-container';
-                
-                const humanBtn = document.createElement('button');
-                humanBtn.className = 'toggle-btn active';
-                humanBtn.innerText = 'Human';
-                
-                const aiBtn = document.createElement('button');
-                aiBtn.className = 'toggle-btn';
-                aiBtn.innerText = 'Computer';
-                
-                humanBtn.onclick = () => {
-                    config.isAI = false;
-                    humanBtn.classList.add('active');
-                    aiBtn.classList.remove('active');
-                    this.updateAIPresence(playerConfigs);
-                };
-                
-                aiBtn.onclick = () => {
-                    config.isAI = true;
-                    aiBtn.classList.add('active');
-                    humanBtn.classList.remove('active');
-                    this.updateAIPresence(playerConfigs);
-                };
-                
-                toggle.appendChild(humanBtn);
-                toggle.appendChild(aiBtn);
-                playerGroup.appendChild(toggle);
-            }
-
-            namesContainer.appendChild(playerGroup);
-        }
-
-        const beginBtn = document.createElement('button');
-        beginBtn.className = "primary-btn";
-        beginBtn.style.marginTop = "10px";
-        beginBtn.style.padding = "15px 40px";
-        beginBtn.innerText = "BEGIN GAME";
-        beginBtn.onclick = () => {
-            const finalPlayers = playerConfigs.map(c => ({
-                name: c.input.value.trim(),
-                isAI: c.isAI
-            }));
-            this.initGame(count, finalPlayers);
-        };
-
-        wrapper.appendChild(namesContainer);
-        wrapper.appendChild(beginBtn);
-    }
-
-    updateAIPresence(configs) {
-        let aiCount = 0;
-        configs.forEach((c, idx) => {
-            const currentVal = c.input.value.trim();
-            // A name is "default" if it's empty, "Player X", or "Computer X"
-            const isDefault = currentVal === '' || currentVal === `Player ${idx + 1}` || /^Computer \d+$/.test(currentVal);
-            
-            if (c.isAI) {
-                aiCount++;
-                if (isDefault) {
-                    c.input.value = `Computer ${aiCount}`;
-                    c.input.dataset.isDefault = 'false';
-                    c.input.classList.remove('is-default');
-                }
-            } else {
-                // If it was an auto-generated Computer name, revert to Player default
-                if (/^Computer \d+$/.test(currentVal) || currentVal === '') {
-                    c.input.value = `Player ${idx + 1}`;
-                    c.input.dataset.isDefault = 'true';
-                    c.input.classList.add('is-default');
-                }
-            }
-        });
-    }
-
-    initGame(playerCount, customPlayerConfigs) {
-        if (playerCount === undefined) {
-            playerCount = this.lastPlayerCount || 2;
-        }
-        this.lastPlayerCount = playerCount;
-
-        const mainBtn = document.getElementById('overlay-main-btn');
-        if (mainBtn) mainBtn.style.display = 'block';
-        
-        const actions = document.getElementById('overlay-actions');
-        if (actions) actions.innerHTML = '';
-        
-        this.els.overlay.classList.remove('visible');
-
-        const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
-
-        this.players = [];
-        for (let i = 0; i < playerCount; i++) {
-            const config = (customPlayerConfigs && customPlayerConfigs[i]) ? customPlayerConfigs[i] : { name: `Player ${i+1}`, isAI: false };
-            this.players.push({
-                globalId: i + 1,
-                name: config.name,
-                isAI: config.isAI,
-                cash: 10,
-                color: { hex: colors[i] },
-                hand: [],
-                canMulligan: true,
-                status: 'ACTIVE'
-            });
-        }
+    initGame() {
+        // Filter players who can afford at least 1 round (need > 0 technically, but let's just take all active)
+        this.players = this.allGlobalPlayers.map(p => ({
+            globalId: p.id,
+            name: p.name,
+            cash: p.cash,
+            color: p.color,
+            hand: [],
+            canMulligan: true,
+            status: p.cash > 0 ? 'ACTIVE' : 'BANKRUPT'
+        }));
 
         if (this.players.length < 2) {
             alert("Need at least 2 players to play Frontier!");
@@ -556,15 +282,13 @@ class FrontierGame {
         this.roundBet = 0;
 
         // Ensure starting player is not bankrupt
-        this.activePlayerId = 0;
-        while (this.players[this.activePlayerId].status === 'BANKRUPT') {
-            this.activePlayerId = (this.activePlayerId + 1) % this.players.length;
-        }
+        this.activePlayerId = this.players.findIndex(p => p.status === 'ACTIVE');
+        if (this.activePlayerId === -1) this.activePlayerId = 0;
 
         this.els.mainHud.style.display = 'flex';
         this.phase = 'TRANSITION';
 
-        // Removed obsolete save call
+        this.saveGlobalPlayers();
         this.renderTransition();
     }
 
@@ -583,140 +307,16 @@ class FrontierGame {
         this.els.historyPanel.style.display = 'none';
         this.els.mulliganBtn.style.display = 'none';
 
-        if (player.isAI) {
-            this.executeAITurn();
-            return;
-        }
-
         this.els.overlayTitle.innerText = `PASS TO ${player.name.toUpperCase()}`;
         this.els.overlayTitle.style.color = player.color.hex || 'var(--gold)';
         this.els.overlayDesc.innerText = `When ready, click below to reveal Round ${this.currentRoundNum} hand.`;
 
         const btn = document.getElementById('overlay-main-btn');
-        btn.style.display = 'block';
         btn.innerText = "REVEAL CARDS";
         btn.onclick = () => this.startTurn();
 
         this.els.overlay.classList.add('visible');
         this.setMessage("");
-    }
-
-    executeAITurn() {
-        const player = this.players[this.activePlayerId];
-        this.els.overlayTitle.innerText = `${player.name.toUpperCase()} IS THINKING...`;
-        this.els.overlayTitle.style.color = player.color.hex;
-        this.els.overlayDesc.innerText = "Analyzing current tactical landscape...";
-        this.els.overlay.classList.add('visible');
-        document.getElementById('overlay-main-btn').style.display = 'none';
-
-        // Phase 1: Analyzing Hand
-        setTimeout(() => {
-            this.els.overlayDesc.innerText = "Evaluating hand strength and alliance potential...";
-            
-            setTimeout(() => {
-                // Phase 2: Selecting Cards
-                const bestSelection = this.getAISelection(player);
-                this.selectedCardIndices = bestSelection.indices;
-                this.els.overlayDesc.innerText = `Selecting ${bestSelection.indices.length} card${bestSelection.indices.length > 1 ? 's' : ''} for the engagement...`;
-
-                setTimeout(() => {
-                    // Phase 3: Deciding Action
-                    const isFirstPlayer = this.roundPlays.length === 0;
-                    const decision = this.getAIBettingDecision(player, bestSelection.eval);
-                    
-                    let actionMsg = "";
-                    let type = "";
-                    if (decision.action === 'FOLD') {
-                        actionMsg = "Decided to retreat from the current round.";
-                        type = "Folds";
-                    } else {
-                        type = isFirstPlayer ? 'Bets' : (decision.action === 'RAISE' ? 'Raises to' : 'Calls');
-                        actionMsg = `${type} $${decision.amount} with ${bestSelection.eval.tier}.`;
-                    }
-                    this.els.overlayDesc.innerText = actionMsg;
-
-                    setTimeout(() => {
-                        this.els.overlay.classList.remove('visible');
-                        if (decision.action === 'FOLD') {
-                            this.executeFold();
-                        } else {
-                            this.executePlay(decision.amount);
-                        }
-                        
-                        // Show a quick announcement message in the main UI
-                        this.setMessage(`<div style="color: ${player.color.hex}; font-weight: bold;">${player.name} ${type} $${decision.amount || 0}.</div>`);
-                    }, 800);
-                }, 1000);
-            }, 1000);
-        }, 1000);
-    }
-
-    getAISelection(player) {
-        // Simple logic: return all cards if they form a good hand, 
-        // or find the subset with highest score.
-        // For AI, we'll just check the full hand first, then pairs.
-        const fullEval = evaluateHand(player.hand);
-        let bestIndices = player.hand.map((_, i) => i);
-        let bestEval = fullEval;
-
-        // For simplicity in this 'average' AI, it plays its whole hand if it's better than Tier 5
-        // Otherwise it plays its highest card.
-        if (fullEval.tier === 'Tier 5') {
-            const highCardIdx = player.hand.reduce((maxIdx, card, idx, arr) => 
-                card.val > arr[maxIdx].val ? idx : maxIdx, 0);
-            bestIndices = [highCardIdx];
-            bestEval = evaluateHand([player.hand[highCardIdx]]);
-        }
-
-        return { indices: bestIndices, eval: bestEval };
-    }
-
-    getAIBettingDecision(player, handEval) {
-        const isFirstPlayer = this.roundPlays.length === 0;
-        
-        const otherActiveIds = this.roundActivePlayers.filter(idx => idx !== this.activePlayerId);
-        const maxOtherCash = otherActiveIds.length > 0 
-            ? Math.max(...otherActiveIds.map(idx => this.players[idx].cash)) 
-            : 0;
-        const maxBetAllowed = Math.min(5, maxOtherCash);
-
-        // Average risk-averse logic
-        if (isFirstPlayer) {
-            if (handEval.tier === 'Tier 1' || handEval.tier === 'Tier 2') {
-                return { action: 'BET', amount: Math.min(player.cash, 3) };
-            }
-            if (handEval.tier === 'Tier 3' || handEval.tier === 'Tier 4') {
-                return { action: 'BET', amount: Math.min(player.cash, 1) };
-            }
-            return { action: 'BET', amount: Math.min(player.cash, 1) };
-        } else {
-            const callAmount = Math.min(player.cash, this.roundBet);
-            
-            // Confidence based on Tier
-            let confidence = 0;
-            if (handEval.tier === 'Tier 1') confidence = 1.0;
-            else if (handEval.tier === 'Tier 2') confidence = 0.9;
-            else if (handEval.tier === 'Tier 3') confidence = 0.7;
-            else if (handEval.tier === 'Tier 4') confidence = 0.4;
-            else confidence = 0.1;
-
-            // Decision
-            if (confidence > 0.8) {
-                // High confidence: Call and maybe Raise
-                if (this.roundBet < maxBetAllowed && Math.random() > 0.5) {
-                    return { action: 'RAISE', amount: Math.min(player.cash, this.roundBet + 1) };
-                }
-                return { action: 'CALL', amount: callAmount };
-            } else if (confidence > 0.3) {
-                // Medium confidence: Call small bets
-                if (this.roundBet <= 2) return { action: 'CALL', amount: callAmount };
-                return { action: 'FOLD' };
-            } else {
-                // Low confidence: Fold unless it's cheap
-                if (this.roundBet <= 1) return { action: 'CALL', amount: callAmount };
-                return { action: 'FOLD' };
-            }
-        }
     }
 
     startTurn() {
@@ -736,11 +336,13 @@ class FrontierGame {
             if (this.selectedCardIndices.includes(idx)) div.classList.add('selected');
 
             div.innerHTML = `
-                <div class="card-corner">${card.val}</div>
+                <div class="card-corner">${card.suit.symbol}</div>
                 <div class="card-center">
-                    <div class="card-val">${card.suit.symbol}</div>
+                    <div class="card-suit-name">${card.suit.name}</div>
+                    <div class="card-val">${card.val}</div>
+                    <div class="card-align">${card.suit.align}</div>
                 </div>
-                <div class="card-corner bottom">${card.val}</div>
+                <div class="card-corner bottom">${card.suit.symbol}</div>
             `;
 
             if (isClickable) {
@@ -773,13 +375,7 @@ class FrontierGame {
 
         const isFirstPlayer = this.roundPlays.length === 0;
         const isLastPlayer = this.roundPlays.length === this.roundActivePlayers.length - 1;
-        
-        // LIMITATION: Cannot bet more than the richest other active player has (Standard Table Stakes)
-        const otherActiveIds = this.roundActivePlayers.filter(idx => idx !== this.activePlayerId);
-        const maxOtherCash = otherActiveIds.length > 0 
-            ? Math.max(...otherActiveIds.map(idx => this.players[idx].cash)) 
-            : 0;
-        const maxBetAllowed = Math.min(5, maxOtherCash);
+        const maxBetAllowed = 5 * BASE_BET_UNIT;
 
         // Evaluate Selection
         const selectedCards = this.selectedCardIndices.map(i => player.hand[i]);
@@ -797,12 +393,11 @@ class FrontierGame {
             } else {
                 this.setMessage(`Select cards to play and set the bet.`);
             }
-            
-            for (let b = 1; b <= maxBetAllowed; b++) {
+            for (let b = BASE_BET_UNIT; b <= maxBetAllowed; b += BASE_BET_UNIT) {
                 const disabledStr = (this.selectedCardIndices.length === 0 || player.cash < b) ? 'disabled' : '';
-                controlsHTML += `<button class="action-btn" ${disabledStr} onclick="frontierGame.executePlay(${b})">BET $${b}</button>`;
+                controlsHTML += `<button class="action-btn" ${disabledStr} onclick="game.executePlay(${b})">BET €${b}</button>`;
             }
-            controlsHTML += `<button class="danger-btn" onclick="frontierGame.executeFold()">FOLD</button>`;
+            controlsHTML += `<button class="danger-btn" onclick="game.executeFold()">FOLD</button>`;
         } else {
             if (handEval) {
                 const details = handEval.tier === 'Tier 5' ? `Power: ${handEval.power}` : handEval.name;
@@ -810,19 +405,16 @@ class FrontierGame {
             } else {
                 this.setMessage(`Match the bet, raise, or retreat.`);
             }
-            
-            // Can always call up to your own cash or the round bet
-            const callAmount = Math.min(player.cash, this.roundBet);
-            const callDisabled = (this.selectedCardIndices.length === 0 || player.cash < callAmount) ? 'disabled' : '';
-            controlsHTML += `<button class="action-btn call-btn" ${callDisabled} onclick="frontierGame.executePlay(${callAmount})">CALL $${callAmount}</button>`;
+            const callDisabled = (this.selectedCardIndices.length === 0 || player.cash < this.roundBet) ? 'disabled' : '';
+            controlsHTML += `<button class="action-btn call-btn" ${callDisabled} onclick="game.executePlay(${this.roundBet})">CALL €${this.roundBet}</button>`;
 
             if (!isLastPlayer) {
-                for (let b = this.roundBet + 1; b <= maxBetAllowed; b++) {
+                for (let b = this.roundBet + BASE_BET_UNIT; b <= maxBetAllowed; b += BASE_BET_UNIT) {
                     const raiseDisabled = (this.selectedCardIndices.length === 0 || player.cash < b) ? 'disabled' : '';
-                    controlsHTML += `<button class="action-btn raise-btn" ${raiseDisabled} onclick="frontierGame.executePlay(${b})">RAISE $${b}</button>`;
+                    controlsHTML += `<button class="action-btn raise-btn" ${raiseDisabled} onclick="game.executePlay(${b})">RAISE €${b}</button>`;
                 }
             }
-            controlsHTML += `<button class="danger-btn" onclick="frontierGame.executeFold()">FOLD</button>`;
+            controlsHTML += `<button class="danger-btn" onclick="game.executeFold()">FOLD</button>`;
         }
 
         this.els.controlsArea.innerHTML = controlsHTML;
@@ -869,7 +461,7 @@ class FrontierGame {
 
         this.roundPlays.push({ playerId: this.activePlayerId, cards: cardsToPlay, amount });
         this.roundBet = Math.max(this.roundBet, amount);
-        // Removed obsolete save call
+        this.saveGlobalPlayers();
 
         this.advanceRound();
     }
@@ -883,21 +475,17 @@ class FrontierGame {
         if (this.roundActivePlayers.length <= 1 || this.roundPlays.length === this.roundActivePlayers.length) {
             // Showdown
             let evaluatedPlays = this.roundPlays.map(p => ({ ...p, result: evaluateHand(p.cards) }));
-            let winners = [];
+            let winnerId = -1;
             let isDefault = false;
 
             if (this.roundActivePlayers.length <= 1) {
-                const winnerId = this.roundActivePlayers.length === 1 ? this.roundActivePlayers[0] : (this.roundPlays[0] ? this.roundPlays[0].playerId : 0);
-                winners = [winnerId];
+                winnerId = this.roundActivePlayers.length === 1 ? this.roundActivePlayers[0] : (this.roundPlays[0] ? this.roundPlays[0].playerId : 0);
                 isDefault = true;
             } else {
                 evaluatedPlays.sort((a, b) => b.result.score - a.result.score);
-                const topScore = evaluatedPlays[0].result.score;
-                winners = evaluatedPlays
-                    .filter(p => p.result.score === topScore)
-                    .map(p => p.playerId);
+                winnerId = evaluatedPlays[0].playerId;
             }
-            this.concludeRound(winners, evaluatedPlays, isDefault);
+            this.concludeRound(winnerId, evaluatedPlays, isDefault);
         } else {
             // Next Player
             let nextIndexObj = -1;
@@ -914,19 +502,15 @@ class FrontierGame {
         }
     }
 
-    concludeRound(winnerIds, finalPlays, isDefault) {
+    concludeRound(winnerId, finalPlays, isDefault) {
+        const winner = this.players[winnerId];
         const finalPot = this.pot;
-        const share = Math.floor(finalPot / winnerIds.length);
-        const remainder = finalPot % winnerIds.length;
-
-        winnerIds.forEach((id, idx) => {
-            const winner = this.players[id];
-            winner.cash += share + (idx === 0 ? remainder : 0);
-        });
+        winner.cash += finalPot;
+        this.saveGlobalPlayers();
 
         const roundResult = {
             roundNum: this.currentRoundNum,
-            winnerIds,
+            winnerId,
             isDefault,
             plays: finalPlays,
             potWon: finalPot
@@ -945,10 +529,10 @@ class FrontierGame {
         this.updatePlayerPods();
 
         const roundResult = this.gameHistory[this.gameHistory.length - 1];
-        const winnerNames = roundResult.winnerIds.map(id => this.players[id].name).join(' & ');
+        const winnerObj = this.players[roundResult.winnerId];
         const isFinal = this.currentRoundNum === 5;
 
-        this.setMessage(`${winnerNames} win${roundResult.winnerIds.length === 1 ? 's' : ''} Round ${this.currentRoundNum}! (Pot: $${roundResult.potWon})`);
+        this.setMessage(`${winnerObj.name} wins Round ${this.currentRoundNum}! (Pot: €${roundResult.potWon})`);
 
         // Build History Panel
         this.els.historyContent.innerHTML = '';
@@ -958,7 +542,7 @@ class FrontierGame {
             roundResult.plays.forEach(p => {
                 const pObj = this.players[p.playerId];
                 const res = p.result;
-                const isWinner = roundResult.winnerIds.includes(p.playerId);
+                const isWinner = p.playerId === roundResult.winnerId;
 
                 let cardsHtml = p.cards.map(c => `<div class="card-mini suit-${c.suit.id}"><span class="card-val" style="color:${c.suit.color}">${c.val}</span></div>`).join('');
 
@@ -983,7 +567,7 @@ class FrontierGame {
         this.els.controlsArea.style.display = 'flex';
 
         const btnText = isFinal ? "PROCEED TO STANDINGS" : `BEGIN ROUND ${this.currentRoundNum + 1}`;
-        this.els.controlsArea.innerHTML = `<button class="primary-btn" onclick="frontierGame.advanceToNextRound()">${btnText}</button>`;
+        this.els.controlsArea.innerHTML = `<button class="primary-btn" onclick="game.advanceToNextRound()">${btnText}</button>`;
     }
 
     advanceToNextRound() {
@@ -1060,8 +644,8 @@ class FrontierGame {
         const winners = sortedPlayers.filter(p => p.cash === topCash);
 
         let msg = winners.length > 1
-            ? `DRAW! ${winners.map(w => w.name).join(' & ')} tied with $${topCash}.`
-            : `${winners[0].name.toUpperCase()} WINS THE FRONTIER WITH $${topCash}!`;
+            ? `DRAW! ${winners.map(w => w.name).join(' & ')} tied with €${topCash}.`
+            : `${winners[0].name.toUpperCase()} WINS THE FRONTIER WITH €${topCash}!`;
 
         this.setMessage(msg);
 
@@ -1078,7 +662,7 @@ class FrontierGame {
                 <div style="display: flex; flex-direction: column; align-items: center; ${isWinner ? 'transform: scale(1.1); color: var(--gold-bright);' : (isBankrupt ? 'opacity: 0.2; filter: grayscale(1);' : 'opacity: 0.6;')}">
                     <span style="font-size: 0.8rem; font-family: 'Playfair Display', serif;">#${idx + 1}</span>
                     <strong style="font-size: 1.5rem;">${p.name}</strong>
-                    <span style="font-size: 2rem; font-family: 'Cinzel', serif;">$${p.cash}</span>
+                    <span style="font-size: 2rem; font-family: 'Cinzel', serif;">€${p.cash}</span>
                     ${isBankrupt ? '<span style="font-size: 0.6rem; color: #f87171;">BANKRUPT</span>' : ''}
                 </div>
             `;
@@ -1087,8 +671,8 @@ class FrontierGame {
         html += `
                 </div>
                 <div style="display: flex; gap: 20px; margin-top: 20px;">
-                    <button class="primary-btn" onclick="frontierGame.initGame()">PLAY AGAIN</button>
-                    <a href="#games" style="text-decoration: none;"><button class="secondary-btn" style="background: rgba(40, 40, 40, 0.8); border: 1px solid var(--gold-dim); color: var(--gold); padding: 15px 30px; font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: all 0.3s;">BACK TO MENU</button></a>
+                    <button class="primary-btn" onclick="window.location.reload()">PLAY AGAIN</button>
+                    <a href="index.html" style="text-decoration: none;"><button class="secondary-btn" style="background: rgba(40, 40, 40, 0.8); border: 1px solid var(--gold-dim); color: var(--gold); padding: 15px 30px; font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: all 0.3s;">BACK TO MENU</button></a>
                 </div>
             </div>
         `;
@@ -1098,8 +682,8 @@ class FrontierGame {
 
     updateHUD() {
         document.getElementById('round-display').innerText = this.currentRoundNum;
-        document.getElementById('pot-display').innerText = `$${this.pot}`;
-        document.getElementById('current-bet-display').innerText = `$${this.roundBet}`;
+        document.getElementById('pot-display').innerText = `€${this.pot}`;
+        document.getElementById('current-bet-display').innerText = `€${this.roundBet}`;
         document.getElementById('deck-display').innerText = this.deck.length;
     }
 
@@ -1116,7 +700,7 @@ class FrontierGame {
             } else if (this.phase === 'PLAYING') {
                 const play = this.roundPlays.find(play => play.playerId === idx);
                 if (play) {
-                    actionStr = `Played $${play.amount}`;
+                    actionStr = `Played €${play.amount}`;
                 } else if (isFolded) {
                     actionStr = 'Folded';
                 } else if (isActiveTurn) {
@@ -1129,8 +713,8 @@ class FrontierGame {
             if (isBankrupt) div.style.opacity = "0.3";
 
             div.innerHTML = `
-                <div class="pod-name" style="color: ${p.color.hex}">${p.name}${p.isAI ? '<span class="ai-tag">AI</span>' : ''}</div>
-                <div class="pod-cash">$${p.cash}</div>
+                <div class="pod-name" style="color: ${p.color.hex}">${p.name}</div>
+                <div class="pod-cash">€${p.cash}</div>
                 <div class="pod-action">${actionStr}</div>
             `;
             this.els.playerStatusGrid.appendChild(div);
@@ -1139,4 +723,4 @@ class FrontierGame {
 }
 
 // Init
-const frontierGame = new FrontierGame();
+const game = new FrontierGame();

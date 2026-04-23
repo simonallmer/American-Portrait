@@ -251,6 +251,13 @@
             <div id="chronicle-grid" class="periodic-grid">
                 <!-- 251 years generated via app.js -->
             </div>
+
+            <div class="presidents-section">
+                <h3 class="chronicle-section-title">THE PRESIDENTS</h3>
+                <div id="presidents-timeline" class="presidents-timeline">
+                    <!-- Presidents generated via app.js -->
+                </div>
+            </div>
             
             <div class="chronicle-coming-soon">
                 <div class="coming-soon-header" style="color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; display: inline-block;">IN DEVELOPMENT</div>
@@ -295,6 +302,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- President Popup -->
+        <div id="president-popup" class="chronicle-popup side-panel">
+            <div class="popup-overlay" onclick="closePresidentPopup()"></div>
+            <div class="popup-content">
+                <button class="popup-close" onclick="closePresidentPopup()">×</button>
+                <div id="president-popup-body">
+                    <!-- Content generated via app.js -->
+                </div>
+            </div>
+        </div>
         <footer class="section-footer">
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
@@ -314,12 +332,11 @@
                         <span class="game-btn">PLAY</span>
                     </div>
                 </div>
-                <div class="game-card clickable" onclick="window.open('https://simonallmer.com/sevenwondersarcade', '_top')">
+                <div class="game-card clickable" onclick="window.location.hash = '#skyscraper'">
                     <h3>Skyscraper</h3>
                     <p>To light up the New York skyline, you must start at the ground floor.</p>
                     <div class="game-actions">
                         <span class="game-btn">PLAY</span>
-                        <a href="https://simonallmer.com/skyscraper" class="game-btn rules-btn" onclick="event.stopPropagation();" target="_top">LEARN MORE</a>
                     </div>
                 </div>
                 <div class="game-card" style="cursor: default;">
@@ -334,6 +351,128 @@
         </footer>
     </section>
     <!-- Frontier Game View -->
+    <section id="skyscraper" class="view">
+        <a href="#games" class="back-link">← Back to Games</a>
+
+        <div id="skyscraper-menu-trigger">
+            <div class="sky-line"></div>
+            <div class="sky-line"></div>
+            <div class="sky-line"></div>
+        </div>
+
+        <header id="skyscraper-main-header">
+            <h1>Skyscraper</h1>
+        </header>
+
+        <div id="skyscraper-game-layout">
+            <div id="skyscraper-view-container">
+                <canvas id="skyscraper-canvas2d"></canvas>
+                <div id="skyscraper-canvas3d"></div>
+            </div>
+
+            <div id="skyscraper-hud">
+                <div class="score-item white-theme">
+                    <div class="turn-indicator" id="skyscraper-turn-white"></div>
+                    <div class="score-val" id="skyscraper-score-white">0</div>
+                    <div class="label">Yellow</div>
+                </div>
+
+                <div class="controls">
+                    <div class="mode-dropdown">
+                        <button id="skyscraper-mode-btn">2 Players</button>
+                        <div class="mode-menu" id="skyscraper-mode-menu">
+                            <button data-players="2">2 Players</button>
+                            <button data-players="3">3 Players</button>
+                            <button data-players="4">4 Players</button>
+                        </div>
+                    </div>
+                    <div class="ai-dropdown">
+                        <button id="skyscraper-ai-btn">Opponent: Human</button>
+                        <div class="ai-menu" id="skyscraper-ai-menu">
+                            <button data-diff="none">Human</button>
+                            <button data-diff="easy">Computer: Easy</button>
+                            <button data-diff="medium">Computer: Medium</button>
+                            <button data-diff="hard">Computer: Hard</button>
+                        </div>
+                    </div>
+                    <div class="view-dropdown">
+                        <button id="skyscraper-view-btn">View: 3D</button>
+                        <div class="view-menu" id="skyscraper-view-menu">
+                            <button id="skyscraper-btn-view-3d" data-view="3d">3D View</button>
+                            <button id="skyscraper-btn-view-2d" data-view="2d">2D View</button>
+                        </div>
+                    </div>
+                    <button id="skyscraper-rules-btn">Rules</button>
+                    <button id="skyscraper-reset-btn">Reset</button>
+                </div>
+
+                <div class="score-item red-theme">
+                    <div class="turn-indicator" id="skyscraper-turn-red" style="opacity: 0.2;"></div>
+                    <div class="score-val" id="skyscraper-score-red">0</div>
+                    <div class="label">Red</div>
+                </div>
+
+                <div class="score-item blue-theme" id="skyscraper-score-block-blue" style="display: none;">
+                    <div class="turn-indicator" id="skyscraper-turn-blue" style="opacity: 0.2;"></div>
+                    <div class="score-val" id="skyscraper-score-blue">0</div>
+                    <div class="label">Blue</div>
+                </div>
+
+                <div class="score-item green-theme" id="skyscraper-score-block-green" style="display: none;">
+                    <div class="turn-indicator" id="skyscraper-turn-green" style="opacity: 0.2;"></div>
+                    <div class="score-val" id="skyscraper-score-green">0</div>
+                    <div class="label">Green</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Design: Simon Allmer
+        </footer>
+
+        <div id="skyscraper-message-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="skyscraper-msg-title">Victory</h2>
+                <p id="skyscraper-msg-body"></p>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+                    <button onclick="window.location.reload()">New Game</button>
+                    <button onclick="window.location.hash = '#games'">Back to Games</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="skyscraper-rules-modal" class="modal">
+            <div class="modal-content">
+                <h2>Skyscraper Rules</h2>
+                <div class="rules-text">
+                    <strong>Objective:</strong> Winning the game is achieved by securing more than your <strong>equal
+                        share</strong> of the
+                    playable fields (e.g. over <strong>half</strong> for 2 players, over a <strong>third</strong> for 3
+                    players...) or by maintaining a higher field count when no further moves are
+                    possible.<br><br>
+                    <strong>Connection:</strong> A field may be illuminated only if it maintains a <strong>clear line of
+                        sight</strong>
+                    through the 3D structure to another field of the same color.<br><br>
+                    <strong>Shadow Rule:</strong> Opponent-controlled fields <strong>obstruct</strong> light. Connections
+                    cannot be
+                    established through sectors occupied by the adversary.<br><br>
+                    <strong>Capture:</strong> Completion of a full sequence of <strong>5</strong> windows on the same block
+                    initiates a capture event. The player holding the <strong>majority</strong> of illuminated fields within
+                    that sequence secures the entire line.<br><br>
+                    <strong>Split Capture:</strong> Should a move finalize multiple sequences simultaneously, each is
+                    evaluated independently for majority. The <strong>trigger field</strong> remains secure from capture
+                    provided it contributes to at least one sequence won by the active player.<br><br>
+                    <strong>Elevator:</strong> Accessibility to higher floors is restricted by the elevator height. Each
+                    round (after all players have moved), the elevator rises by <strong>1 floor</strong>, gradually opening
+                    the top of
+                    the structure.
+                </div>
+                <button onclick="document.getElementById('skyscraper-rules-modal').style.display='none'"
+                    style="margin: 20px auto; display: flex;">Close</button>
+            </div>
+        </div>
+    </section>
+
     <section id="frontier" class="view" style="position: relative;">
         <a href="#games" class="back-abs" style="position: absolute; top: 25px; left: 25px;">BACK TO GAMES</a>
         <div id="game-container">
@@ -688,6 +827,16 @@
         </button>
     </nav>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="presidents_data.js"></script>
+    <script src="skyscraper-game.js"></script>
     <script src="frontier.js"></script>
     <script src="app.js"></script>
 </body>
