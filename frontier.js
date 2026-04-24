@@ -1,25 +1,62 @@
 // --- Constants & Data ---
 const SUITS = {
+    WEST_FRONTIER: { id: 'WEST_FRONTIER', name: 'Western Frontier', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg>', color: 'var(--west-frontier-text)', bg: 'var(--west-frontier-bg)', border: 'var(--west-frontier-border)', align: 'Union' },
+    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 50 C 48 48, 35 40, 35 28 C 35 15, 45 10, 50 5 C 55 10, 65 15, 65 28 C 65 40, 52 48, 50 50 C 52 48, 60 35, 72 35 C 85 35, 90 45, 95 50 C 90 55, 85 65, 72 65 C 60 65, 52 52, 50 50 C 52 52, 65 60, 65 72 C 65 85, 55 90, 50 95 C 45 90, 35 85, 35 72 C 35 60, 48 52, 50 50 C 48 52, 40 65, 28 65 C 15 65, 10 55, 5 50 C 10 45, 15 35, 28 35 C 40 35, 48 48, 50 50 Z" fill="currentColor"/></svg>', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
     DEEP_SOUTH: { id: 'DEEP_SOUTH', name: 'Deep South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 18 C 60 8, 78 10, 78 25 C 78 40, 54 35, 54 50 C 54 65, 78 60, 78 75 C 78 90, 60 92, 50 82 C 40 92, 22 90, 22 75 C 22 60, 46 65, 46 50 C 46 35, 22 40, 22 25 C 22 10, 40 8, 50 18 Z" fill="currentColor"/></svg>', color: 'var(--deep-south-text)', bg: 'var(--deep-south-bg)', border: 'var(--deep-south-border)', align: 'Confederacy' },
     UPPER_SOUTH: { id: 'UPPER_SOUTH', name: 'Upper/Western South', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 8 A 120 120 0 0 0 78 50 A 120 120 0 0 0 50 92 A 120 120 0 0 0 22 50 A 120 120 0 0 0 50 8 Z" fill="currentColor"/></svg>', color: 'var(--upper-south-text)', bg: 'var(--upper-south-bg)', border: 'var(--upper-south-border)', align: 'Confederacy' },
-    INDUST_EAST: { id: 'INDUST_EAST', name: 'Indust. East', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 50 C 48 48, 35 40, 35 28 C 35 15, 45 10, 50 5 C 55 10, 65 15, 65 28 C 65 40, 52 48, 50 50 C 52 48, 60 35, 72 35 C 85 35, 90 45, 95 50 C 90 55, 85 65, 72 65 C 60 65, 52 52, 50 50 C 52 52, 65 60, 65 72 C 65 85, 55 90, 50 95 C 45 90, 35 85, 35 72 C 35 60, 48 52, 50 50 C 48 52, 40 65, 28 65 C 15 65, 10 55, 5 50 C 10 45, 15 35, 28 35 C 40 35, 48 48, 50 50 Z" fill="currentColor"/></svg>', color: 'var(--indust-east-text)', bg: 'var(--indust-east-bg)', border: 'var(--indust-east-border)', align: 'Union' },
-    WEST_FRONTIER: { id: 'WEST_FRONTIER', name: 'Western Frontier', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg>', color: 'var(--west-frontier-text)', bg: 'var(--west-frontier-bg)', border: 'var(--west-frontier-border)', align: 'Union' },
     BORDER: { id: 'BORDER', name: 'Border States', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="6" fill="currentColor"/><circle cx="83" cy="31" r="6" fill="currentColor"/><circle cx="83" cy="69" r="6" fill="currentColor"/><circle cx="50" cy="88" r="6" fill="currentColor"/><circle cx="17" cy="69" r="6" fill="currentColor"/><circle cx="17" cy="31" r="6" fill="currentColor"/></svg>', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
+};
+
+const PRESIDENTS = {
+    BLACK: [
+        "washington", "adams-john", "jefferson", "madison", "monroe",
+        "adams-quincy", "harrison-william", "tyler", "taylor", "fillmore"
+    ],
+    BLUE: [
+        "jackson", "van-buren", "polk", "pierce", "buchanan",
+        "johnson-andrew", "cleveland-1", "wilson", "roosevelt-franklin", "truman",
+        "kennedy", "johnson-lyndon", "carter", "clinton", "obama", "biden"
+    ],
+    RED: [
+        "lincoln", "grant", "hayes", "garfield", "arthur",
+        "harrison-benjamin", "mckinley", "roosevelt-theodore", "taft", "harding",
+        "coolidge", "hoover", "eisenhower", "nixon", "ford",
+        "reagan", "bush-herbert", "bush-walker", "trump"
+    ]
 };
 
 const BASE_BET_UNIT = 1;
 
 // --- Helper Functions ---
-function createDeck() {
+function createDeck(edition = 'STANDARD') {
     let newDeck = [];
     Object.keys(SUITS).forEach(suitKey => {
         const suit = SUITS[suitKey];
         for (let val = 1; val <= 10; val++) {
+            let presidentId = null;
+            if (edition === 'PRESIDENT') {
+                if (suitKey === 'BORDER') {
+                    presidentId = PRESIDENTS.BLACK[val - 1] || null;
+                } else if (suitKey === 'WEST_FRONTIER') { // Spades (Row 1)
+                    presidentId = PRESIDENTS.BLUE[val - 1] || null;
+                } else if (suitKey === 'INDUST_EAST') { // Clubs (Row 4)
+                    presidentId = PRESIDENTS.BLUE[10 + val - 1] || null;
+                } else if (suitKey === 'DEEP_SOUTH') { // Hearts (Row 2)
+                    presidentId = PRESIDENTS.RED[val - 1] || null;
+                } else if (suitKey === 'UPPER_SOUTH') { // Diamonds (Row 3)
+                    presidentId = PRESIDENTS.RED[10 + val - 1] || null;
+                }
+            }
+
+            const president = presidentId ? presidentsData.find(p => p.id === presidentId) : null;
+
             newDeck.push({
                 id: `${suitKey}-${val}`,
                 suit: suit,
                 name: `Rank ${val}`,
-                val: val
+                val: val,
+                president: president ? president.name : null,
+                portraitUrl: president ? president.portraitUrl : null
             });
         }
     });
@@ -224,6 +261,8 @@ class FrontierGame {
             allCardsGrid: document.getElementById('all-cards-grid')
         };
 
+        this.edition = 'STANDARD'; // 'STANDARD' or 'PRESIDENT'
+
         // this.loadGlobalPlayers(); // Removed as we now use showSetup()
 
         // window.addEventListener('keydown', (e) => { ... }) // Removed to consolidate in app.js
@@ -241,6 +280,18 @@ class FrontierGame {
                 const isInsideMenu = this.els.menuDropdown.contains(e.target);
                 if (!isMenuBtn && !isInsideMenu) {
                     this.els.menuDropdown.classList.remove('active');
+                }
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.code === 'Space') {
+                if (this.phase === 'TRANSITION') {
+                    const overlayBtn = document.getElementById('overlay-main-btn');
+                    if (overlayBtn && overlayBtn.style.display !== 'none') {
+                        e.preventDefault();
+                        this.startTurn();
+                    }
                 }
             }
         });
@@ -275,21 +326,57 @@ class FrontierGame {
         Object.keys(SUITS).forEach(suitKey => {
             const suit = SUITS[suitKey];
             for (let val = 1; val <= 10; val++) {
-                const card = { suit, val };
+                let presidentId = null;
+                if (this.edition === 'PRESIDENT') {
+                    if (suitKey === 'BORDER') {
+                        presidentId = PRESIDENTS.BLACK[val - 1] || null;
+                    } else if (suitKey === 'WEST_FRONTIER') { // Spades
+                        presidentId = PRESIDENTS.BLUE[val - 1] || null;
+                    } else if (suitKey === 'INDUST_EAST') { // Clubs
+                        presidentId = PRESIDENTS.BLUE[10 + val - 1] || null;
+                    } else if (suitKey === 'DEEP_SOUTH') { // Hearts
+                        presidentId = PRESIDENTS.RED[val - 1] || null;
+                    } else if (suitKey === 'UPPER_SOUTH') { // Diamonds
+                        presidentId = PRESIDENTS.RED[10 + val - 1] || null;
+                    }
+                }
+
+                const president = presidentId ? presidentsData.find(p => p.id === presidentId) : null;
+                const card = { suit, val, president: president ? president.name : "?", portraitUrl: president ? president.portraitUrl : null };
                 const div = document.createElement('div');
                 div.className = `card suit-${card.suit.id}`;
+                if (this.edition === 'PRESIDENT') div.classList.add('is-president-edition');
                 div.style.width = "90px";
                 div.style.height = "135px";
                 div.style.fontSize = "0.7rem";
                 div.style.cursor = "default";
                 
-                div.innerHTML = `
-                    <div class="card-corner">${card.val}</div>
-                    <div class="card-center">
-                        <div class="card-val">${card.suit.symbol}</div>
-                    </div>
-                    <div class="card-corner bottom">${card.val}</div>
-                `;
+                if (this.edition === 'PRESIDENT') {
+                    div.innerHTML = `
+                        <div class="card-corner">
+                            <div class="corner-val">${card.val}</div>
+                            <div class="corner-suit">${card.suit.symbol}</div>
+                        </div>
+                        <div class="card-center">
+                            <div class="card-portrait-container">
+                                ${card.portraitUrl ? `<img src="${card.portraitUrl}" class="card-portrait" alt="${card.president}">` : ''}
+                            </div>
+                            <div class="card-president-name">${card.president || ""}</div>
+                        </div>
+                        <div class="card-corner bottom">
+                            <div class="corner-val">${card.val}</div>
+                            <div class="corner-suit">${card.suit.symbol}</div>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <div class="card-corner">${card.val}</div>
+                        <div class="card-center">
+                            <div class="card-val">${card.suit.symbol}</div>
+                        </div>
+                        <div class="card-corner bottom">${card.val}</div>
+                    `;
+                }
                 this.els.allCardsGrid.appendChild(div);
             }
         });
@@ -326,6 +413,53 @@ class FrontierGame {
         wrapper.style.alignItems = 'center';
         wrapper.style.gap = '20px';
         
+        const editionRow = document.createElement('div');
+        editionRow.style.display = 'flex';
+        editionRow.style.flexDirection = 'column';
+        editionRow.style.alignItems = 'center';
+        editionRow.style.gap = '10px';
+        editionRow.style.marginBottom = '10px';
+
+        const editionLabel = document.createElement('div');
+        editionLabel.innerText = "EDITION";
+        editionLabel.style.fontSize = "0.7rem";
+        editionLabel.style.color = "var(--gold-dim)";
+        editionLabel.style.letterSpacing = "2px";
+        editionRow.appendChild(editionLabel);
+
+        const editionToggle = document.createElement('div');
+        editionToggle.className = 'toggle-container';
+        editionToggle.style.width = '200px';
+
+        const stdBtn = document.createElement('button');
+        stdBtn.className = `toggle-btn ${this.edition === 'STANDARD' ? 'active' : ''}`;
+        stdBtn.innerText = 'Standard';
+        stdBtn.onclick = () => {
+            this.edition = 'STANDARD';
+            stdBtn.classList.add('active');
+            presBtn.classList.remove('active');
+        };
+
+        const presBtn = document.createElement('button');
+        presBtn.className = `toggle-btn ${this.edition === 'PRESIDENT' ? 'active' : ''}`;
+        presBtn.innerText = 'President';
+        presBtn.onclick = () => {
+            this.edition = 'PRESIDENT';
+            presBtn.classList.add('active');
+            stdBtn.classList.remove('active');
+        };
+
+        editionToggle.appendChild(stdBtn);
+        editionToggle.appendChild(presBtn);
+        editionRow.appendChild(editionToggle);
+
+        const countLabel = document.createElement('div');
+        countLabel.innerText = "SELECT COMMANDER COUNT";
+        countLabel.style.fontSize = "0.7rem";
+        countLabel.style.color = "var(--gold-dim)";
+        countLabel.style.letterSpacing = "2px";
+        countLabel.style.marginTop = "10px";
+
         const countRow = document.createElement('div');
         countRow.style.display = 'flex';
         countRow.style.gap = '10px';
@@ -362,6 +496,8 @@ class FrontierGame {
         credit.style.letterSpacing = "2px";
         credit.style.marginTop = "30px";
         
+        wrapper.appendChild(editionRow);
+        wrapper.appendChild(countLabel);
         wrapper.appendChild(countRow);
         wrapper.appendChild(rulesBtn);
         wrapper.appendChild(credit);
@@ -538,7 +674,7 @@ class FrontierGame {
             return;
         }
 
-        this.deck = createDeck();
+        this.deck = createDeck(this.edition);
         this.discardPile = [];
         this.pot = 0;
         this.currentRoundNum = 1;
@@ -733,15 +869,36 @@ class FrontierGame {
 
             const div = document.createElement('div');
             div.className = `card suit-${card.suit.id}`;
+            if (this.edition === 'PRESIDENT') div.classList.add('is-president-edition');
             if (this.selectedCardIndices.includes(idx)) div.classList.add('selected');
 
-            div.innerHTML = `
-                <div class="card-corner">${card.val}</div>
-                <div class="card-center">
-                    <div class="card-val">${card.suit.symbol}</div>
-                </div>
-                <div class="card-corner bottom">${card.val}</div>
-            `;
+            if (this.edition === 'PRESIDENT') {
+                const portraitUrl = card.portraitUrl || (presidentsData.find(p => p.name === card.president)?.portraitUrl || null);
+                div.innerHTML = `
+                    <div class="card-corner">
+                        <div class="corner-val">${card.val}</div>
+                        <div class="corner-suit">${card.suit.symbol}</div>
+                    </div>
+                    <div class="card-center">
+                        <div class="card-portrait-container">
+                            ${portraitUrl ? `<img src="${portraitUrl}" class="card-portrait" alt="${card.president}">` : ''}
+                        </div>
+                        <div class="card-president-name">${card.president || ""}</div>
+                    </div>
+                    <div class="card-corner bottom">
+                        <div class="corner-val">${card.val}</div>
+                        <div class="corner-suit">${card.suit.symbol}</div>
+                    </div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="card-corner">${card.val}</div>
+                    <div class="card-center">
+                        <div class="card-val">${card.suit.symbol}</div>
+                    </div>
+                    <div class="card-corner bottom">${card.val}</div>
+                `;
+            }
 
             if (isClickable) {
                 div.onclick = () => {
@@ -749,6 +906,9 @@ class FrontierGame {
                         this.selectedCardIndices = this.selectedCardIndices.filter(i => i !== idx);
                     } else {
                         this.selectedCardIndices.push(idx);
+                    }
+                    if (this.edition === 'PRESIDENT') {
+                        this.updateProfilePanel();
                     }
                     this.renderPlaying();
                 };
@@ -789,6 +949,10 @@ class FrontierGame {
         }
 
         let controlsHTML = '';
+
+        if (this.edition === 'PRESIDENT') {
+            controlsHTML += `<button class="action-btn" style="border-color: var(--gold); color: var(--gold);" onclick="frontierGame.toggleProfilePanel()">PROFILE</button>`;
+        }
 
         if (isFirstPlayer) {
             if (handEval) {
@@ -1135,6 +1299,72 @@ class FrontierGame {
             `;
             this.els.playerStatusGrid.appendChild(div);
         });
+    }
+
+    toggleProfilePanel() {
+        const panel = document.getElementById('president-profile-panel');
+        if (panel) {
+            panel.classList.toggle('visible');
+        }
+    }
+
+    updateProfilePanel() {
+        if (this.edition !== 'PRESIDENT') return;
+        const panelContent = document.getElementById('profile-content');
+        if (!panelContent) return;
+
+        if (this.selectedCardIndices.length === 0) {
+            panelContent.innerHTML = '<div class="profile-placeholder">Select a President Card to view Profile</div>';
+            return;
+        }
+
+        // Get the most recently selected card's president
+        const lastSelectedIdx = this.selectedCardIndices[this.selectedCardIndices.length - 1];
+        const player = this.players[this.activePlayerId];
+        if (!player || !player.hand[lastSelectedIdx]) return;
+
+        const card = player.hand[lastSelectedIdx];
+        const pName = card.president;
+        if (!pName) {
+            panelContent.innerHTML = '<div class="profile-placeholder">This card does not feature a President.</div>';
+            return;
+        }
+
+        const p = presidentsData.find(pres => pres.name === pName);
+        if (!p) {
+            panelContent.innerHTML = `<div class="profile-placeholder">Profile not found for ${pName}</div>`;
+            return;
+        }
+
+        const partyColorHex = p.partyColor === 'red' ? '#ff4d4d' : p.partyColor === 'blue' ? '#0077ff' : '#fff';
+        const portraitUrl = card.portraitUrl || p.portraitUrl;
+
+        panelContent.innerHTML = `
+            <div class="profile-header">
+                <div class="profile-portrait-large">
+                    <img src="${portraitUrl}" alt="${p.name}">
+                </div>
+                <div class="profile-name">${p.name}</div>
+                <div class="profile-years">${p.years}</div>
+            </div>
+            <div class="profile-meta-grid">
+                <div class="meta-box">
+                    <label>Lifespan</label>
+                    <span>${p.lifespan}</span>
+                </div>
+                <div class="meta-box">
+                    <label>Political Party</label>
+                    <span style="color: ${partyColorHex}">${p.party}</span>
+                </div>
+            </div>
+            <div class="profile-summary">${p.summary}</div>
+            <div class="profile-events">
+                <h4>Notable Events</h4>
+                <ul>
+                    ${p.events.map(e => `<li>${e}</li>`).join('')}
+                </ul>
+            </div>
+        `;
     }
 }
 

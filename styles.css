@@ -3298,3 +3298,307 @@ body:has(#frontier.active) .back-to-sa {
     right: 1.5rem;
     font-size: 2rem;
 }
+        /* President Edition Card Styles */
+        .card.is-president-edition {
+            padding: 8px;
+        }
+
+        .card.is-president-edition .card-corner {
+            display: flex;
+            flex-direction: row; /* Next to each other */
+            align-items: center;
+            justify-content: flex-start;
+            padding: 4px 6px;
+            gap: 5px; /* Increased gap */
+            line-height: 1;
+            width: fit-content;
+            height: auto;
+            text-align: left;
+            align-self: flex-start; /* Top corner to the left */
+        }
+
+        .card.is-president-edition .card-corner.bottom {
+            padding: 4px 6px;
+            justify-content: flex-start; /* Still flex-start because of 180deg rotation */
+            align-self: flex-end; /* Bottom corner to the right */
+        }
+
+        .card.is-president-edition .corner-val {
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card.is-president-edition .corner-suit {
+            width: 15px;
+            height: 15px;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .card.is-president-edition .card-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10px;
+            flex: 1; /* Push corners to edges */
+        }
+
+        .card-president-name {
+            font-family: 'GT America', sans-serif;
+            font-size: 0.55rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            word-wrap: break-word;
+            max-width: 100%;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .card-portrait-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.3);
+            background: #000;
+        }
+
+        .card-portrait {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(0.2) contrast(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card.selected .card-portrait {
+            transform: scale(1.1);
+        }
+
+        #all-cards-grid .card-portrait-container {
+            width: 50px;
+            height: 50px;
+        }
+
+        #all-cards-grid .card-president-name {
+            font-size: 0.45rem;
+            letter-spacing: 0.5px;
+        }
+
+
+        #all-cards-grid .card.is-president-edition {
+            padding: 4px;
+        }
+
+        #all-cards-grid .card.is-president-edition .card-corner {
+            padding: 2px 4px;
+            gap: 2px;
+        }
+
+        #all-cards-grid .card.is-president-edition .corner-val {
+            font-size: 0.8rem;
+        }
+
+        #all-cards-grid .card.is-president-edition .corner-suit {
+            width: 12px;
+            height: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .card-president-name {
+                font-size: 0.5rem;
+            }
+            .card.is-president-edition .corner-suit {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        /* PRESIDENT PROFILE PANEL */
+        #president-profile-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 380px;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(212, 175, 55, 0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            color: var(--text-color);
+        }
+
+        #president-profile-panel.visible {
+            transform: translateX(0);
+        }
+
+        .panel-close {
+            position: absolute;
+            top: 20px;
+            left: -40px;
+            width: 40px;
+            height: 40px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-right: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px 0 0 8px;
+            transition: color 0.3s;
+        }
+
+        .panel-close:hover {
+            color: var(--gold-bright);
+        }
+
+        #profile-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 30px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-dim) transparent;
+        }
+
+        .profile-placeholder {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0.4;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-portrait-large {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            background: #000;
+        }
+
+        .profile-portrait-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold-bright);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .profile-years {
+            font-size: 0.9rem;
+            color: var(--gold-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .profile-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .meta-box label {
+            display: block;
+            font-size: 0.6rem;
+            color: var(--gold-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-box span {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .profile-summary {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #ccc;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .profile-events h4 {
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .profile-events ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .profile-events li {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            color: #bbb;
+        }
+
+        .profile-events li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        @media (max-width: 800px) {
+            #president-profile-panel {
+                width: 100%;
+                z-index: 2000;
+            }
+            .panel-close {
+                left: auto;
+                right: 20px;
+                top: 20px;
+                border-radius: 50%;
+                border: 1px solid var(--gold);
+            }
+        }
