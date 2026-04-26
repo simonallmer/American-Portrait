@@ -7,6 +7,29 @@ const SUITS = {
     BORDER: { id: 'BORDER', name: 'Border States', symbol: '<svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="6" fill="currentColor"/><circle cx="83" cy="31" r="6" fill="currentColor"/><circle cx="83" cy="69" r="6" fill="currentColor"/><circle cx="50" cy="88" r="6" fill="currentColor"/><circle cx="17" cy="69" r="6" fill="currentColor"/><circle cx="17" cy="31" r="6" fill="currentColor"/></svg>', color: 'var(--border-text)', bg: 'var(--border-bg)', border: 'var(--border-border)', align: 'Neutral' }
 };
 
+const STATES = {
+    ATLANTIC_CORRIDOR: [
+        "Maine", "Vermont", "New Hampshire", "Massachusetts", "Rhode Island",
+        "Connecticut", "New York", "New Jersey", "Delaware", "Maryland"
+    ],
+    PACIFIC_SUN: [
+        "California", "Oregon", "Washington", "Hawaii", "Illinois",
+        "Minnesota", "Colorado", "New Mexico", "Virginia", "Nevada"
+    ],
+    SOUTHERN_HEART: [
+        "South Carolina", "Alabama", "Mississippi", "Louisiana", "Arkansas",
+        "Tennessee", "Kentucky", "West Virginia", "Oklahoma", "Texas"
+    ],
+    GREAT_FRONTIER: [
+        "Kansas", "Nebraska", "South Dakota", "North Dakota", "Montana",
+        "Wyoming", "Idaho", "Utah", "Missouri", "Indiana"
+    ],
+    WILD_SWINGS: [
+        "Pennsylvania", "Florida", "Ohio", "Michigan", "Wisconsin",
+        "Georgia", "Arizona", "North Carolina", "Iowa", "Alaska"
+    ]
+};
+
 const PRESIDENTS = {
     BLACK: [
         "washington", "adams-john", "jefferson", "madison", "monroe",
@@ -34,6 +57,7 @@ function createDeck(edition = 'STANDARD') {
         const suit = SUITS[suitKey];
         for (let val = 1; val <= 10; val++) {
             let presidentId = null;
+            let stateName = null;
             if (edition === 'PRESIDENT') {
                 if (suitKey === 'BORDER') {
                     presidentId = PRESIDENTS.BLACK[val - 1] || null;
@@ -46,9 +70,22 @@ function createDeck(edition = 'STANDARD') {
                 } else if (suitKey === 'UPPER_SOUTH') { // Diamonds (Row 3)
                     presidentId = PRESIDENTS.RED[10 + val - 1] || null;
                 }
+            } else if (edition === 'STATE') {
+                if (suitKey === 'INDUST_EAST') {
+                    stateName = STATES.ATLANTIC_CORRIDOR[val - 1] || null;
+                } else if (suitKey === 'WEST_FRONTIER') {
+                    stateName = STATES.PACIFIC_SUN[val - 1] || null;
+                } else if (suitKey === 'DEEP_SOUTH') {
+                    stateName = STATES.SOUTHERN_HEART[val - 1] || null;
+                } else if (suitKey === 'UPPER_SOUTH') {
+                    stateName = STATES.GREAT_FRONTIER[val - 1] || null;
+                } else if (suitKey === 'BORDER') {
+                    stateName = STATES.WILD_SWINGS[val - 1] || null;
+                }
             }
 
             const president = presidentId ? presidentsData.find(p => p.id === presidentId) : null;
+            const state = stateName ? getStateByName(stateName) : null;
 
             newDeck.push({
                 id: `${suitKey}-${val}`,
@@ -56,7 +93,9 @@ function createDeck(edition = 'STANDARD') {
                 name: `Rank ${val}`,
                 val: val,
                 president: president ? president.name : null,
-                portraitUrl: president ? president.portraitUrl : null
+                state: stateName,
+                portraitUrl: president ? president.portraitUrl : null,
+                flagUrl: state ? state.flagUrl : null
             });
         }
     });
@@ -292,6 +331,9 @@ class FrontierGame {
                         e.preventDefault();
                         this.startTurn();
                     }
+                } else if (this.phase === 'PLAYING' && (this.edition === 'PRESIDENT' || this.edition === 'STATE')) {
+                    e.preventDefault();
+                    this.toggleProfilePanel();
                 }
             }
         });
@@ -308,6 +350,12 @@ class FrontierGame {
     toggleRules() {
         this.els.rulesModal.classList.toggle('visible');
         this.els.menuDropdown.classList.remove('active');
+    }
+
+    getOrdinalSuffix(n) {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return s[(v - 20) % 10] || s[v] || s[0];
     }
 
     toggleMenu() {
@@ -327,6 +375,7 @@ class FrontierGame {
             const suit = SUITS[suitKey];
             for (let val = 1; val <= 10; val++) {
                 let presidentId = null;
+                let stateName = null;
                 if (this.edition === 'PRESIDENT') {
                     if (suitKey === 'BORDER') {
                         presidentId = PRESIDENTS.BLACK[val - 1] || null;
@@ -339,19 +388,35 @@ class FrontierGame {
                     } else if (suitKey === 'UPPER_SOUTH') { // Diamonds
                         presidentId = PRESIDENTS.RED[10 + val - 1] || null;
                     }
+                } else if (this.edition === 'STATE') {
+                    if (suitKey === 'INDUST_EAST') {
+                        stateName = STATES.ATLANTIC_CORRIDOR[val - 1] || null;
+                    } else if (suitKey === 'WEST_FRONTIER') {
+                        stateName = STATES.PACIFIC_SUN[val - 1] || null;
+                    } else if (suitKey === 'DEEP_SOUTH') {
+                        stateName = STATES.SOUTHERN_HEART[val - 1] || null;
+                    } else if (suitKey === 'UPPER_SOUTH') {
+                        stateName = STATES.GREAT_FRONTIER[val - 1] || null;
+                    } else if (suitKey === 'BORDER') {
+                        stateName = STATES.WILD_SWINGS[val - 1] || null;
+                    }
                 }
 
                 const president = presidentId ? presidentsData.find(p => p.id === presidentId) : null;
-                const card = { suit, val, president: president ? president.name : "?", portraitUrl: president ? president.portraitUrl : null };
+                const state = stateName ? getStateByName(stateName) : null;
+                const card = { suit, val, president: president ? president.name : "?", state: stateName, portraitUrl: president ? president.portraitUrl : null, flagUrl: state ? state.flagUrl : null };
                 const div = document.createElement('div');
                 div.className = `card suit-${card.suit.id}`;
-                if (this.edition === 'PRESIDENT') div.classList.add('is-president-edition');
-                div.style.width = "90px";
-                div.style.height = "135px";
-                div.style.fontSize = "0.7rem";
-                div.style.cursor = "default";
-                
-                if (this.edition === 'PRESIDENT') {
+if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add('is-president-edition');
+            if (this.edition === 'STATE') div.classList.add('is-state-edition');
+            div.style.width = "90px";
+            div.style.height = "135px";
+            div.style.fontSize = "0.7rem";
+            div.style.cursor = "default";
+            
+            if (this.edition === 'PRESIDENT' || this.edition === 'STATE') {
+                    const dispText = this.edition === 'PRESIDENT' ? (card.president || "") : (card.state || "");
+                    const imageUrl = this.edition === 'PRESIDENT' ? card.portraitUrl : card.flagUrl;
                     div.innerHTML = `
                         <div class="card-corner">
                             <div class="corner-val">${card.val}</div>
@@ -359,9 +424,9 @@ class FrontierGame {
                         </div>
                         <div class="card-center">
                             <div class="card-portrait-container">
-                                ${card.portraitUrl ? `<img src="${card.portraitUrl}" class="card-portrait" alt="${card.president}">` : ''}
+                                ${imageUrl ? `<img src="${imageUrl}" class="card-portrait" alt="${dispText}">` : ''}
                             </div>
-                            <div class="card-president-name">${card.president || ""}</div>
+                            <div class="card-president-name">${dispText}</div>
                         </div>
                         <div class="card-corner bottom">
                             <div class="corner-val">${card.val}</div>
@@ -399,9 +464,23 @@ class FrontierGame {
         this.els.controlsArea.innerHTML = '';
         this.els.mulliganBtn.style.display = 'none';
 
-        this.els.overlayTitle.innerText = "FRONTIER";
+        // Close and clear profile panel if open
+        const panel = document.getElementById('president-profile-panel');
+        if (panel) {
+            panel.classList.remove('visible');
+            const panelContent = document.getElementById('profile-content');
+            if (panelContent) panelContent.innerHTML = '<div class="profile-placeholder">Select a Card to view Profile</div>';
+            
+            const svgs = panel.querySelectorAll('.panel-close svg');
+            svgs.forEach(svg => svg.style.stroke = 'var(--gold-dim)');
+            
+            const fab = document.querySelector('.panel-toggle-fab');
+            if (fab) fab.style.display = 'none'; // Only show fab when game starts
+        }
+
+        this.els.overlayTitle.innerText = "AMERICAN PLAYING CARDS";
         this.els.overlayTitle.style.color = "var(--gold-bright)";
-        this.els.overlayDesc.innerHTML = "A high-stakes tactical card game played with <strong>American Playing Cards</strong>.<br/><br/>Select Commander count:";
+        this.els.overlayDesc.innerHTML = "A New System for the Frontier.";
 
         const actions = document.getElementById('overlay-actions');
         actions.innerHTML = '';
@@ -413,12 +492,45 @@ class FrontierGame {
         wrapper.style.alignItems = 'center';
         wrapper.style.gap = '20px';
         
+        const gameRow = document.createElement('div');
+        gameRow.style.display = 'flex';
+        gameRow.style.flexDirection = 'column';
+        gameRow.style.alignItems = 'center';
+        gameRow.style.gap = '10px';
+        gameRow.style.marginBottom = '20px';
+
+        const gameLabel = document.createElement('div');
+        gameLabel.innerText = "GAME";
+        gameLabel.style.fontSize = "0.7rem";
+        gameLabel.style.color = "var(--gold-dim)";
+        gameLabel.style.letterSpacing = "2px";
+        gameRow.appendChild(gameLabel);
+
+        const gameToggle = document.createElement('div');
+        gameToggle.className = 'toggle-container';
+        gameToggle.style.width = '350px';
+
+        const frontierBtn = document.createElement('button');
+        frontierBtn.className = 'toggle-btn active';
+        frontierBtn.innerText = 'Frontier';
+
+        const cowboyBtn = document.createElement('button');
+        cowboyBtn.className = 'toggle-btn';
+        cowboyBtn.innerText = 'Cowboy (Coming Soon)';
+        cowboyBtn.style.opacity = '0.5';
+        cowboyBtn.style.cursor = 'not-allowed';
+        cowboyBtn.disabled = true;
+
+        gameToggle.appendChild(frontierBtn);
+        gameToggle.appendChild(cowboyBtn);
+        gameRow.appendChild(gameToggle);
+
         const editionRow = document.createElement('div');
         editionRow.style.display = 'flex';
         editionRow.style.flexDirection = 'column';
         editionRow.style.alignItems = 'center';
         editionRow.style.gap = '10px';
-        editionRow.style.marginBottom = '10px';
+        editionRow.style.marginBottom = '20px';
 
         const editionLabel = document.createElement('div');
         editionLabel.innerText = "EDITION";
@@ -429,50 +541,85 @@ class FrontierGame {
 
         const editionToggle = document.createElement('div');
         editionToggle.className = 'toggle-container';
-        editionToggle.style.width = '200px';
+        editionToggle.style.width = '300px';
 
         const stdBtn = document.createElement('button');
         stdBtn.className = `toggle-btn ${this.edition === 'STANDARD' ? 'active' : ''}`;
         stdBtn.innerText = 'Standard';
+        
+        const presBtn = document.createElement('button');
+        presBtn.className = `toggle-btn ${this.edition === 'PRESIDENT' ? 'active' : ''}`;
+        presBtn.innerText = 'President';
+        
+        const stateBtn = document.createElement('button');
+        stateBtn.className = `toggle-btn ${this.edition === 'STATE' ? 'active' : ''}`;
+        stateBtn.innerText = 'State';
+
         stdBtn.onclick = () => {
             this.edition = 'STANDARD';
             stdBtn.classList.add('active');
             presBtn.classList.remove('active');
+            stateBtn.classList.remove('active');
         };
 
-        const presBtn = document.createElement('button');
-        presBtn.className = `toggle-btn ${this.edition === 'PRESIDENT' ? 'active' : ''}`;
-        presBtn.innerText = 'President';
         presBtn.onclick = () => {
             this.edition = 'PRESIDENT';
             presBtn.classList.add('active');
             stdBtn.classList.remove('active');
+            stateBtn.classList.remove('active');
+        };
+
+        stateBtn.onclick = () => {
+            this.edition = 'STATE';
+            stateBtn.classList.add('active');
+            stdBtn.classList.remove('active');
+            presBtn.classList.remove('active');
         };
 
         editionToggle.appendChild(stdBtn);
         editionToggle.appendChild(presBtn);
+        editionToggle.appendChild(stateBtn);
         editionRow.appendChild(editionToggle);
 
         const countLabel = document.createElement('div');
-        countLabel.innerText = "SELECT COMMANDER COUNT";
+        countLabel.innerText = "PLAYER COUNT";
         countLabel.style.fontSize = "0.7rem";
         countLabel.style.color = "var(--gold-dim)";
         countLabel.style.letterSpacing = "2px";
         countLabel.style.marginTop = "10px";
 
         const countRow = document.createElement('div');
+        countRow.id = 'count-row';
         countRow.style.display = 'flex';
         countRow.style.gap = '10px';
         
         [2, 3, 4, 5, 6].forEach(count => {
             const btn = document.createElement('button');
-            btn.className = "primary-btn";
+            btn.className = "primary-btn count-btn";
             btn.style.padding = "10px 20px";
             btn.style.minWidth = "60px";
             btn.innerText = count;
-            btn.onclick = () => this.preparePlayerNames(count);
+            btn.onclick = () => {
+                document.querySelectorAll('.count-btn').forEach(b => b.style.background = 'transparent');
+                btn.style.background = 'rgba(255,255,255,0.2)';
+                this.preparePlayerNames(count);
+            };
             countRow.appendChild(btn);
         });
+        
+        const namesWrapper = document.createElement('div');
+        namesWrapper.id = "names-wrapper";
+        namesWrapper.style.width = '100%';
+        namesWrapper.style.display = 'flex';
+        namesWrapper.style.flexDirection = 'column';
+        namesWrapper.style.alignItems = 'center';
+        namesWrapper.style.marginTop = '10px';
+
+        const beginBtnWrapper = document.createElement('div');
+        beginBtnWrapper.id = "begin-btn-wrapper";
+        beginBtnWrapper.style.width = '100%';
+        beginBtnWrapper.style.display = 'flex';
+        beginBtnWrapper.style.justifyContent = 'center';
         
         const rulesBtn = document.createElement('div');
         rulesBtn.innerText = "RULES";
@@ -496,21 +643,30 @@ class FrontierGame {
         credit.style.letterSpacing = "2px";
         credit.style.marginTop = "30px";
         
+        wrapper.appendChild(gameRow);
         wrapper.appendChild(editionRow);
         wrapper.appendChild(countLabel);
         wrapper.appendChild(countRow);
+        wrapper.appendChild(namesWrapper);
+        wrapper.appendChild(beginBtnWrapper);
         wrapper.appendChild(rulesBtn);
         wrapper.appendChild(credit);
         actions.appendChild(wrapper);
 
         this.els.overlay.classList.add('visible');
         document.getElementById('overlay-main-btn').style.display = 'none';
+        
+        // Default to 2 players
+        setTimeout(() => {
+            if (countRow.children[0]) countRow.children[0].click();
+        }, 10);
     }
 
     preparePlayerNames(count) {
-        this.els.overlayDesc.innerHTML = "Enter Commander Names:";
-        const wrapper = document.getElementById('setup-wrapper');
-        wrapper.innerHTML = '';
+        // No longer change the overlayDesc because the title is static above
+        const namesWrapper = document.getElementById('names-wrapper');
+        if (!namesWrapper) return;
+        namesWrapper.innerHTML = '';
         
         const namesContainer = document.createElement('div');
         namesContainer.style.display = 'flex';
@@ -596,9 +752,15 @@ class FrontierGame {
             namesContainer.appendChild(playerGroup);
         }
 
+        namesWrapper.appendChild(namesContainer);
+
+        const beginBtnWrapper = document.getElementById('begin-btn-wrapper');
+        if (!beginBtnWrapper) return;
+        beginBtnWrapper.innerHTML = '';
+
         const beginBtn = document.createElement('button');
         beginBtn.className = "primary-btn";
-        beginBtn.style.marginTop = "10px";
+        beginBtn.style.marginTop = "20px";
         beginBtn.style.padding = "15px 40px";
         beginBtn.innerText = "BEGIN GAME";
         beginBtn.onclick = () => {
@@ -608,9 +770,7 @@ class FrontierGame {
             }));
             this.initGame(count, finalPlayers);
         };
-
-        wrapper.appendChild(namesContainer);
-        wrapper.appendChild(beginBtn);
+        beginBtnWrapper.appendChild(beginBtn);
     }
 
     updateAIPresence(configs) {
@@ -869,11 +1029,13 @@ class FrontierGame {
 
             const div = document.createElement('div');
             div.className = `card suit-${card.suit.id}`;
-            if (this.edition === 'PRESIDENT') div.classList.add('is-president-edition');
+            if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add('is-president-edition');
+            if (this.edition === 'STATE') div.classList.add('is-state-edition');
             if (this.selectedCardIndices.includes(idx)) div.classList.add('selected');
 
-            if (this.edition === 'PRESIDENT') {
-                const portraitUrl = card.portraitUrl || (presidentsData.find(p => p.name === card.president)?.portraitUrl || null);
+            if (this.edition === 'PRESIDENT' || this.edition === 'STATE') {
+                const dispText = this.edition === 'PRESIDENT' ? (card.president || "") : (card.state || "");
+                const imageUrl = this.edition === 'PRESIDENT' ? (card.portraitUrl || (card.president ? (presidentsData.find(p => p.name === card.president)?.portraitUrl || null) : null)) : (card.flagUrl || null);
                 div.innerHTML = `
                     <div class="card-corner">
                         <div class="corner-val">${card.val}</div>
@@ -881,9 +1043,9 @@ class FrontierGame {
                     </div>
                     <div class="card-center">
                         <div class="card-portrait-container">
-                            ${portraitUrl ? `<img src="${portraitUrl}" class="card-portrait" alt="${card.president}">` : ''}
+                            ${imageUrl ? `<img src="${imageUrl}" class="card-portrait" alt="${dispText}">` : ''}
                         </div>
-                        <div class="card-president-name">${card.president || ""}</div>
+                        <div class="card-president-name">${dispText}</div>
                     </div>
                     <div class="card-corner bottom">
                         <div class="corner-val">${card.val}</div>
@@ -907,7 +1069,7 @@ class FrontierGame {
                     } else {
                         this.selectedCardIndices.push(idx);
                     }
-                    if (this.edition === 'PRESIDENT') {
+                    if (this.edition === 'PRESIDENT' || this.edition === 'STATE') {
                         this.updateProfilePanel();
                     }
                     this.renderPlaying();
@@ -950,10 +1112,6 @@ class FrontierGame {
 
         let controlsHTML = '';
 
-        if (this.edition === 'PRESIDENT') {
-            controlsHTML += `<button class="action-btn" style="border-color: var(--gold); color: var(--gold);" onclick="frontierGame.toggleProfilePanel()">PROFILE</button>`;
-        }
-
         if (isFirstPlayer) {
             if (handEval) {
                 const details = handEval.tier === 'Tier 5' ? `Power: ${handEval.power}` : handEval.name;
@@ -987,6 +1145,14 @@ class FrontierGame {
                 }
             }
             controlsHTML += `<button class="danger-btn" onclick="frontierGame.executeFold()">FOLD</button>`;
+        }
+
+        if (this.edition === 'PRESIDENT' || this.edition === 'STATE') {
+            const profileLabel = this.edition === 'STATE' ? 'PROFILE' : 'PROFILE';
+            const panel = document.getElementById('president-profile-panel');
+            const isActive = panel && panel.classList.contains('visible');
+            const activeStyle = isActive ? 'style="color: var(--gold-bright); border-color: var(--gold-bright); background: rgba(255, 215, 0, 0.1);"' : '';
+            controlsHTML += `<button class="action-btn" ${activeStyle} onclick="frontierGame.toggleProfilePanel()">${profileLabel}</button>`;
         }
 
         this.els.controlsArea.innerHTML = controlsHTML;
@@ -1305,66 +1471,148 @@ class FrontierGame {
         const panel = document.getElementById('president-profile-panel');
         if (panel) {
             panel.classList.toggle('visible');
+            panel.dataset.edition = this.edition;
+            
+            const isOpen = panel.classList.contains('visible');
+            
+            // Side panel button - grey when closed, gold when open
+            const svgs = panel.querySelectorAll('.panel-close svg');
+            svgs.forEach(svg => {
+                svg.style.stroke = isOpen ? 'var(--gold-bright)' : 'var(--gold-dim)';
+            });
+            
+            // FAB - always grey, hides when open
+            const fab = document.querySelector('.panel-toggle-fab');
+            if (fab) {
+                fab.style.display = isOpen ? 'none' : 'flex';
+            }
         }
+        this.updateControls();
     }
 
     updateProfilePanel() {
-        if (this.edition !== 'PRESIDENT') return;
+        const panel = document.getElementById('president-profile-panel');
+        if (panel) {
+            panel.dataset.edition = this.edition;
+        }
+        
         const panelContent = document.getElementById('profile-content');
         if (!panelContent) return;
 
-        if (this.selectedCardIndices.length === 0) {
-            panelContent.innerHTML = '<div class="profile-placeholder">Select a President Card to view Profile</div>';
-            return;
-        }
+        if (this.edition === 'PRESIDENT') {
+            if (this.selectedCardIndices.length === 0) {
+                panelContent.innerHTML = '<div class="profile-placeholder">Select a President Card to view Profile</div>';
+                return;
+            }
 
-        // Get the most recently selected card's president
-        const lastSelectedIdx = this.selectedCardIndices[this.selectedCardIndices.length - 1];
-        const player = this.players[this.activePlayerId];
-        if (!player || !player.hand[lastSelectedIdx]) return;
+            const lastSelectedIdx = this.selectedCardIndices[this.selectedCardIndices.length - 1];
+            const player = this.players[this.activePlayerId];
+            if (!player || !player.hand[lastSelectedIdx]) return;
 
-        const card = player.hand[lastSelectedIdx];
-        const pName = card.president;
-        if (!pName) {
-            panelContent.innerHTML = '<div class="profile-placeholder">This card does not feature a President.</div>';
-            return;
-        }
+            const card = player.hand[lastSelectedIdx];
+            const pName = card.president;
+            if (!pName) {
+                panelContent.innerHTML = '<div class="profile-placeholder">This card does not feature a President.</div>';
+                return;
+            }
 
-        const p = presidentsData.find(pres => pres.name === pName);
-        if (!p) {
-            panelContent.innerHTML = `<div class="profile-placeholder">Profile not found for ${pName}</div>`;
-            return;
-        }
+            const p = presidentsData.find(pres => pres.name === pName);
+            if (!p) {
+                panelContent.innerHTML = `<div class="profile-placeholder">Profile not found for ${pName}</div>`;
+                return;
+            }
 
-        const partyColorHex = p.partyColor === 'red' ? '#ff4d4d' : p.partyColor === 'blue' ? '#0077ff' : '#fff';
-        const portraitUrl = card.portraitUrl || p.portraitUrl;
+            const partyColorHex = p.partyColor === 'red' ? '#ff4d4d' : p.partyColor === 'blue' ? '#0077ff' : '#fff';
+            const portraitUrl = card.portraitUrl || p.portraitUrl;
 
-        panelContent.innerHTML = `
-            <div class="profile-header">
-                <div class="profile-portrait-large">
-                    <img src="${portraitUrl}" alt="${p.name}">
+            panelContent.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-portrait-large">
+                        <img src="${portraitUrl}" alt="${p.name}">
+                    </div>
+                    <div class="profile-name">${p.name}</div>
+                    <div class="profile-years">${p.years}</div>
                 </div>
-                <div class="profile-name">${p.name}</div>
-                <div class="profile-years">${p.years}</div>
-            </div>
-            <div class="profile-meta-grid">
-                <div class="meta-box">
-                    <label>Lifespan</label>
-                    <span>${p.lifespan}</span>
+                <div class="profile-meta-grid">
+                    <div class="meta-box">
+                        <label>Lifespan</label>
+                        <span>${p.lifespan}</span>
+                    </div>
+                    <div class="meta-box">
+                        <label>Political Party</label>
+                        <span style="color: ${partyColorHex}">${p.party}</span>
+                    </div>
                 </div>
-                <div class="meta-box">
-                    <label>Political Party</label>
-                    <span style="color: ${partyColorHex}">${p.party}</span>
+                <div class="profile-summary">${p.summary}</div>
+                <div class="profile-events">
+                    <h4>Notable Events</h4>
+                    <ul>
+                        ${p.events.map(e => `<li>${e}</li>`).join('')}
+                    </ul>
                 </div>
-            </div>
-            <div class="profile-summary">${p.summary}</div>
-            <div class="profile-events">
-                <h4>Notable Events</h4>
-                <ul>
-                    ${p.events.map(e => `<li>${e}</li>`).join('')}
-                </ul>
-            </div>
-        `;
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="action-btn" style="border-color: var(--gold); color: var(--gold); padding: 8px 16px; font-size: 0.85rem;" onclick="window.open('index.html#chronicle-view', '_blank')">AMERICAN CHRONICLE</button>
+                    <div style="font-size: 0.7rem; color: #888; margin-top: 5px; font-style: italic;">(It will open in new tab)</div>
+                </div>
+            `;
+        } else if (this.edition === 'STATE') {
+            if (this.selectedCardIndices.length === 0) {
+                panelContent.innerHTML = '<div class="profile-placeholder">Select a State Card to view Info</div>';
+                return;
+            }
+
+            const lastSelectedIdx = this.selectedCardIndices[this.selectedCardIndices.length - 1];
+            const player = this.players[this.activePlayerId];
+            if (!player || !player.hand[lastSelectedIdx]) return;
+
+            const card = player.hand[lastSelectedIdx];
+            const stateName = card.state;
+            if (!stateName) {
+                panelContent.innerHTML = '<div class="profile-placeholder">This card does not feature a State.</div>';
+                return;
+            }
+
+            const state = getStateByName(stateName);
+            if (!state) {
+                panelContent.innerHTML = `<div class="profile-placeholder">State info not found for ${stateName}</div>`;
+                return;
+            }
+
+            panelContent.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-portrait-large" style="${this.edition === 'STATE' ? 'width:140px;height:90px;border-radius:4px;' : ''}">
+                        <img src="${state.flagUrl}" alt="${state.name}">
+                    </div>
+                    <div class="profile-name">${state.name}</div>
+                    <div class="profile-years">${state.nickname}</div>
+                </div>
+                <div class="profile-meta-grid">
+                    <div class="meta-box">
+                        <label>Capital</label>
+                        <span>${state.capital}</span>
+                    </div>
+                    <div class="meta-box">
+                        <label>Largest City</label>
+                        <span>${state.largestCity}</span>
+                    </div>
+                    <div class="meta-box">
+                        <label>Joined Union</label>
+                        <span>${state.year}</span>
+                    </div>
+                    <div class="meta-box">
+                        <label>Order</label>
+                        <span>${state.order}${this.getOrdinalSuffix(state.order)}</span>
+                    </div>
+                </div>
+                <div class="chronicle-text" style="font-size:0.95rem; line-height:1.7; margin-top:15px; color:#ccc;">
+                    <p>${state.summary}</p>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="action-btn" style="border-color: var(--gold); color: var(--gold); padding: 8px 16px; font-size: 0.85rem;" onclick="window.open('index.html#chronicle-view', '_blank')">AMERICAN CHRONICLE</button>
+                    <div style="font-size: 0.7rem; color: #888; margin-top: 5px; font-style: italic;">(Opens in new tab)</div>
+                </div>
+            `;
+        }
     }
 }
 

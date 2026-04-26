@@ -351,7 +351,7 @@ const presidentsData = [
   {
     "id": "cleveland-1",
     "name": "Grover Cleveland",
-    "years": "1885\u20131889",
+    "years": "1885–1889 & 1893–1897",
     "lifespan": "1837\u20131908",
     "party": "Democratic",
     "partyColor": "blue",
@@ -384,7 +384,7 @@ const presidentsData = [
   {
     "id": "cleveland-2",
     "name": "Grover Cleveland",
-    "years": "1893\u20131897",
+    "years": "1885–1889 & 1893–1897",
     "lifespan": "1837\u20131908",
     "party": "Democratic",
     "partyColor": "blue",
@@ -412,7 +412,7 @@ const presidentsData = [
       "Annexation of Hawaii",
       "Gold Standard Act"
     ],
-    "summary": "William McKinley\u2019s presidency saw the United States emerge as a global imperial power following the Spanish-American War. Under his leadership, the nation acquired territories in the Caribbean and the Pacific, and McKinley successfully championed the gold standard and high protective tariffs. His second term was cut short by an assassin\u2019s bullet in 1901, leading to the ascension of his dynamic Vice President, Theodore Roosevelt.",
+    "summary": "William McKinley\u2019s presidency was defined by the transition into the 20th century and the United States' emergence as a global imperial power. Under his leadership, the nation acquired territories in the Caribbean and the Pacific, and McKinley successfully championed the gold standard and high protective tariffs. His second term was cut short by an assassin\u2019s bullet in 1901, leading to the ascension of his dynamic Vice President, Theodore Roosevelt.",
     "portraitUrl": "President Portraits/mckinley.jpg"
   },
   {
@@ -738,7 +738,7 @@ const presidentsData = [
   {
     "id": "trump",
     "name": "Donald Trump",
-    "years": "2017\u20132021",
+    "years": "2017\u20132021 & 2025\u2013",
     "lifespan": "1946\u2013",
     "party": "Republican",
     "partyColor": "red",

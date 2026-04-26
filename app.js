@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== ' ') return;
 
         // Focusable items: links, cards, years, tracks, books
-        const selectors = 'a.enter-btn, a.back-abs, a.back-to-sa, .portrait-card, .journal-card, .periodic-year, .game-card, .library-book, .custom-audio, .bookstore-item';
+        const selectors = 'a.enter-btn, a.back-abs, a.back-to-sa, .portrait-card, .journal-card, .periodic-year, .game-card:not(:has(.game-btn)), .library-book, .custom-audio, .bookstore-item';
         const focusable = Array.from(activeView.querySelectorAll(selectors))
             .filter(el => el.offsetParent !== null);
 
@@ -230,6 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (document.getElementById('president-popup').classList.contains('active')) {
                 closePresidentPopup();
+                return;
+            }
+            if (document.getElementById('state-popup') && document.getElementById('state-popup').classList.contains('active')) {
+                closeStatePopup();
                 return;
             }
             if (document.getElementById('quotes-overlay').classList.contains('active')) {
@@ -439,6 +443,7 @@ function initChronicleGrid() {
     }
     
     initPresidentsTimeline();
+    initStatesTimeline();
 }
 
 function initPresidentsTimeline() {
@@ -466,51 +471,85 @@ function initPresidentsTimeline() {
     });
 }
 
-function openPresidentInfo(id) {
-    const pres = presidentsData.find(p => p.id === id);
-    if (!pres) return;
+function initStatesTimeline() {
+    const timeline = document.getElementById('states-timeline');
+    if (!timeline) return;
+    timeline.innerHTML = '';
     
-    const popup = document.getElementById('president-popup');
-    const body = document.getElementById('president-popup-body');
+    // Sort states by year they joined the union
+    const sortedStates = [...statesData].sort((a, b) => a.year - b.year);
     
-    let eventsHtml = pres.events.map(e => `<li>${e}</li>`).join('');
-    
-    body.innerHTML = `
-        <div class="president-info-header">
-            <h2 style="font-family:'Cinzel', serif; margin:0;">${pres.name}</h2>
-            <div style="color:var(--accent-gold); font-size:0.8rem; letter-spacing:0.1rem;">PRESIDENT OF THE UNITED STATES</div>
-        </div>
+    sortedStates.forEach(state => {
+        const box = document.createElement('div');
+        box.className = 'state-box';
         
-        <div class="president-meta">
-            <div class="meta-item">
-                <label>Lifespan</label>
-                <span>${pres.lifespan}</span>
+        box.innerHTML = `
+            <img src="${state.flagUrl}" alt="${state.name}" class="state-flag">
+            <div class="state-info">
+                <div class="state-name">${state.name}</div>
+                <div class="state-year">${state.year}</div>
             </div>
-            <div class="meta-item">
-                <label>In Office</label>
-                <span>${pres.years}</span>
-            </div>
-            <div class="meta-item">
-                <label>Affiliation</label>
-                <span style="color:${pres.partyColor === 'red' ? '#ff4d4d' : (pres.partyColor === 'blue' ? '#0077ff' : '#fff')}">${pres.party}</span>
-            </div>
-            <div class="meta-item">
-                <label>Notable Events</label>
-                <div class="notable-events">
-                    <ul>${eventsHtml}</ul>
+        `;
+        
+        box.onclick = () => openStateInfo(state.id);
+        timeline.appendChild(box);
+    });
+}
+
+function openPresidentInfo(id) {
+    try {
+        const pres = presidentsData.find(p => p.id === id);
+        if (!pres) return;
+        
+        const popup = document.getElementById('president-popup');
+        const body = document.getElementById('president-popup-body');
+        
+        const presIndex = presidentsData.indexOf(pres) + 1;
+        const ordinal = getOrdinalSuffix(presIndex);
+        
+        body.innerHTML = `
+            <div class="president-info-header">
+                <img src="${pres.portraitUrl || 'assets/placeholder-portrait.jpg'}" alt="${pres.name}" class="president-portrait-large">
+                <div>
+                    <h2 style="color: #fff;">${pres.name}</h2>
+                    <div class="president-subtitle">${presIndex}${ordinal} President of the United States</div>
                 </div>
             </div>
-        </div>
-        
-        <div class="chronicle-text" style="font-size:1.1rem; line-height:1.8;">
-            <p>${pres.summary}</p>
-        </div>
-    `;
-    
-    popup.classList.add('active');
-    // document.body.style.overflow = 'hidden'; // Removed to allow scrolling
+            
+            <div class="president-meta">
+                <div class="meta-item">
+                    <label>Lifespan</label>
+                    <span>${pres.lifespan || 'Unknown'}</span>
+                </div>
+                <div class="meta-item">
+                    <label>Years in Office</label>
+                    <span>${pres.years || 'Unknown'}</span>
+                </div>
+                <div class="meta-item">
+                    <label>Political Party</label>
+                    <span style="color: ${pres.partyColor === 'red' ? '#ff4d4d' : pres.partyColor === 'blue' ? '#0077ff' : '#eee'}">${pres.party || 'None'}</span>
+                </div>
+            </div>
+            
+            <div class="chronicle-text" style="font-size:1.1rem; line-height:1.8; color: #ccc;">
+                <p>${pres.summary || ''}</p>
+            </div>
 
-    highlightPresidentYears(pres.startYear, pres.endYear || 2025, pres.partyColor);
+            <div class="notable-events">
+                <h4>Notable Events</h4>
+                <ul>
+                    ${pres.events && Array.isArray(pres.events) ? pres.events.map(event => `<li>${event}</li>`).join('') : '<li>No major events recorded.</li>'}
+                </ul>
+            </div>
+        `;
+        
+        popup.classList.add('active');
+        
+        // Highlight his years in the grid
+        highlightPresidentYears(pres.startYear, pres.endYear, pres.partyColor);
+    } catch (e) {
+        console.error("Error opening president: ", e);
+    }
 }
 
 function closePresidentPopup() {
@@ -518,6 +557,62 @@ function closePresidentPopup() {
     // document.body.style.overflow = '';
     clearPresidentHighlights();
 }
+
+function openStateInfo(id) {
+    const state = statesData.find(s => s.id === id);
+    if (!state) return;
+    
+    const popup = document.getElementById('state-popup');
+    const body = document.getElementById('state-popup-body');
+    
+    const orderOrdinal = getOrdinalSuffix(state.order);
+
+    body.innerHTML = `
+        <div class="state-info-header">
+            <img src="${state.flagUrl}" alt="${state.name}" class="state-flag-large">
+            <div>
+                <h2 style="color: #fff;">${state.name}</h2>
+                <div class="state-subtitle">${state.nickname}</div>
+            </div>
+        </div>
+        
+        <div class="president-meta">
+            <div class="meta-item">
+                <label>Capital</label>
+                <span>${state.capital}</span>
+            </div>
+            <div class="meta-item">
+                <label>Largest City</label>
+                <span>${state.largestCity || state.capital}</span>
+            </div>
+            <div class="meta-item">
+                <label>Entered Union</label>
+                <span>${state.year}</span>
+            </div>
+            <div class="meta-item">
+                <label>Order</label>
+                <span>${state.order}${orderOrdinal} State</span>
+            </div>
+        </div>
+        
+        <div class="chronicle-text" style="font-size:1.1rem; line-height:1.8; color: #ccc;">
+            <p>${state.summary || 'Historical information coming soon.'}</p>
+        </div>
+    `;
+    
+    popup.classList.add('active');
+}
+
+function closeStatePopup() {
+    document.getElementById('state-popup').classList.remove('active');
+}
+
+function getOrdinalSuffix(n) {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+}
+
 
 function highlightPresidentYears(start, end, partyColor) {
     clearPresidentHighlights();
@@ -827,6 +922,15 @@ function updateChroniclePopup() {
     
     // Use entry if exists, otherwise placeholder
     let details = chronicleEntries[currentChronicleYear] || "Information coming soon.";
+    
+    // Check if president changed this year
+    const activePresidents = presidentsData.filter(p => currentChronicleYear >= p.startYear && currentChronicleYear <= (p.endYear || 2025));
+    if (activePresidents.length > 0) {
+        activePresidents.forEach(p => {
+            details += `<br><br><span style="color: var(--accent-gold); font-size: 0.95rem; font-weight: bold;">President ${p.name}</span><br><span style="font-size: 0.85rem; color: #aaa; line-height: 1.5; display: inline-block; margin-top: 5px;">${p.summary}</span>`;
+        });
+    }
+
     info.innerHTML = details;
 
     // Boundary check for arrows

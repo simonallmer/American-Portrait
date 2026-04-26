@@ -258,6 +258,13 @@
                     <!-- Presidents generated via app.js -->
                 </div>
             </div>
+
+            <div class="states-section">
+                <h3 class="chronicle-section-title">THE STATES</h3>
+                <div id="states-timeline" class="states-timeline">
+                    <!-- States generated via app.js -->
+                </div>
+            </div>
             
             <div class="chronicle-coming-soon">
                 <div class="coming-soon-header" style="color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; display: inline-block;">IN DEVELOPMENT</div>
@@ -306,9 +313,20 @@
         <!-- President Popup -->
         <div id="president-popup" class="chronicle-popup side-panel">
             <div class="popup-overlay" onclick="closePresidentPopup()"></div>
+            <button class="popup-close" onclick="closePresidentPopup()">×</button>
             <div class="popup-content">
-                <button class="popup-close" onclick="closePresidentPopup()">×</button>
                 <div id="president-popup-body">
+                    <!-- Content generated via app.js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- State Popup -->
+        <div id="state-popup" class="chronicle-popup side-panel">
+            <div class="popup-overlay" onclick="closeStatePopup()"></div>
+            <button class="popup-close" onclick="closeStatePopup()">×</button>
+            <div class="popup-content">
+                <div id="state-popup-body">
                     <!-- Content generated via app.js -->
                 </div>
             </div>
@@ -325,18 +343,20 @@
         <div class="games-container">
             <h2 class="section-title">Games</h2>
             <div class="games-list">
-                <div class="game-card clickable" onclick="location.hash='#frontier'; frontierGame.showSetup()">
-                    <h3>Frontier</h3>
-                    <p>No Kings on American Playing Cards.</p>
-                    <div class="game-actions">
-                        <span class="game-btn">PLAY</span>
+                <div class="game-card" onclick="location.hash='#frontier'; frontierGame.showSetup()" style="cursor: pointer;">
+                    <h3>American Playing Cards</h3>
+                    <p>A New System for the Frontier.</p>
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                        <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.showSetup()">PLAY</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-apc'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
                     </div>
                 </div>
-                <div class="game-card clickable" onclick="window.location.hash = '#skyscraper'">
+                <div class="game-card" onclick="window.location.hash = '#skyscraper'" style="cursor: pointer;">
                     <h3>Skyscraper</h3>
                     <p>To light up the New York skyline, you must start at the ground floor.</p>
-                    <div class="game-actions">
-                        <span class="game-btn">PLAY</span>
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                        <span class="game-btn clickable" onclick="event.stopPropagation(); window.location.hash = '#skyscraper'">PLAY</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-skyscraper'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
                     </div>
                 </div>
                 <div class="game-card" style="cursor: default;">
@@ -350,6 +370,56 @@
             © 2026 Simon Allmer Entertainment
         </footer>
     </section>
+    
+    <!-- About American Playing Cards View -->
+    <section id="about-apc" class="view" style="overflow-y: auto;">
+        <a href="#games" class="back-abs">BACK TO GAMES</a>
+        <div class="about-container" style="max-width: 800px; margin: 0 auto; padding-top: 100px; padding-bottom: 50px;">
+            <h2 class="section-title">American Playing Cards</h2>
+            <div class="about-content" style="color: #ccc; line-height: 1.6; font-size: 1.1rem; text-align: left;">
+                <p>The French system of suits and royalty has governed card games for five centuries. American Playing Cards offer a new foundation.</p>
+                <p>Fifty cards. Four colored suits of ten. One wild suit of ten. The numbers run from 1 to 10, with no court cards and no jokers.</p>
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">The System</h3>
+                <p>The suits are designed with true rotational symmetry: where a standard playing card must print its suit twice to remain readable from either end, every American Playing Card suit is shaped so that it reads identically when rotated 180 degrees. The suit designs themselves are original, each one a creative development of its source shape rather than a reproduction of convention.</p>
+                <p>The Standard Edition keeps the suits abstract. Their meaning, and how the cards are used, is determined by the game being played or by the edition in hand.</p>
+            </div>
+            <div style="text-align: center; margin-top: 4rem;">
+                <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="location.hash='#frontier'; frontierGame.showSetup()">PLAY</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Skyscraper View -->
+    <section id="about-skyscraper" class="view" style="overflow-y: auto;">
+        <a href="#games" class="back-abs">BACK TO GAMES</a>
+        <div class="about-container" style="max-width: 800px; margin: 0 auto; padding-top: 100px; padding-bottom: 50px;">
+            <h2 class="section-title">Skyscraper</h2>
+            <div class="about-content" style="color: #ccc; line-height: 1.6; font-size: 1.1rem; text-align: left;">
+                <p>Travel back to 1930s New York City when the greatest architectural achievement of the era, the Skyscraper of Manhattan, rises from the streets. As one of four competing developers, your goal is to illuminate your vision upon this towering structure and claim your place at the top of the city skyline.</p>
+                
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Features</h3>
+                <ul>
+                    <li>Unique 3D mechanics & floor-by-floor elevator progression</li>
+                    <li>2-4 Players (Local or AI opponents)</li>
+                    <li>Stunning Art Deco graphics</li>
+                </ul>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Goal</h3>
+                <p>Winning the game is achieved by securing more than your equal share of the playable fields (over half for 2 players, over a third for 3 players and over a fourth for 4 player) or by maintaining a higher field count when no further moves are possible.</p>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Gameplay</h3>
+                <p><strong>Connection:</strong> A field may be illuminated only if it maintains a clear line of sight through the 3D structure to another field of the same color.</p>
+                <p><strong>Shadow Rule:</strong> Opponent-controlled fields obstruct light. Connections cannot be established through sectors occupied by the adversary.</p>
+                <p><strong>Capture:</strong> Completion of a full sequence of 5 windows on the same block initiates a capture event. The player holding the majority of illuminated fields within that sequence secures the entire line.</p>
+                <p><strong>Split Capture:</strong> Should a move finalize multiple sequences simultaneously, each is evaluated independently for majority. The trigger field remains secure from capture provided it contributes to at least one sequence won by the active player.</p>
+                <p><strong>Elevator:</strong> Accessibility to higher floors is restricted by the elevator height, starting with 1 floor in the first round. Each round, the elevator rises by 1 floor, gradually opening the top of the structure.</p>
+            </div>
+            <div style="text-align: center; margin-top: 4rem;">
+                <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="window.location.hash='#skyscraper'">PLAY</span>
+            </div>
+        </div>
+    </section>
+    
     <!-- Frontier Game View -->
     <section id="skyscraper" class="view">
         <a href="#games" class="back-link">← Back to Games</a>
@@ -588,11 +658,23 @@
 
             <!-- PRESIDENT PROFILE PANEL -->
             <div id="president-profile-panel">
-                <button class="panel-close" onclick="frontierGame.toggleProfilePanel()">×</button>
+                <button class="panel-close" onclick="frontierGame.toggleProfilePanel()">
+                    <svg class="arrow-right" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <svg class="arrow-left" viewBox="0 0 24 24" fill="none" stroke-width="2" style="display:none;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
                 <div id="profile-content">
                     <div class="profile-placeholder">Select a President Card to view Profile</div>
                 </div>
             </div>
+            <button class="panel-toggle-fab" onclick="frontierGame.toggleProfilePanel()">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
     </section>
 
     <!-- Review: Nuclear Weapons -->
@@ -844,6 +926,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
     <script src="presidents_data.js"></script>
+    <script src="states_data.js"></script>
     <script src="skyscraper-game.js"></script>
     <script src="frontier.js"></script>
     <script src="app.js"></script>
