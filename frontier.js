@@ -280,6 +280,7 @@ class FrontierGame {
 
         this.selectedCardIndices = [];
         this.phase = 'SETUP'; // SETUP, TRANSITION, PLAYING, ROUND_OVER, GAME_OVER
+        this.currentGame = 'FRONTIER';
 
         // DOM Elements
         this.els = {
@@ -297,7 +298,8 @@ class FrontierGame {
             mulliganBtn: document.getElementById('mulligan-btn'),
             menuDropdown: document.getElementById('frontier-menu-dropdown'),
             allCardsModal: document.getElementById('all-cards-modal'),
-            allCardsGrid: document.getElementById('all-cards-grid')
+            allCardsGrid: document.getElementById('all-cards-grid'),
+            rulesInnerWrapper: document.getElementById('rules-inner-content-wrapper')
         };
 
         this.edition = 'STANDARD'; // 'STANDARD' or 'PRESIDENT'
@@ -348,8 +350,116 @@ class FrontierGame {
     /* loadGlobalPlayers & saveGlobalPlayers removed (absorbed into initGame) */
 
     toggleRules() {
+        this.updateRulesContent();
         this.els.rulesModal.classList.toggle('visible');
         this.els.menuDropdown.classList.remove('active');
+    }
+
+    updateRulesContent() {
+        if (!this.els.rulesInnerWrapper) return;
+        
+        if (this.currentGame === 'PRESIDENT_QUIZ') {
+            this.els.rulesInnerWrapper.innerHTML = `
+                <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
+                <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">President Quiz Rulebook</h2>
+                <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. Objective</h3>
+                    <p>Identify the years during which each President served in office.</p>
+                    
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. The Deck (50 Cards)</h3>
+                    <p>The game uses the <strong>President Edition</strong> of American Playing Cards, featuring the Presidents of the United States.</p>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Round Structure</h3>
+                    <p>The game lasts <strong>5 Rounds</strong>. Each round follows this sequence:</p>
+                    <ol>
+                        <li><strong>Ante:</strong> Every player contributes $2 to the Pot at the start of the round.</li>
+                        <li><strong>Reveal:</strong> A President card is revealed to all players.</li>
+                        <li><strong>Guessing:</strong> Players use the keypad to log their guess (a specific year).</li>
+                        <li><strong>Confidentiality:</strong> To ensure fair play, your guess is hidden after entry.</li>
+                    </ol>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">4. Scoring & Victory</h3>
+                    <p>After all players have guessed, the President's tenure is revealed.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>Correct Year:</strong> Any year that falls within the President's actual tenure is considered a direct hit!</li>
+                        <li><strong>Distance:</strong> If no one guesses a year within the tenure, the player(s) closest to the tenure (either before start or after end) win.</li>
+                    </ul>
+                    <p>The player(s) with the <strong>best guess</strong> win the entire Pot. If multiple players are equally close or correct, the Pot is split.</p>
+                    <p>The ultimate winner is the player with the <strong>most wins</strong> after 5 rounds.</p>
+                    
+                    <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
+                </div>
+            `;
+        } else if (this.currentGame === 'STATE_QUIZ') {
+            this.els.rulesInnerWrapper.innerHTML = `
+                <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
+                <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The State Quiz Rulebook</h2>
+                <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. Objective</h3>
+                    <p>Test your knowledge of the Union by identifying the location of each state on the US map.</p>
+                    
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. The Deck (50 Cards)</h3>
+                    <p>The game uses the <strong>State Edition</strong> of American Playing Cards, featuring all 50 states of the Union.</p>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Round Structure</h3>
+                    <p>The game lasts <strong>5 Rounds</strong>. Each round follows this sequence:</p>
+                    <ol>
+                        <li><strong>Ante:</strong> Every player contributes $2 to the Pot at the start of the round.</li>
+                        <li><strong>Reveal:</strong> A target state is revealed to all players.</li>
+                        <li><strong>Guessing:</strong> Players take turns clicking on the map to place their pin.</li>
+                        <li><strong>Blind Mechanic:</strong> To ensure fair play in local multiplayer, each player's pin is visible for only <strong>2 seconds</strong> before disappearing.</li>
+                    </ol>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">4. Scoring & Victory</h3>
+                    <p>After all players have guessed, the true location is revealed.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>Distance 0:</strong> Perfect guess! You are on the target state.</li>
+                        <li><strong>Distance 1:</strong> You clicked a state that borders the target.</li>
+                        <li><strong>Distance 2+:</strong> You are multiple borders away from the target.</li>
+                    </ul>
+                    <p>The player(s) with the <strong>closest guess</strong> (minimum distance) win the entire Pot. If multiple players are equally close, the Pot is split.</p>
+                    <p>The ultimate winner is the player with the <strong>most wins</strong> after 5 rounds.</p>
+                    
+                    <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
+                </div>
+            `;
+        } else {
+            this.els.rulesInnerWrapper.innerHTML = `
+                <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
+                <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The Frontier Rulebook</h2>
+                <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. The Deck (50 Cards)</h3>
+                    <p>There are 5 categories, each containing 10 cards numbered 1 through 10:</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><span style="color: var(--deep-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg></span> & <span style="color: var(--upper-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg></span> (Red Alliance)</li>
+                        <li><span style="color: var(--indust-east-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg></span> & <span style="color: var(--west-frontier-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg></span> (Blue Alliance)</li>
+                        <li><span style="color: var(--border-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg></span> (Wildcards)</li>
+                    </ul>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. Round Structure</h3>
+                    <p>The game lasts <strong>5 Rounds</strong>. Hand capacity scales up by 1 card each round.</p>
+                    <ol>
+                        <li><strong>Turns:</strong> Players TAKE TURNS to bet. You must CALL (match), RAISE (increase), or FOLD.</li>
+                        <li><strong>Resolution:</strong> After the last turn, the best hand takes the Pot.</li>
+                        <li><strong>Discard & Draw:</strong> After each round, played cards are discarded. You keep your unplayed hand and draw cards to reach your capacity.</li>
+                    </ol>
+
+                    <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Victory & Tie-Breakers</h3>
+                    <p>The winner is the player with the <strong>Most Cash</strong> at the end of Round 5!</p>
+                    <p><strong>Split Pots:</strong> If two or more commanders deploy hands of identical strength, the Pot is divided equally. Any remaining coin ($1) is awarded to the first tied commander in the turn order.</p>
+                    
+                    <p><strong>Hierarchy (Superior Volume Prevails):</strong> A configuration deploying a greater number of cards universally overcomes one deploying fewer.</p>
+                    <ul style="background: rgba(255,255,255,0.03); padding: 20px; border: 1px solid #333; list-style: none; font-size: 0.85rem;">
+                        <li><strong style="color: #e879f9;">Tier 1:</strong> 5 of a Rank, Pure Suit, Coalition (Alliance), or Campaign (Sequence)</li>
+                        <li><strong style="color: #fb923c;">Tier 2:</strong> 4 of a Rank, Pure, Coalition, or Campaign</li>
+                        <li><strong style="color: #c084fc;">Tier 3:</strong> 3 of a Rank, Pure, Coalition, or Campaign</li>
+                        <li><strong style="color: #34d399;">Tier 4:</strong> Pairs</li>
+                        <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards. Pure (Product x 2), Coalition (Product), Divided (Sum). <strong>Rank 1</strong> imitates the highest card in the hand.</li>
+                    </ul>
+                    <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
+                </div>
+            `;
+        }
     }
 
     getOrdinalSuffix(n) {
@@ -514,14 +624,69 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         frontierBtn.className = 'toggle-btn active';
         frontierBtn.innerText = 'Frontier';
 
+        const quizBtn = document.createElement('button');
+        quizBtn.className = 'toggle-btn';
+        quizBtn.innerText = 'State Quiz';
+
+        const presQuizBtn = document.createElement('button');
+        presQuizBtn.className = 'toggle-btn';
+        presQuizBtn.innerText = 'President Quiz';
+
         const cowboyBtn = document.createElement('button');
         cowboyBtn.className = 'toggle-btn';
-        cowboyBtn.innerText = 'Cowboy (Coming Soon)';
-        cowboyBtn.style.opacity = '0.5';
+        cowboyBtn.innerText = 'Cowboy (TBA)';
+        cowboyBtn.style.opacity = '0.4';
         cowboyBtn.style.cursor = 'not-allowed';
         cowboyBtn.disabled = true;
 
+        frontierBtn.onclick = () => {
+            this.currentGame = 'FRONTIER';
+            frontierBtn.classList.add('active');
+            quizBtn.classList.remove('active');
+            presQuizBtn.classList.remove('active');
+            stdBtn.disabled = false;
+            presBtn.disabled = false;
+            stateBtn.disabled = false;
+            stdBtn.style.opacity = '1';
+            presBtn.style.opacity = '1';
+            stateBtn.style.opacity = '1';
+        };
+
+        quizBtn.onclick = () => {
+            this.currentGame = 'STATE_QUIZ';
+            quizBtn.classList.add('active');
+            frontierBtn.classList.remove('active');
+            presQuizBtn.classList.remove('active');
+            // Lock in State Edition
+            stateBtn.disabled = false;
+            stateBtn.style.opacity = '1';
+            this.edition = 'STATE';
+            stateBtn.click();
+            stdBtn.disabled = true;
+            presBtn.disabled = true;
+            stdBtn.style.opacity = '0.5';
+            presBtn.style.opacity = '0.5';
+        };
+
+        presQuizBtn.onclick = () => {
+            this.currentGame = 'PRESIDENT_QUIZ';
+            presQuizBtn.classList.add('active');
+            frontierBtn.classList.remove('active');
+            quizBtn.classList.remove('active');
+            // Lock in President Edition
+            presBtn.disabled = false;
+            presBtn.style.opacity = '1';
+            this.edition = 'PRESIDENT';
+            presBtn.click();
+            stdBtn.disabled = true;
+            stateBtn.disabled = true;
+            stdBtn.style.opacity = '0.5';
+            stateBtn.style.opacity = '0.5';
+        };
+
         gameToggle.appendChild(frontierBtn);
+        gameToggle.appendChild(presQuizBtn);
+        gameToggle.appendChild(quizBtn);
         gameToggle.appendChild(cowboyBtn);
         gameRow.appendChild(gameToggle);
 
@@ -763,13 +928,23 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         beginBtn.style.marginTop = "20px";
         beginBtn.style.padding = "15px 40px";
         beginBtn.innerText = "BEGIN GAME";
-        beginBtn.onclick = () => {
-            const finalPlayers = playerConfigs.map(c => ({
-                name: c.input.value.trim(),
-                isAI: c.isAI
-            }));
-            this.initGame(count, finalPlayers);
-        };
+            beginBtn.onclick = () => {
+                const finalPlayers = playerConfigs.map(c => ({
+                    name: c.input.value.trim(),
+                    isAI: c.isAI
+                }));
+                if (this.currentGame === 'STATE_QUIZ') {
+                    this.els.overlay.classList.remove('visible');
+                    location.hash = '#state-quiz';
+                    stateQuiz.initGame(finalPlayers);
+                } else if (this.currentGame === 'PRESIDENT_QUIZ') {
+                    this.els.overlay.classList.remove('visible');
+                    location.hash = '#president-quiz';
+                    presidentQuiz.initGame(finalPlayers);
+                } else {
+                    this.initGame(count, finalPlayers);
+                }
+            };
         beginBtnWrapper.appendChild(beginBtn);
     }
 

@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#music': 'music',
         '#about': 'about',
         '#skyscraper': 'skyscraper',
+        '#state-quiz': 'state-quiz',
         '#review-nuclear': 'review-nuclear',
         '#review-genesis': 'review-genesis',
         '#review-leadership': 'review-leadership',
@@ -147,6 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (skyscraperV2D) skyscraperV2D.resize();
                 }, 100);
             }
+
+            // State Quiz: Ensure map is loaded
+            if (targetId === 'state-quiz' && typeof stateQuiz !== 'undefined') {
+                if (!stateQuiz.mapSvg) stateQuiz.loadMap();
+            }
         }
     }
 
@@ -254,7 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#music': '#start',
                 '#games': '#start',
                 '#frontier': '#games',
-                '#skyscraper': '#games'
+                '#skyscraper': '#games',
+                '#state-quiz': '#games'
             };
 
             if (backMap[currentHash]) {
