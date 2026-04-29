@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#games': 'games',
         '#frontier': 'frontier',
         '#music': 'music',
-        '#about': 'about',
+        '#introduction': 'introduction',
         '#skyscraper': 'skyscraper',
         '#state-quiz': 'state-quiz',
         '#review-nuclear': 'review-nuclear',
@@ -153,8 +153,33 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetId === 'state-quiz' && typeof stateQuiz !== 'undefined') {
                 if (!stateQuiz.mapSvg) stateQuiz.loadMap();
             }
+
+            // Introduction Reset
+            if (targetId === 'introduction') {
+                const btnShow = document.getElementById('btn-show-galleries');
+                const btnHide = document.getElementById('btn-hide-galleries');
+                const mainContent = document.getElementById('intro-main-content');
+                const galleriesContent = document.getElementById('intro-galleries-content');
+                const title = document.getElementById('intro-title');
+                
+                if (btnShow && btnHide && mainContent && galleriesContent) {
+                    mainContent.style.display = 'block';
+                    galleriesContent.style.display = 'none';
+                    btnShow.style.display = 'block';
+                    btnHide.style.display = 'none';
+                    if (title) title.innerText = 'Introduction';
+                }
+            }
+
+            // Mini Music Player Visibility Logic
+            if (typeof updateMiniPlayerVisibility === 'function') {
+                updateMiniPlayerVisibility(targetId);
+            }
         }
     }
+
+    // Initialize both portraits (Now in Comics view)
+
 
     // Initial load
     navigate();
@@ -177,6 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initChronicleGrid();
     initMusicPlayer();
+    initMusicHandlers();
+    initIntroToggle();
     initLibraries();
     initChronicleNavigation(); // Add keyboard support
 
@@ -256,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#comics': '#start',
                 '#journals': '#start',
                 '#films': '#start',
-                '#about': '#start',
+                '#introduction': '#start',
                 '#music': '#start',
                 '#games': '#start',
                 '#frontier': '#games',
@@ -974,11 +1001,9 @@ function initChronicleNavigation() {
     });
 }
 
-function initMusicPlayer() {
-    const container = document.getElementById('audio-player-container');
-    if (!container) return;
-    
-    const tracks = [
+// Global Music State
+window.musicState = {
+    tracks: [
         { file: 'AllmerMusicAmericanAnthem.mp3', title: 'American Anthem' },
         { file: 'Allmer Music American Portrait A World Destroyed.mp3', title: 'A World Destroyed' },
         { file: 'AllmerMusic Kissinger The Pentarchy .mp3', title: 'The Pentarchy' },
@@ -986,9 +1011,155 @@ function initMusicPlayer() {
         { file: 'AllmerMusicCulturalRevolution.mp3', title: 'Cultural Revolution' },
         { file: 'AllmerMusicDesertFire.mp3', title: 'Desert Fire' },
         { file: 'AllmerMusicLandoftheFree.mp3', title: 'Land of the Free' }
-    ];
+    ],
+    currentIndex: -1,
+    isPlaying: false,
+    audio: new Audio(),
+    isMiniPlayerClosed: false
+};
 
-    tracks.forEach(track => {
+// Initialize ends of ended track
+window.musicState.audio.addEventListener('ended', () => {
+    playNextTrack();
+});
+
+function updateMiniPlayerVisibility(viewId) {
+    const mini = document.getElementById('mini-music-player');
+    if (!mini) return;
+
+    // Show if a track is active (even if paused) and NOT on music page
+    const isTrackActive = window.musicState.currentIndex !== -1;
+    if (isTrackActive && viewId !== 'music' && !window.musicState.isMiniPlayerClosed) {
+        mini.style.display = 'flex';
+        setTimeout(() => mini.classList.add('visible'), 10);
+    } else {
+        mini.classList.remove('visible');
+        setTimeout(() => {
+            if (!mini.classList.contains('visible')) mini.style.display = 'none';
+        }, 300);
+    }
+}
+
+function playTrack(index) {
+    if (index < 0 || index >= window.musicState.tracks.length) return;
+    
+    const track = window.musicState.tracks[index];
+    const isSameTrack = window.musicState.currentIndex === index;
+
+    if (isSameTrack) {
+        if (window.musicState.audio.paused) {
+            window.musicState.audio.play();
+            window.musicState.isPlaying = true;
+            window.musicState.isMiniPlayerClosed = false; // Re-open if manually resumed
+        } else {
+            window.musicState.audio.pause();
+            window.musicState.isPlaying = false;
+        }
+    } else {
+        window.musicState.currentIndex = index;
+        window.musicState.audio.src = `American Portrait Music/${track.file}`;
+        window.musicState.audio.play();
+        window.musicState.isPlaying = true;
+        window.musicState.isMiniPlayerClosed = false; // Re-open if user closed it but manually triggered new track
+    }
+
+    updateMusicUI();
+}
+
+function updateMusicUI() {
+    const track = window.musicState.tracks[window.musicState.currentIndex];
+    
+    // Update Mini Player
+    const miniTitle = document.getElementById('mini-track-title');
+    const miniPlayBtn = document.getElementById('mini-play-pause');
+    if (miniTitle && track) miniTitle.innerText = track.title;
+    if (miniPlayBtn) miniPlayBtn.innerText = window.musicState.audio.paused ? '▶' : '⏸';
+
+    // Update main Music view items
+    document.querySelectorAll('.audio-track-card').forEach((card, idx) => {
+        const btn = card.querySelector('.play-trigger-btn');
+        if (idx === window.musicState.currentIndex) {
+            card.classList.add('playing');
+            if (btn) btn.innerText = window.musicState.audio.paused ? 'PLAY' : 'PAUSE';
+        } else {
+            card.classList.remove('playing');
+            if (btn) btn.innerText = 'PLAY';
+        }
+    });
+
+    const currentView = document.querySelector('.view.active');
+    if (currentView) updateMiniPlayerVisibility(currentView.id);
+}
+
+function playNextTrack() {
+    let next = window.musicState.currentIndex + 1;
+    if (next >= window.musicState.tracks.length) next = 0;
+    playTrack(next);
+}
+
+function playPrevTrack() {
+    let prev = window.musicState.currentIndex - 1;
+    if (prev < 0) prev = window.musicState.tracks.length - 1;
+    playTrack(prev);
+}
+
+function initMusicHandlers() {
+    // Mini Player Listeners
+    const miniPlay = document.getElementById('mini-play-pause');
+    const miniPrev = document.getElementById('mini-prev');
+    const miniNext = document.getElementById('mini-next');
+    const miniVol = document.getElementById('mini-volume');
+    const miniClose = document.getElementById('mini-player-close');
+
+    if (miniPlay) miniPlay.onclick = () => {
+        if (window.musicState.currentIndex === -1) playTrack(0);
+        else playTrack(window.musicState.currentIndex);
+    };
+    if (miniPrev) miniPrev.onclick = playPrevTrack;
+    if (miniNext) miniNext.onclick = playNextTrack;
+    if (miniVol) miniVol.oninput = (e) => {
+        window.musicState.audio.volume = e.target.value;
+    };
+    if (miniClose) miniClose.onclick = () => {
+        window.musicState.audio.pause();
+        window.musicState.isPlaying = false;
+        window.musicState.isMiniPlayerClosed = true;
+        updateMusicUI();
+    };
+}
+
+function initIntroToggle() {
+    const btnShow = document.getElementById('btn-show-galleries');
+    const btnHide = document.getElementById('btn-hide-galleries');
+    const mainContent = document.getElementById('intro-main-content');
+    const galleriesContent = document.getElementById('intro-galleries-content');
+    const title = document.getElementById('intro-title');
+
+    if (btnShow && btnHide && mainContent && galleriesContent) {
+        btnShow.onclick = () => {
+            mainContent.style.display = 'none';
+            galleriesContent.style.display = 'block';
+            btnShow.style.display = 'none';
+            btnHide.style.display = 'block';
+            title.innerText = 'About A Portrait';
+        };
+
+        btnHide.onclick = () => {
+            mainContent.style.display = 'block';
+            galleriesContent.style.display = 'none';
+            btnShow.style.display = 'block';
+            btnHide.style.display = 'none';
+            title.innerText = 'Introduction';
+        };
+    }
+}
+
+function initMusicPlayer() {
+    const container = document.getElementById('audio-player-container');
+    if (!container) return;
+    container.innerHTML = ''; // Clear for re-init
+    
+    window.musicState.tracks.forEach((track, idx) => {
         const wrap = document.createElement('div');
         wrap.className = 'audio-track-card';
         
@@ -996,16 +1167,23 @@ function initMusicPlayer() {
         title.innerText = track.title;
         title.className = 'audio-title';
         
-        const audio = document.createElement('audio');
-        audio.controls = true;
-        audio.src = `American Portrait Music/${track.file}`;
-        audio.className = 'custom-audio';
-
-        // Styling the audio elements natively across all modern browsers implicitly via standard controls,
-        // but we encapsulate in dark themed borders
+        const btn = document.createElement('button');
+        btn.className = 'play-trigger-btn';
+        btn.innerText = 'PLAY';
+        btn.style.marginTop = '1rem';
+        btn.style.padding = '0.5rem 1.5rem';
+        btn.style.background = 'var(--red-accent)';
+        btn.style.border = 'none';
+        btn.style.color = '#fff';
+        btn.style.borderRadius = '4px';
+        btn.style.cursor = 'pointer';
+        btn.style.fontWeight = 'bold';
+        btn.style.letterSpacing = '1px';
         
+        btn.onclick = () => playTrack(idx);
+
         wrap.appendChild(title);
-        wrap.appendChild(audio);
+        wrap.appendChild(btn);
         container.appendChild(wrap);
     });
 }

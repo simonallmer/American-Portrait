@@ -27,7 +27,7 @@
             <a href="#journals" class="enter-btn">JOURNALS</a>
             
             <div class="split-actions-row">
-                <a href="#about" class="enter-btn secondary-btn">ABOUT</a>
+                <a href="#introduction" class="enter-btn secondary-btn">INTRODUCTION</a>
                 <a href="https://simonallmer.com" target="_top" class="enter-btn secondary-btn">BACK TO SA</a>
             </div>
         </div>
@@ -38,18 +38,52 @@
         </footer>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="view">
+    <!-- Introduction Section (Formerly About) -->
+    <section id="introduction" class="view">
         <a href="#start" class="back-abs">BACK TO HOME</a>
         <div class="about-container">
-            <h2 class="section-title">About</h2>
-            <div class="about-content">
+            <h2 id="intro-title" class="section-title">Introduction</h2>
+            
+            <!-- Main Intro Content -->
+            <div id="intro-main-content" class="about-content">
                 <p>When the evil empire cast a shadow over the free world and nuclear annihilation was only a crisis away, what happened inside the White House stayed there. Until now.</p>
                 <p>American Portrait is a canvas stretched across the centuries, painted with the dark hues of Henry Kissinger’s realism and the bright strokes of Jimmy Carter’s idealism. The interplay of their tones creates a tapestry in which their philosophies collide and blend like colors meeting at twilight.</p>
                 <p>The frame, measuring 100 years in each direction, both anchors and magnifies the composition. Yet within its borders, the painting transcends chronology. It invites the viewer to linger, to see beyond contrasts and find the moments in which brushstrokes converge into something even more profound - a portrait not just of two individuals, but of a nation’s struggle for freedom.</p>
             </div>
-            <a href="#start" class="enter-btn" style="margin-top: 3rem;">BACK TO HOME</a>
+
+            <!-- Galleries Info (Hidden by default) -->
+            <div id="intro-galleries-content" class="about-content" style="display: none;">
+                <p>The galleries explore the character of three distinct continents through the extraordinary lives of individuals.</p>
+                <div class="galleries-summary">
+                    <div class="gallery-summary-item active">
+                        <h3><span class="first-letter-red">A</span>merican Portrait</h3>
+                        <p class="gallery-status">Currently Selected</p>
+                        <p class="gallery-character">Characters: Henry Kissinger, Jimmy Carter</p>
+                        <p class="gallery-theme">Theme: Freedom</p>
+                    </div>
+                    <div class="gallery-summary-item">
+                        <h3><span class="first-letter-red">A</span>frican Portrait</h3>
+                        <p class="gallery-status">Opening 2028</p>
+                        <p class="gallery-character">Character: Paul Kagame</p>
+                        <p class="gallery-theme">Theme: Survival</p>
+                    </div>
+                    <div class="gallery-summary-item">
+                        <h3><span class="first-letter-red">A</span>sian Portrait</h3>
+                        <p class="gallery-status">Opening 2028</p>
+                        <p class="gallery-character">Character: Lee Kuan Yew</p>
+                        <p class="gallery-theme">Theme: Order</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="intro-actions" style="margin-top: 3rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                <button id="btn-show-galleries" class="enter-btn secondary-btn" style="width: auto; min-width: 250px;">ABOUT A PORTRAIT</button>
+                <button id="btn-hide-galleries" class="enter-btn secondary-btn" style="width: auto; min-width: 250px; display: none;">BACK TO INTRODUCTION</button>
+                <a href="#start" class="enter-btn">BACK TO HOME</a>
+            </div>
+
             <footer class="section-footer">
+                <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
                 <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
                 © 2026 Simon Allmer Entertainment
             </footer>
@@ -105,6 +139,7 @@
 
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -124,6 +159,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -139,6 +175,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -155,6 +192,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -171,6 +209,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -194,13 +233,14 @@
                     </div>
                 </a>
 
-                <!-- Kissinger Library -->
                 <a href="#library-kissinger" class="journal-card">
-                    <div class="journal-cover kissinger-placeholder">
-                        <div class="cover-content">
-                            <div class="library-tag">LIBRARY</div>
-                            <h4 class="cover-title">Kissinger</h4>
-                            <div class="library-accent"></div>
+                    <div class="journal-cover library-cover-container">
+                        <div class="library-cover">
+                            <h4 class="library-cover-title">Kissinger Library</h4>
+                            <div class="portrait-box">
+                                <img src="Society Review Logo/kissingerlibrary.png" alt="Kissinger" class="portrait-img">
+                            </div>
+                            <img src="Society Review Logo/SocietyReviewLogoTransp.png" alt="Society Review" class="society-logo">
                         </div>
                         <div class="cover-overlay"></div>
                     </div>
@@ -210,13 +250,14 @@
                     </div>
                 </a>
 
-                <!-- Carter Library -->
                 <a href="#library-carter" class="journal-card">
-                    <div class="journal-cover carter-placeholder">
-                        <div class="cover-content">
-                            <div class="library-tag">LIBRARY</div>
-                            <h4 class="cover-title">Carter</h4>
-                            <div class="library-accent"></div>
+                    <div class="journal-cover library-cover-container">
+                        <div class="library-cover">
+                            <h4 class="library-cover-title">Carter Library</h4>
+                            <div class="portrait-box">
+                                <img src="Society Review Logo/carterlibrary+.png" alt="Carter" class="portrait-img carter-portrait">
+                            </div>
+                            <img src="Society Review Logo/SocietyReviewLogoTransp.png" alt="Society Review" class="society-logo">
                         </div>
                         <div class="cover-overlay"></div>
                     </div>
@@ -228,6 +269,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -238,6 +280,7 @@
         <a href="#journals" class="back-abs">BACK TO JOURNALS</a>
         <div class="chronicle-container">
             <h2>American Chronicle<br><span class="chronicle-subtitle">THE ASCENT</span><span class="chronicle-subtitle">1776—2026</span></h2>
+            
             
             <div class="chronicle-preface">
                 <p>The greatest art makes of seemingly unrelated pieces a unified whole.</p>
@@ -288,7 +331,13 @@
                 </div>
             </div>
             
-            <a href="https://simonallmer.com/chronicle" class="enter-btn" style="margin-top: 6rem;">CHRONICLE</a>
+            <div class="chronicle-nav-section" style="margin-top: 6rem; margin-bottom: 4rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                <a href="https://simonallmer.com/chronicle" class="chronicle-nav-btn" target="_blank">CHRONICLE</a>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="#journals" class="chronicle-nav-btn">BACK TO JOURNALS</a>
+                    <a href="#start" class="chronicle-nav-btn">BACK TO HOME</a>
+                </div>
+            </div>
         </div>
 
         <!-- Chronicle Year Popup -->
@@ -333,6 +382,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -344,11 +394,11 @@
         <div class="games-container">
             <h2 class="section-title">Games</h2>
             <div class="games-list">
-                <div class="game-card" onclick="location.hash='#frontier'; frontierGame.showSetup()" style="cursor: pointer;">
+                <div class="game-card" onclick="location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()" style="cursor: pointer;">
                     <h3>American Playing Cards</h3>
                     <p>A New System for the Frontier.</p>
                     <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
-                        <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.showSetup()">PLAY</span>
+                        <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()">PLAY</span>
                         <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-apc'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
                     </div>
                 </div>
@@ -367,6 +417,7 @@
             </div>
         </div>
         <footer class="section-footer">
+            <a href="https://aportrait.org" class="footer-link">aportrait.org</a><br>
             <a href="https://instagram.com/amerportrait" target="_blank" class="footer-link">@amerportrait</a><br>
             © 2026 Simon Allmer Entertainment
         </footer>
@@ -385,7 +436,7 @@
                 <p>The Standard Edition keeps the suits abstract. Their meaning, and how the cards are used, is determined by the game being played or by the edition in hand.</p>
             </div>
             <div style="text-align: center; margin-top: 4rem;">
-                <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="location.hash='#frontier'; frontierGame.showSetup()">PLAY</span>
+                <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()">PLAY</span>
             </div>
         </div>
     </section>
@@ -929,8 +980,6 @@
                 <h2 style="color: var(--red-accent); font-size: 2.5rem; margin-bottom: 0.5rem; line-height: 1.2;">Leadership: Six Studies in World Strategy</h2>
                 <h3 style="color: #bbb; font-size: 1.3rem; margin-bottom: 3rem; font-weight: normal;">Review from Simon Allmer published in <a href="https://societyreview.org" target="_blank" style="color: inherit; text-decoration: underline;">Society Review</a></h3>
                 
-                <p style="font-style: italic; color: #888; font-size: 1.1rem;">[Editorial Disclaimer: The following piece is a stylized review written from a historical perspective.]</p>
-                
                 <p style="font-weight: bold; margin-bottom: 2rem; margin-top: 2rem;">June 2023</p>
                 
                 <p>The circumstances of history place each society into the contesting forces of the inherited past, forming its memory, and a vision for the future that can lead to evolution or destruction. Philosophers speak of a destiny, so powerful that no individual could possibly defy it. The six leaders described in Henry Kissingers new book transcend these limitations and prove that by willpower and strategy, the impossible can become a new reality.</p>
@@ -965,8 +1014,6 @@
             <div class="review-content">
                 <h2 style="color: var(--red-accent); font-size: 2.5rem; margin-bottom: 0.5rem; line-height: 1.2;">The Age of AI: And Our Human Future</h2>
                 <h3 style="color: #bbb; font-size: 1.3rem; margin-bottom: 3rem; font-weight: normal;">Review from Simon Allmer published in <a href="https://societyreview.org" target="_blank" style="color: inherit; text-decoration: underline;">Society Review</a></h3>
-                
-                <p style="font-style: italic; color: #888; font-size: 1.1rem;">[Editorial Disclaimer: The following piece is a stylized review written from a historical perspective.]</p>
                 
                 <p style="font-weight: bold; margin-bottom: 2rem; margin-top: 2rem;">November 2022</p>
                 
@@ -1029,6 +1076,23 @@
             <span class="nav-label">Home</span>
         </button>
     </nav>
+
+    <!-- Mini Music Player (Persistent) -->
+    <div id="mini-music-player" class="mini-player">
+        <button id="mini-player-close" class="mini-close">&times;</button>
+        <div class="mini-track-info">
+            <div id="mini-track-title" class="mini-title">No Track Playing</div>
+        </div>
+        <div class="mini-controls">
+            <button id="mini-prev" class="mini-btn" title="Previous">⏮</button>
+            <button id="mini-play-pause" class="mini-btn" title="Play/Pause">⏯</button>
+            <button id="mini-next" class="mini-btn" title="Next">⏭</button>
+        </div>
+        <div class="mini-volume-container">
+            <span style="font-size: 0.7rem; color: #888;">Vol</span>
+            <input type="range" id="mini-volume" min="0" max="1" step="0.01" value="1">
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>

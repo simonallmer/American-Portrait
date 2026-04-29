@@ -91,25 +91,61 @@ class PresidentQuizGame {
 
     renderTargetCard() {
         const p = this.targetPresident;
+        
+        // Find actual card mapping from Frontier data
+        let suitId = null;
+        let rank = null;
+        
+        // Handle Cleveland double-entry: both 22nd and 24th are the same person/card
+        const pid = p.id === 'cleveland-2' ? 'cleveland-1' : p.id;
+        
+        // Match frontier.js logic for card assignment
+        let bIdx = PRESIDENTS.BLACK.indexOf(pid);
+        if (bIdx !== -1) {
+            suitId = 'BORDER';
+            rank = bIdx + 1;
+        } else {
+            let blueIdx = PRESIDENTS.BLUE.indexOf(pid);
+            if (blueIdx !== -1) {
+                if (blueIdx < 10) {
+                    suitId = 'WEST_FRONTIER';
+                    rank = blueIdx + 1;
+                } else {
+                    suitId = 'INDUST_EAST';
+                    rank = blueIdx - 10 + 1;
+                }
+            } else {
+                let redIdx = PRESIDENTS.RED.indexOf(pid);
+                if (redIdx !== -1) {
+                    if (redIdx < 10) {
+                        suitId = 'DEEP_SOUTH';
+                        rank = redIdx + 1;
+                    } else {
+                        suitId = 'UPPER_SOUTH';
+                        rank = redIdx - 10 + 1;
+                    }
+                }
+            }
+        }
+
+        const suit = SUITS[suitId] || { symbol: "★", id: "UNKNOWN", color: "var(--gold-bright)" };
+        const val = rank || "P";
+
         this.els.cardDisplay.innerHTML = `
-            <div class="card revealed" style="width: 200px; height: 300px; margin: 0 auto; cursor: default; transform: none; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-corner">
-                            <div class="corner-val">P</div>
-                            <div class="corner-suit" style="color: var(--gold-bright);">★</div>
-                        </div>
-                        <div class="card-center">
-                            <div class="card-portrait-container">
-                                <img src="${p.portraitUrl}" class="card-portrait" alt="${p.name}">
-                            </div>
-                            <div class="card-president-name">${p.name}</div>
-                        </div>
-                        <div class="card-corner bottom">
-                            <div class="corner-val">P</div>
-                            <div class="corner-suit" style="color: var(--gold-bright);">★</div>
-                        </div>
+            <div class="card revealed suit-${suit.id} is-president-edition" style="width: 200px; height: 300px; margin: 0 auto; cursor: default; transform: none; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+                <div class="card-corner">
+                    <div class="corner-val">${val}</div>
+                    <div class="corner-suit">${suit.symbol}</div>
+                </div>
+                <div class="card-center">
+                    <div class="card-portrait-container">
+                        <img src="${p.portraitUrl}" class="card-portrait" alt="${p.name}">
                     </div>
+                    <div class="card-president-name">${p.name}</div>
+                </div>
+                <div class="card-corner bottom">
+                    <div class="corner-val">${val}</div>
+                    <div class="corner-suit">${suit.symbol}</div>
                 </div>
             </div>
         `;

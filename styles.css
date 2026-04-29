@@ -235,6 +235,25 @@ body:has(#frontier.active) .back-to-sa {
     color: rgba(255,255,255,0.7);
 }
 
+.chronicle-nav-btn {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 300;
+}
+
+.chronicle-nav-btn:hover {
+    background: white;
+    color: black;
+    border-color: white;
+}
+
 .landing-actions {
     display: flex;
     flex-direction: column;
@@ -851,6 +870,12 @@ body:has(#frontier.active) .back-to-sa {
 .audio-track-card:hover {
     transform: translateY(-5px);
     background: rgba(60,60,60,0.8);
+}
+
+.audio-track-card.playing {
+    border-color: #fff;
+    background: rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
 }
 
 .audio-title {
@@ -1486,6 +1511,60 @@ body:has(#frontier.active) .back-to-sa {
     margin-bottom: 2rem;
 }
 
+/* Galleries Summary in Introduction */
+.galleries-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.gallery-summary-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.gallery-summary-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.first-letter-red {
+    color: #ff4444; /* Lighter red for better readability on dark bg */
+}
+
+.gallery-summary-item .gallery-status {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    color: var(--red-accent);
+}
+
+.gallery-summary-item .gallery-character {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.4;
+    margin-bottom: 0.2rem;
+}
+
+.gallery-summary-item .gallery-theme {
+    font-size: 0.85rem;
+    color: var(--gold);
+    opacity: 0.9;
+}
+
+.gallery-summary-item.active {
+    background: rgba(255, 0, 0, 0.05);
+    border-color: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 768px) {
     .about-container {
         margin: 60px auto;
@@ -1548,8 +1627,8 @@ body:has(#frontier.active) .back-to-sa {
 
 .journal-cover {
     width: 100%;
-    aspect-ratio: auto;
-    background: #1a1a1a;
+    aspect-ratio: 3 / 4;
+    background: #000;
     position: relative;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -1564,10 +1643,9 @@ body:has(#frontier.active) .back-to-sa {
 
 .cover-img {
     width: 100%;
-    height: auto;
-    max-height: 80vh;
+    height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
     transition: transform 0.6s ease;
 }
 
@@ -1628,46 +1706,67 @@ body:has(#frontier.active) .back-to-sa {
     font-weight: 300;
 }
 
-/* Placeholders */
-.kissinger-placeholder {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a1a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Library Covers */
+.library-cover-container {
+    background: #000;
 }
 
-.carter-placeholder {
-    background: linear-gradient(135deg, #1a1a1a 0%, #1a0a0a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cover-content {
+.library-cover {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    padding: 2rem;
+    justify-content: space-between;
+    padding: 2.5rem 1rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 
-.library-tag {
-    font-size: 0.8rem;
-    letter-spacing: 0.3em;
-    color: #666;
+.library-cover-title {
+    font-family: 'GT America', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: #fff;
     text-transform: uppercase;
-}
-
-.cover-title {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
     font-weight: 300;
-    color: #ddd;
+    margin: 0;
+    text-align: center;
 }
 
-.library-accent {
-    width: 40px;
+.portrait-box {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.journal-card:hover .portrait-img {
+    transform: scale(1.08);
+}
+
+.portrait-img.carter-portrait {
+    width: 65%; /* Reduced by another 5% for perfect visual alignment */
+    height: auto;
+    object-fit: contain;
+}
+
+.society-logo {
+    width: 80px;
+    height: auto;
+    opacity: 0.9;
+    filter: brightness(0) invert(1); /* Ensure it's white if needed, but the user said on black background */
+}
     height: 2px;
     background: var(--red-accent);
 }
@@ -1837,11 +1936,24 @@ body:has(#frontier.active) .back-to-sa {
 
         @media (max-width: 600px) {
             #game-container {
-                padding: 10px;
-                height: auto;
-                min-height: 90vh;
-                width: calc(100% - 20px);
-                border-radius: 10px;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #game-container {
+                padding: 1rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #game-container {
+                height: 100%;
+                min-height: 100vh;
+                width: 100%;
+                left: 0;
+                top: 0;
+                border-radius: 0;
             }
 
             .hud {
@@ -2050,21 +2162,34 @@ body:has(#frontier.active) .back-to-sa {
 
         .toggle-btn {
             flex: 1;
-            padding: 8px;
-            font-size: 0.7rem;
+            padding: 10px 15px;
+            font-size: 0.8rem;
             color: #aaa;
             background: transparent;
             border: none;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             transition: all 0.3s;
+            white-space: normal;
+            min-width: 0;
         }
 
         .toggle-btn.active {
             background: var(--gold-dim);
             color: #000;
             font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .toggle-btn {
+                font-size: 0.6rem;
+                padding: 6px 2px;
+                letter-spacing: 0.5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
 
         .keypad-btn {
@@ -2221,6 +2346,24 @@ body:has(#frontier.active) .back-to-sa {
             justify-content: center;
             align-items: center;
             flex-grow: 1;
+        }
+
+        #overlay h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 600px) {
+            #overlay h1 {
+                font-size: 2.2rem;
+                padding: 0 10px;
+            }
+            #overlay p {
+                font-size: 0.9rem !important;
+                padding: 0 20px;
+            }
         }
 
         .card-val {
@@ -3546,11 +3689,11 @@ body:has(#frontier.active) .back-to-sa {
 
         .card.is-president-edition .card-corner {
             display: flex;
-            flex-direction: row; /* Next to each other */
+            flex-direction: row;
             align-items: center;
             justify-content: flex-start;
             padding: 4px 6px;
-            gap: 5px; /* Increased gap */
+            gap: 2px; /* Closer together as in image */
             line-height: 1;
             width: fit-content;
             height: auto;
@@ -3560,8 +3703,9 @@ body:has(#frontier.active) .back-to-sa {
 
         .card.is-president-edition .card-corner.bottom {
             padding: 4px 6px;
-            justify-content: flex-start; /* Still flex-start because of 180deg rotation */
+            justify-content: flex-start;
             align-self: flex-end; /* Bottom corner to the right */
+            transform: rotate(180deg);
         }
 
         .card.is-president-edition .corner-val {
@@ -3580,6 +3724,7 @@ body:has(#frontier.active) .back-to-sa {
 
         .card.is-president-edition .card-center {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
@@ -4033,4 +4178,191 @@ body:has(#frontier.active) .back-to-sa {
 .card.is-state-edition {
     background: rgba(255,255,255,0.03);
     backdrop-filter: blur(5px);
+}
+/* Mini Music Player Styles */
+.mini-player {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 280px;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    z-index: 10000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+.mini-player.visible {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.mini-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.mini-close:hover {
+    color: var(--red-accent);
+}
+
+.mini-track-info {
+    padding-right: 1.5rem;
+}
+
+.mini-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'GT America', sans-serif;
+}
+
+.mini-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.mini-btn {
+    background: none;
+    border: none;
+    color: #ddd;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mini-btn:hover {
+    color: var(--red-accent);
+    transform: scale(1.1);
+}
+
+.mini-volume-container {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+#mini-volume {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    background: #333;
+    border-radius: 2px;
+    outline: none;
+}
+
+#mini-volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--red-accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#mini-volume::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* === MOBILE FIXES FOR QUIZZES === */
+@media (max-width: 768px) {
+    #quiz-hud, #pres-quiz-hud {
+        flex-wrap: wrap;
+        gap: 15px !important;
+        padding: 10px 20px !important;
+        font-size: 0.8rem !important;
+        width: 90% !important;
+        justify-content: center;
+        top: 10px !important;
+    }
+    
+    #quiz-hud .hud-item, #pres-quiz-hud > div {
+        flex: 1 1 auto;
+        min-width: 60px;
+    }
+
+    #quiz-map-container {
+        padding: 60px 10px 100px 10px !important;
+    }
+
+    #map-svg-wrapper {
+        height: 60vh !important;
+    }
+
+    #pres-quiz-main-container {
+        flex-direction: column;
+        padding: 20px !important;
+        justify-content: flex-start !important;
+        padding-top: 100px !important;
+    }
+
+    #pres-quiz-card-display {
+        transform: scale(0.7) !important;
+        margin-bottom: -40px !important;
+    }
+
+    #pres-quiz-input-container {
+        position: relative !important;
+        right: auto !important;
+        bottom: auto !important;
+        margin-top: 20px;
+        transform: none !important;
+        width: 90% !important;
+        max-width: 320px !important;
+        padding: 15px !important;
+    }
+
+    #pres-quiz-player-turn {
+        position: relative !important;
+        left: auto !important;
+        bottom: auto !important;
+        text-align: center !important;
+        margin-top: 20px;
+    }
+
+    #pres-quiz-display {
+        font-size: 1.8rem !important;
+        padding: 10px 20px !important;
+    }
+
+    .keypad-btn {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.2rem !important;
+    }
+
+    #pres-quiz-overlay > div {
+        padding: 30px 20px !important;
+        width: 95% !important;
+    }
+    
+    #pres-quiz-overlay-title {
+        font-size: 1.8rem !important;
+    }
 }

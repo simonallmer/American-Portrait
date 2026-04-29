@@ -303,6 +303,7 @@ class FrontierGame {
         };
 
         this.edition = 'STANDARD'; // 'STANDARD' or 'PRESIDENT'
+        this.currentGame = 'FRONTIER'; // 'FRONTIER', 'STATE_QUIZ', 'PRESIDENT_QUIZ'
 
         // this.loadGlobalPlayers(); // Removed as we now use showSetup()
 
@@ -618,18 +619,19 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
 
         const gameToggle = document.createElement('div');
         gameToggle.className = 'toggle-container';
-        gameToggle.style.width = '350px';
+        gameToggle.style.width = '100%';
+        gameToggle.style.maxWidth = '600px';
 
         const frontierBtn = document.createElement('button');
-        frontierBtn.className = 'toggle-btn active';
+        frontierBtn.className = `toggle-btn ${this.currentGame === 'FRONTIER' ? 'active' : ''}`;
         frontierBtn.innerText = 'Frontier';
 
         const quizBtn = document.createElement('button');
-        quizBtn.className = 'toggle-btn';
+        quizBtn.className = `toggle-btn ${this.currentGame === 'STATE_QUIZ' ? 'active' : ''}`;
         quizBtn.innerText = 'State Quiz';
 
         const presQuizBtn = document.createElement('button');
-        presQuizBtn.className = 'toggle-btn';
+        presQuizBtn.className = `toggle-btn ${this.currentGame === 'PRESIDENT_QUIZ' ? 'active' : ''}`;
         presQuizBtn.innerText = 'President Quiz';
 
         const cowboyBtn = document.createElement('button');
@@ -706,7 +708,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
 
         const editionToggle = document.createElement('div');
         editionToggle.className = 'toggle-container';
-        editionToggle.style.width = '300px';
+        editionToggle.style.width = '100%';
+        editionToggle.style.maxWidth = '450px';
 
         const stdBtn = document.createElement('button');
         stdBtn.className = `toggle-btn ${this.edition === 'STANDARD' ? 'active' : ''}`;
@@ -757,6 +760,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         countRow.id = 'count-row';
         countRow.style.display = 'flex';
         countRow.style.gap = '10px';
+        countRow.style.flexWrap = 'wrap';
+        countRow.style.justifyContent = 'center';
         
         [2, 3, 4, 5, 6].forEach(count => {
             const btn = document.createElement('button');
@@ -837,7 +842,7 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         namesContainer.style.display = 'flex';
         namesContainer.style.flexDirection = 'column';
         namesContainer.style.gap = '20px';
-        namesContainer.style.width = '100%';
+        namesContainer.style.width = '90%';
         namesContainer.style.maxWidth = '300px';
 
         const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
