@@ -76,6 +76,12 @@
                 <rect x="0" y="0" width="1000" height="700" fill="${RED}"/>
                 <rect x="0" y="700" width="1000" height="700" fill="${BLUE}"/>
                 
+                <!-- Backside Top Text -->
+                <g transform="translate(500, 200)" font-family="Arial, Helvetica, sans-serif" fill="white" text-anchor="middle">
+                    <text x="0" y="0" font-size="26">50 Cards.</text>
+                    <text x="0" y="35" font-size="26">Endless Games.</text>
+                </g>
+                
                 <g transform="translate(60, 1050)" font-family="Arial, Helvetica, sans-serif" fill="white">
                     <text x="0" y="0" font-size="22">www.simonallmer.com</text>
                     <image href="${logoBase64}" x="-5" y="15" width="400" height="100" preserveAspectRatio="xMinYMid meet" />
@@ -416,14 +422,34 @@
                 return tex;
             };
 
-            const docGeo = new THREE.PlaneGeometry(3, 4.2);
-            const docMat = new THREE.MeshStandardMaterial({ map: createDocTexture(), roughness: 0.9, side: THREE.DoubleSide });
-            const docMesh = new THREE.Mesh(docGeo, docMat);
-            docMesh.rotation.x = -Math.PI / 2;
-            docMesh.position.set(-2.5, -6.99, 0.5);
-            docMesh.rotation.z = Math.PI / 8;
-            docMesh.receiveShadow = true;
-            roomGroup.add(docMesh);
+            // 2. Enemy List Document Stack
+            const docGroup = new THREE.Group();
+            const numPages = 5;
+            const pageTex = createDocTexture();
+            
+            for(let i=0; i<numPages; i++) {
+                // Use thin BoxGeometry instead of Plane for "thickness"
+                const pageGeo = new THREE.BoxGeometry(3, 0.015, 4.2);
+                // Top page has the ENEMY LIST texture, others are slightly aged paper
+                const pageMat = (i === numPages - 1) 
+                    ? new THREE.MeshStandardMaterial({ map: pageTex, roughness: 0.85 })
+                    : new THREE.MeshStandardMaterial({ color: 0xf8f5e6, roughness: 0.9 });
+                
+                const page = new THREE.Mesh(pageGeo, pageMat);
+                page.position.y = i * 0.02; // Stack them
+                // Slight misalignment for realism
+                page.rotation.y = (Math.random() - 0.5) * 0.04;
+                page.position.x = (Math.random() - 0.5) * 0.05;
+                page.position.z = (Math.random() - 0.5) * 0.05;
+                
+                page.castShadow = true;
+                page.receiveShadow = true;
+                docGroup.add(page);
+            }
+
+            docGroup.position.set(-2.5, -7.0, 0.5);
+            docGroup.rotation.y = Math.PI / 8;
+            roomGroup.add(docGroup);
 
             // 2. Table Legs (Dark wood)
             const woodMat = new THREE.MeshStandardMaterial({ color: 0x2b1508, roughness: 0.7 });
