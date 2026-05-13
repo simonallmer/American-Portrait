@@ -28,7 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         const key = e.key;
         if (key === 'Escape') {
-            window.location.hash = '#games';
+            const hash = window.location.hash;
+            if (hash === '#frontier' || hash === '#skyscraper' || hash === '#african-pyramid' || hash === '#asian-elements' || hash === '#about-apc' || hash === '#about-skyscraper') {
+                window.location.hash = '#games';
+            } else if (hash.startsWith('#library-')) {
+                window.location.hash = '#journals';
+            } else if (hash !== '#start' && hash !== '') {
+                window.location.hash = '#start';
+            }
             return;
         }
         const activeView = document.querySelector('.view.active');

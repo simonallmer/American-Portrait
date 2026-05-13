@@ -28,14 +28,12 @@
             
             <div class="split-actions-row">
                 <a href="#introduction" class="enter-btn secondary-btn nav-link">INTRODUCTION</a>
+                <button id="btn-galleries" class="enter-btn secondary-btn">GALLERIES</button>
                 <a href="https://simonallmer.com" target="_top" class="enter-btn secondary-btn">BACK TO SA</a>
             </div>
         </div>
 
         <div class="bottom-galleries-container">
-            <!-- Galleries Button -->
-            <button id="btn-galleries" class="enter-btn">GALLERIES</button>
-            
             <div id="gallery-picker" class="gallery-picker-overlay">
                 <div class="gallery-picker-content">
                     <button class="gallery-option active" data-portrait="american">AMERICAN PORTRAIT</button>
@@ -411,6 +409,7 @@
                     <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
                         <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()">PLAY</span>
                         <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-apc'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); window.location.href='games/american-playing-cards/3d-box/index.html'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">VIEW IN GALLERY</span>
                     </div>
                 </div>
                 <div class="game-card" onclick="window.location.hash = '#skyscraper'" style="cursor: pointer;">

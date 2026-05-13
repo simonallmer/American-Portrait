@@ -232,6 +232,14 @@ function init() {
                 screens.pause.classList.add('hidden');
                 showScreen('setup');
             }
+        } else if (e.key === ' ' || e.code === 'Space') {
+            if (currentScreenName === 'game') {
+                if (!screens.pause.classList.contains('hidden')) {
+                    ui.resumeBtn.click();
+                } else {
+                    ui.menuGameBtn.click();
+                }
+            }
         }
     });
 
