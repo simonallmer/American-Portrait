@@ -1057,7 +1057,7 @@ function playTrack(index) {
         }
     } else {
         window.musicState.currentIndex = index;
-        window.musicState.audio.src = `American Portrait Music/${track.file}`;
+        window.musicState.audio.src = `resources/music/${track.file}`;
         window.musicState.audio.play();
         window.musicState.isPlaying = true;
         window.musicState.isMiniPlayerClosed = false; // Re-open if user closed it but manually triggered new track
