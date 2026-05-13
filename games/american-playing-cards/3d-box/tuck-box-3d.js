@@ -515,36 +515,7 @@
 
             roomGroup.add(sofaGroup);
 
-            // 4. Lincoln Bed
-            const bedGroup = new THREE.Group();
-            bedGroup.position.set(-35, -15, -40);
-            bedGroup.rotation.y = Math.PI / 8;
-            
-            const mattressGeo = new THREE.BoxGeometry(25, 8, 35);
-            const mattress = new THREE.Mesh(mattressGeo, new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.9}));
-            mattress.position.y = 4;
-            mattress.castShadow = true;
-            mattress.receiveShadow = true;
-            bedGroup.add(mattress);
-            
-            const headboardGeo = new THREE.BoxGeometry(27, 30, 2);
-            const headboard = new THREE.Mesh(headboardGeo, woodMat);
-            headboard.position.set(0, 15, -18.5);
-            headboard.castShadow = true;
-            headboard.receiveShadow = true;
-            bedGroup.add(headboard);
-            
-            const pillowGeo = new THREE.BoxGeometry(10, 2, 6);
-            const p1 = new THREE.Mesh(pillowGeo, fabricMat);
-            p1.position.set(-6, 9, -12);
-            p1.rotation.x = Math.PI / 6;
-            bedGroup.add(p1);
-            const p2 = new THREE.Mesh(pillowGeo, fabricMat);
-            p2.position.set(6, 9, -12);
-            p2.rotation.x = Math.PI / 6;
-            bedGroup.add(p2);
 
-            roomGroup.add(bedGroup);
 
             roomGroup.scale.set(6, 6, 6);
             roomGroup.position.y = 35;
