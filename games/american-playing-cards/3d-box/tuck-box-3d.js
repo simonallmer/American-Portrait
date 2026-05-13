@@ -475,45 +475,7 @@
                 roomGroup.add(pivot);
             }
 
-            // 3. Sofa (White tufted with dark wood frame)
-            const sofaGroup = new THREE.Group();
-            sofaGroup.position.set(30, -17, -20);
-            sofaGroup.rotation.y = -Math.PI / 6;
 
-            const fabricMat = new THREE.MeshStandardMaterial({ color: 0xfffdd0, roughness: 0.9 });
-            const seatGeo = new THREE.BoxGeometry(30, 4, 12);
-            const seat = new THREE.Mesh(seatGeo, fabricMat);
-            seat.position.y = 2;
-            seat.castShadow = true;
-            seat.receiveShadow = true;
-            sofaGroup.add(seat);
-            
-            const backrestGeo = new THREE.BoxGeometry(30, 15, 4);
-            const backrest = new THREE.Mesh(backrestGeo, fabricMat);
-            backrest.position.set(0, 11.5, -4);
-            backrest.castShadow = true;
-            backrest.receiveShadow = true;
-            sofaGroup.add(backrest);
-            
-            const armGeo = new THREE.BoxGeometry(4, 10, 12);
-            const leftArm = new THREE.Mesh(armGeo, fabricMat);
-            leftArm.position.set(-17, 5, 0);
-            sofaGroup.add(leftArm);
-            const rightArm = new THREE.Mesh(armGeo, fabricMat);
-            rightArm.position.set(17, 5, 0);
-            sofaGroup.add(rightArm);
-            
-            const baseGeo = new THREE.BoxGeometry(34, 2, 14);
-            const sofaBase = new THREE.Mesh(baseGeo, woodMat);
-            sofaGroup.add(sofaBase);
-            
-            const sofaLegGeo = new THREE.CylinderGeometry(0.5, 0.3, 3, 8);
-            const sl1 = new THREE.Mesh(sofaLegGeo, woodMat); sl1.position.set(-16, -2.5, 6); sofaGroup.add(sl1);
-            const sl2 = new THREE.Mesh(sofaLegGeo, woodMat); sl2.position.set(16, -2.5, 6); sofaGroup.add(sl2);
-            const sl3 = new THREE.Mesh(sofaLegGeo, woodMat); sl3.position.set(-16, -2.5, -6); sofaGroup.add(sl3);
-            const sl4 = new THREE.Mesh(sofaLegGeo, woodMat); sl4.position.set(16, -2.5, -6); sofaGroup.add(sl4);
-
-            roomGroup.add(sofaGroup);
 
 
 
@@ -640,13 +602,19 @@
                 ctx.strokeRect(20, 20, 1398, 2008);
                 
                 ctx.fillStyle = "white";
-                ctx.font = "bold 160px 'Inter', sans-serif";
+                let displayVal = val;
+                if (val === "10" || val === 10) {
+                    displayVal = "C";
+                    ctx.font = "normal 160px 'Optima Black', sans-serif";
+                } else {
+                    ctx.font = "bold 160px 'Inter', sans-serif";
+                }
                 ctx.textAlign = "center";
-                ctx.fillText(val, 130, 200);
+                ctx.fillText(displayVal, 130, 200);
                 ctx.save();
                 ctx.translate(1308, 1850);
                 ctx.rotate(Math.PI);
-                ctx.fillText(val, 0, 0);
+                ctx.fillText(displayVal, 0, 0);
                 ctx.restore();
                 
                 ctx.save();
@@ -693,7 +661,7 @@
             
             const faceTex1 = drawAuthenticCard("3", "cross", "#1b3a8b");
             const faceTex2 = drawAuthenticCard("6", "star", "#1a1c23");
-            const faceTex3 = drawAuthenticCard("10", "heart", "#8b1b1b");
+            const faceTex3 = drawAuthenticCard("10", "heart", "#8b1b1b"); // Handled as 'C' in drawing logic
 
             const singleCardGeo = new THREE.BoxGeometry(1.58, 2.25, 0.005);
             

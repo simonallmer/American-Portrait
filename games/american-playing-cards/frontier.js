@@ -90,8 +90,9 @@ function createDeck(edition = 'STANDARD') {
             newDeck.push({
                 id: `${suitKey}-${val}`,
                 suit: suit,
-                name: `Rank ${val}`,
+                name: val === 10 ? 'Cypher' : `Rank ${val}`,
                 val: val,
+                isCypher: val === 10,
                 president: president ? president.name : null,
                 state: stateName,
                 portraitUrl: president ? president.portraitUrl : null,
@@ -430,12 +431,13 @@ class FrontierGame {
                 <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The Frontier Rulebook</h2>
                 <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
                     <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. The Deck (50 Cards)</h3>
-                    <p>There are 5 categories, each containing 10 cards numbered 1 through 10:</p>
+                    <p>There are 5 categories, each containing 10 cards numbered 1 through 9, plus the <strong>Cypher (C)</strong>:</p>
                     <ul style="list-style: none; padding: 0;">
                         <li><span style="color: var(--deep-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg></span> & <span style="color: var(--upper-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg></span> (Red Alliance)</li>
                         <li><span style="color: var(--indust-east-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg></span> & <span style="color: var(--west-frontier-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg></span> (Blue Alliance)</li>
                         <li><span style="color: var(--border-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg></span> (Wildcards)</li>
                     </ul>
+                    <p style="margin-top: 10px;"><strong>The Cypher (C):</strong> Worth 10 by default. It acts as a connector between high (9) and low (1) cards, allowing series like 8-9-C-1 or C-1-2.</p>
 
                     <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. Round Structure</h3>
                     <p>The game lasts <strong>5 Rounds</strong>. Hand capacity scales up by 1 card each round.</p>
@@ -455,7 +457,7 @@ class FrontierGame {
                         <li><strong style="color: #fb923c;">Tier 2:</strong> 4 of a Rank, Pure, Coalition, or Campaign</li>
                         <li><strong style="color: #c084fc;">Tier 3:</strong> 3 of a Rank, Pure, Coalition, or Campaign</li>
                         <li><strong style="color: #34d399;">Tier 4:</strong> Pairs</li>
-                        <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards. Pure (Product x 2), Coalition (Product), Divided (Sum). <strong>Rank 1</strong> imitates the highest card in the hand.</li>
+                        <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards. Pure (Product x 2), Coalition (Product), Divided (Sum). <strong>Rank 1</strong> imitates the highest card (e.g., C-1-2 results in x10 strength when pure). <strong>Cypher</strong> is worth 10.</li>
                     </ul>
                     <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
                 </div>
@@ -529,8 +531,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                     const dispText = this.edition === 'PRESIDENT' ? (card.president || "") : (card.state || "");
                     const imageUrl = this.edition === 'PRESIDENT' ? card.portraitUrl : card.flagUrl;
                     div.innerHTML = `
-                        <div class="card-corner">
-                            <div class="corner-val">${card.val}</div>
+                        <div class="card-corner ${card.val === 10 ? 'is-cypher' : ''}">
+                            <div class="corner-val">${card.val === 10 ? 'C' : card.val}</div>
                             <div class="corner-suit">${card.suit.symbol}</div>
                         </div>
                         <div class="card-center">
@@ -539,18 +541,18 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                             </div>
                             <div class="card-president-name">${dispText}</div>
                         </div>
-                        <div class="card-corner bottom">
-                            <div class="corner-val">${card.val}</div>
+                        <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : ''}">
+                            <div class="corner-val">${card.val === 10 ? 'C' : card.val}</div>
                             <div class="corner-suit">${card.suit.symbol}</div>
                         </div>
                     `;
                 } else {
                     div.innerHTML = `
-                        <div class="card-corner">${card.val}</div>
+                        <div class="card-corner ${card.val === 10 ? 'is-cypher' : ''}">${card.val === 10 ? 'C' : card.val}</div>
                         <div class="card-center">
                             <div class="card-val">${card.suit.symbol}</div>
                         </div>
-                        <div class="card-corner bottom">${card.val}</div>
+                        <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : ''}">${card.val === 10 ? 'C' : card.val}</div>
                     `;
                 }
                 this.els.allCardsGrid.appendChild(div);
@@ -1217,8 +1219,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                 const dispText = this.edition === 'PRESIDENT' ? (card.president || "") : (card.state || "");
                 const imageUrl = this.edition === 'PRESIDENT' ? (card.portraitUrl || (card.president ? (presidentsData.find(p => p.name === card.president)?.portraitUrl || null) : null)) : (card.flagUrl || null);
                 div.innerHTML = `
-                    <div class="card-corner">
-                        <div class="corner-val">${card.val}</div>
+                    <div class="card-corner ${card.val === 10 ? 'is-cypher' : ''}">
+                        <div class="corner-val">${card.val === 10 ? 'C' : card.val}</div>
                         <div class="corner-suit">${card.suit.symbol}</div>
                     </div>
                     <div class="card-center">
@@ -1227,18 +1229,18 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                         </div>
                         <div class="card-president-name">${dispText}</div>
                     </div>
-                    <div class="card-corner bottom">
-                        <div class="corner-val">${card.val}</div>
+                    <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : ''}">
+                        <div class="corner-val">${card.val === 10 ? 'C' : card.val}</div>
                         <div class="corner-suit">${card.suit.symbol}</div>
                     </div>
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="card-corner">${card.val}</div>
+                    <div class="card-corner ${card.val === 10 ? 'is-cypher' : ''}">${card.val === 10 ? 'C' : card.val}</div>
                     <div class="card-center">
                         <div class="card-val">${card.suit.symbol}</div>
                     </div>
-                    <div class="card-corner bottom">${card.val}</div>
+                    <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : ''}">${card.val === 10 ? 'C' : card.val}</div>
                 `;
             }
 
