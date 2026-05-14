@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initChronicleGrid();
     initMusicPlayer();
     initMusicHandlers();
-    initIntroToggle();
+
     initLibraries();
     initChronicleNavigation(); // Add keyboard support
 
@@ -1128,31 +1128,7 @@ function initMusicHandlers() {
     };
 }
 
-function initIntroToggle() {
-    const btnShow = document.getElementById('btn-show-galleries');
-    const btnHide = document.getElementById('btn-hide-galleries');
-    const mainContent = document.getElementById('intro-main-content');
-    const galleriesContent = document.getElementById('intro-galleries-content');
-    const title = document.getElementById('intro-title');
 
-    if (btnShow && btnHide && mainContent && galleriesContent) {
-        btnShow.onclick = () => {
-            mainContent.style.display = 'none';
-            galleriesContent.style.display = 'block';
-            btnShow.style.display = 'none';
-            btnHide.style.display = 'block';
-            title.innerText = 'About A Portrait';
-        };
-
-        btnHide.onclick = () => {
-            mainContent.style.display = 'block';
-            galleriesContent.style.display = 'none';
-            btnShow.style.display = 'block';
-            btnHide.style.display = 'none';
-            title.innerText = 'Introduction';
-        };
-    }
-}
 
 function initMusicPlayer() {
     const container = document.getElementById('audio-player-container');

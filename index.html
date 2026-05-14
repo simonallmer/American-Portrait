@@ -51,34 +51,10 @@
                 <p>The frame, measuring 100 years in each direction, both anchors and magnifies the composition. Yet within its borders, the painting transcends chronology. It invites the viewer to linger, to see beyond contrasts and find the moments in which brushstrokes converge into something even more profound - a portrait not just of two individuals, but of a nation’s struggle for freedom.</p>
             </div>
 
-            <!-- Galleries Info (Hidden by default) -->
-            <div id="intro-galleries-content" class="about-content" style="display: none;">
-                <p>The galleries explore the character of three distinct continents through the extraordinary lives of individuals.</p>
-                <div class="galleries-summary">
-                    <div class="gallery-summary-item active">
-                        <h3><span class="first-letter-red">A</span>merican Portrait</h3>
-                        <p class="gallery-status">Currently Selected</p>
-                        <p class="gallery-character">Characters: Henry Kissinger, Jimmy Carter</p>
-                        <p class="gallery-theme">Theme: Freedom</p>
-                    </div>
-                    <div class="gallery-summary-item">
-                        <h3><span class="first-letter-red">A</span>frican Portrait</h3>
-                        <p class="gallery-status">Opening 2028</p>
-                        <p class="gallery-character">Character: Paul Kagame</p>
-                        <p class="gallery-theme">Theme: Survival</p>
-                    </div>
-                    <div class="gallery-summary-item">
-                        <h3><span class="first-letter-red">A</span>sian Portrait</h3>
-                        <p class="gallery-status">Opening 2028</p>
-                        <p class="gallery-character">Character: Lee Kuan Yew</p>
-                        <p class="gallery-theme">Theme: Order</p>
-                    </div>
-                </div>
-            </div>
+
             
             <div class="intro-actions" style="margin-top: 3rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
-                <button id="btn-show-galleries" class="enter-btn secondary-btn" style="width: auto; min-width: 250px;">ABOUT A PORTRAIT</button>
-                <button id="btn-hide-galleries" class="enter-btn secondary-btn" style="width: auto; min-width: 250px; display: none;">BACK TO INTRODUCTION</button>
+
                 <a href="#start" class="enter-btn">BACK TO HOME</a>
             </div>
 
@@ -168,8 +144,8 @@
     <!-- Music View -->
     <section id="music" class="view">
         <a href="#start" class="back-abs">BACK TO HOME</a>
-        <div class="container" style="text-align: center; margin-top: 10rem;">
-            <h2>American Portrait Music</h2>
+        <div class="music-container">
+            <h2 class="section-title">Music</h2>
             <div id="audio-player-container" class="audio-container">
                 <!-- Audio elements populated by JS -->
             </div>
@@ -400,6 +376,7 @@
                     <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
                         <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()">PLAY</span>
                         <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-apc'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); window.location.href='games/american-playing-cards/3d-box/index.html'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">3D VIEW</span>
                     </div>
                 </div>
                 <div class="game-card" onclick="window.location.hash = '#skyscraper'" style="cursor: pointer;">

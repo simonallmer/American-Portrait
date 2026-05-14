@@ -743,3 +743,10 @@
                 }
             }, 1000);
         });
+        
+        // Handle Escape key to go back
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.location.href = '../../../index.html#games';
+            }
+        });

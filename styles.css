@@ -846,6 +846,16 @@ body:has(#frontier.active) .back-to-sa {
 }
 
 /* ===== MUSIC SECTION ===== */
+.music-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100%;
+    padding: 100px 2rem 50px 2rem;
+    text-align: center;
+}
+
 .audio-container {
     display: flex;
     flex-wrap: wrap;
@@ -2333,6 +2343,10 @@ body:has(#frontier.active) .back-to-sa {
             line-height: 1;
             padding: 5px;
             font-family: 'Playfair Display', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            align-self: flex-start;
         }
 
         .card-corner.is-cypher {
@@ -2343,6 +2357,7 @@ body:has(#frontier.active) .back-to-sa {
 
         .card-corner.bottom {
             transform: rotate(180deg);
+            align-self: flex-end;
         }
 
         .card-center {
@@ -2880,6 +2895,19 @@ body:has(#frontier.active) .back-to-sa {
 
         #all-cards-grid .card-val {
             font-size: 1.2rem;
+        }
+
+        #all-cards-grid .card {
+            padding: 8px;
+        }
+
+        #all-cards-grid .card .card-corner {
+            font-size: 0.9rem;
+            padding: 3px;
+        }
+
+        #all-cards-grid .card .card-corner.is-cypher {
+            font-size: 1.0rem !important;
         }
 
         #all-cards-modal {
