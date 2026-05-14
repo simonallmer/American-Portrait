@@ -137,7 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Frontier Initialization Fix: Ensure setup is shown on reload
             if (targetId === 'frontier' && typeof frontierGame !== 'undefined') {
                 if (frontierGame.phase === 'SETUP' || !frontierGame.players.length) {
-                    frontierGame.showSetup();
+                    setTimeout(() => {
+                        frontierGame.showSetup();
+                    }, 50);
                 }
             }
 

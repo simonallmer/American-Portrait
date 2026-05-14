@@ -571,11 +571,39 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
     }
 
     showSetup() {
-        this.els.mainHud.style.display = 'none';
+        // Defensive check: ensure elements are connected
+        if (!this.els || !this.els.overlay) {
+            this.els = {
+                cardsContainer: document.getElementById('cards-container'),
+                controlsArea: document.getElementById('controls-area'),
+                mainHud: document.getElementById('main-hud'),
+                playerStatusGrid: document.getElementById('player-status-grid'),
+                overlay: document.getElementById('overlay'),
+                overlayTitle: document.getElementById('overlay-title'),
+                overlayDesc: document.getElementById('overlay-desc'),
+                rulesModal: document.getElementById('rules-modal'),
+                msgArea: document.getElementById('message-area'),
+                historyPanel: document.getElementById('history-panel'),
+                historyContent: document.getElementById('history-content'),
+                mulliganBtn: document.getElementById('mulligan-btn'),
+                menuDropdown: document.getElementById('frontier-menu-dropdown'),
+                allCardsModal: document.getElementById('all-cards-modal'),
+                allCardsGrid: document.getElementById('all-cards-grid'),
+                rulesInnerWrapper: document.getElementById('rules-inner-content-wrapper')
+            };
+        }
+
+        if (this.els.mainHud) this.els.mainHud.style.display = 'none';
         this.els.playerStatusGrid.innerHTML = '';
         this.els.cardsContainer.innerHTML = '';
         this.els.controlsArea.innerHTML = '';
         this.els.mulliganBtn.style.display = 'none';
+
+        // Hide other overlays that might be visible by default
+        const quizOverlay = document.getElementById('quiz-overlay');
+        const presQuizOverlay = document.getElementById('pres-quiz-overlay');
+        if (quizOverlay) quizOverlay.classList.remove('visible');
+        if (presQuizOverlay) presQuizOverlay.classList.remove('visible');
 
         // Close and clear profile panel if open
         const panel = document.getElementById('president-profile-panel');
