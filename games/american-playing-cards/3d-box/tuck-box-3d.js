@@ -718,12 +718,8 @@
                     delay: 0.3, 
                     ease: "power2.inOut",
                     onComplete: () => {
-                        // Reveal the game menu
-                        const menu = document.getElementById('game-menu-overlay');
-                        if (menu) {
-                            menu.style.display = 'flex';
-                            setTimeout(() => { menu.style.opacity = '1'; }, 50);
-                        }
+                        // Redirect directly to the game setup
+                        window.location.href = '../../../index.html#frontier';
                     }
                 });
             };
