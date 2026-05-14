@@ -231,6 +231,16 @@ body:has(#frontier.active) .back-to-sa {
     text-align: center;
 }
 
+.enter-btn.disabled-nav {
+    color: rgba(255, 255, 255, 0.2); /* Only grey out the text */
+    border-color: var(--text-color); /* Keep the border normal */
+}
+
+/* Flash protection for direct hash navigation */
+.hide-start-flash #start-page {
+    display: none !important;
+}
+
 .secondary-btn {
     border-color: rgba(255,255,255,0.3);
     color: rgba(255,255,255,0.7);
@@ -1940,8 +1950,9 @@ body:has(#frontier.active) .back-to-sa {
 
         @media (max-width: 1200px) {
             #game-container {
-                margin: 0 auto; /* Center on smaller screens if side menu hides */
-                max-width: calc(100% - 100px);
+                margin: 0;
+                max-width: 100%;
+                width: 100%;
             }
         }
 

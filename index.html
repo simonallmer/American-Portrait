@@ -5,13 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>American Portrait</title>
     <link rel="stylesheet" href="styles.css?v=1.2">
+    <script>
+        // Prevent menu flash on direct hash navigation (like redirect from 3D box)
+        (function() {
+            const hash = window.location.hash;
+            if (hash && hash !== '#start' && hash !== '#') {
+                document.documentElement.classList.add('hide-start-flash');
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Global Navigation -->
     <a href="https://simonallmer.com" target="_top" class="back-to-sa">BACK TO SA</a>
 
     <!-- Start Page -->
-    <section id="start-page" class="view active">
+    <section id="start-page" class="view">
         <div class="bg-container">
             <div class="oil-paint-bg"></div>
             <div class="overlay"></div>
@@ -20,8 +29,8 @@
             <img src="resources/logos/American Portrait Title Design/AmericanPortraitWhite.png" alt="American Portrait" class="landing-logo">
         </div>
         <div class="landing-actions main-nav">
-            <a href="#comics" class="enter-btn">COMICS [TBA]</a>
-            <a href="#films" class="enter-btn">FILMS [TBA]</a>
+            <a href="#comics" class="enter-btn disabled-nav">COMICS</a>
+            <a href="#films" class="enter-btn disabled-nav">FILMS</a>
             <a href="#music" class="enter-btn">MUSIC</a>
             <a href="#games" class="enter-btn">GAMES</a>
             <a href="#journals" class="enter-btn">JOURNALS</a>

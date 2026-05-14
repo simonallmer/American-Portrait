@@ -735,6 +735,11 @@
             window.addEventListener('click', () => {
                 openBox();
             });
+            
+            window.addEventListener('touchstart', (e) => {
+                // Ensure interaction registers on mobile
+                openBox();
+            }, { passive: true });
 
             function animate() {
                 requestAnimationFrame(animate);

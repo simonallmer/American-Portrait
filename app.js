@@ -143,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Remove flash protection class once navigation is handled
+            document.documentElement.classList.remove('hide-start-flash');
+
             // Skyscraper Initialization Fix: Ensure resize is triggered
             if (targetId === 'skyscraper' && typeof skyscraperV3D !== 'undefined') {
                 setTimeout(() => {
