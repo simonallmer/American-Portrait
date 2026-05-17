@@ -297,6 +297,10 @@ body:has(#frontier.active) .back-to-sa {
     color: var(--bg-color);
 }
 
+.enter-btn.tba {
+    opacity: 0.35;
+}
+
 .copyright-footer {
     position: absolute;
     bottom: 2rem;
@@ -1131,50 +1135,6 @@ body.asian-portrait .landing-logo-text {
     border-left: 10px solid #2a4066;
 }
 
-.mobile-nav-bar {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 2000;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 1rem;
-}
-
-.mobile-nav-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    text-decoration: none;
-    font-family: inherit;
-    font-weight: 300;
-    cursor: pointer;
-    flex: 1;
-}
-
-.nav-icon {
-    font-size: 1.2rem;
-}
-
-.nav-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-.mobile-nav-btn:hover {
-    color: var(--red-accent);
-}
 
 /* ===== REVIEW ARTICLE ===== */
 .review-content {
@@ -1344,17 +1304,6 @@ body.asian-portrait .landing-logo-text {
         padding: 0.4rem 0.8rem;
     }
 
-    .back-abs, .close-menu-btn, .back-to-sa {
-        display: none !important;
-    }
-
-    .mobile-nav-bar {
-        display: flex;
-    }
-
-    .view {
-        padding-bottom: 80px; /* Space for mobile nav */
-    }
 
     .back-to-sa {
         right: 1rem;
@@ -2460,6 +2409,7 @@ body.asian-portrait .landing-logo-text {
             line-height: 1;
             padding: 5px;
             font-family: 'Playfair Display', serif;
+            align-self: flex-start;
         }
 
         .card-corner.is-cypher {
@@ -2468,8 +2418,15 @@ body.asian-portrait .landing-logo-text {
             font-size: 1.6rem;
         }
 
+        .card-corner.is-one {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+
         .card-corner.bottom {
             transform: rotate(180deg);
+            align-self: flex-end;
         }
 
         .card-center {
@@ -4533,21 +4490,31 @@ body.asian-portrait .landing-logo-text {
     }
 }
 
-/* Cypher Rule Styles */
-.optima-c {
-    font-family: 'Optima Black', sans-serif !important;
+/* Cypher Symbol — circle bisected by a vertical line */
+.cypher-svg {
+    display: inline-block;
+    width: 0.75em;
+    height: 1.15em;
+    vertical-align: middle;
+    overflow: visible;
 }
 
-.card-corner.is-cypher, .card-corner.is-cypher .corner-val {
-    font-family: 'Optima Black', sans-serif !important;
-    font-weight: normal !important;
-}
-
+/* Corner sizing: slightly larger so the SVG reads clearly at small scale */
 .card-corner.is-cypher {
-    font-size: 1.6rem !important;
+    font-size: 1rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.card-val.is-cypher {
-    font-family: 'Optima Black', sans-serif !important;
-    font-weight: normal !important;
+.card-corner.is-cypher .corner-val {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mini card Cypher in history view */
+.card-val.is-cypher .cypher-svg {
+    width: 0.65em;
+    height: 1em;
 }

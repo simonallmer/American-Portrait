@@ -1463,16 +1463,6 @@ function closeQuotes() {
     document.getElementById('quotes-overlay').classList.remove('active');
 }
 
-function handleMobileBack() {
-    const hash = window.location.hash;
-    if (hash === '' || hash === '#start' || hash === '#start-page') {
-        return;
-    } else if (hash === '#menu' || hash === '#about') {
-        window.location.hash = '#start';
-    } else {
-        window.location.hash = '#menu';
-    }
-}
 
 // Keyboard navigation for Quotes
 document.addEventListener('keydown', (e) => {
