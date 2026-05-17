@@ -154,12 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Skyscraper Initialization Fix: Ensure resize is triggered
-            if (targetId === 'skyscraper' && typeof skyscraperV3D !== 'undefined') {
+            // Skyscraper Initialization Fix: Ensure resize is triggered and HUD is shown
+            if (targetId === 'skyscraper') {
                 setTimeout(() => {
-                    skyscraperV3D.resize();
-                    if (skyscraperV2D) skyscraperV2D.resize();
-                }, 100);
+                    if (typeof skyscraperV3D !== 'undefined') {
+                        skyscraperV3D.resize();
+                        if (skyscraperV2D) skyscraperV2D.resize();
+                    }
+                    const trigger = document.getElementById('skyscraper-menu-trigger');
+                    const header = document.getElementById('skyscraper-main-header');
+                    const hud = document.getElementById('skyscraper-hud');
+                    if (trigger) trigger.classList.add('active');
+                    if (header) header.classList.add('visible');
+                    if (hud) hud.classList.add('visible');
+                }, 150);
             }
 
             // State Quiz: Ensure map is loaded
