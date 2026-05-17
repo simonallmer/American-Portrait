@@ -699,47 +699,22 @@
             roomGroup.add(card3);
 
 
-            // Interaction state
-            let boxOpened = false;
-            
-            const openBox = () => {
-                if (boxOpened) return;
-                boxOpened = true;
-                
-                // Hide prompt if it exists
-                const prompt = document.getElementById('interaction-prompt');
-                if (prompt) prompt.style.opacity = '0';
-
-                // Box opening animation
-                gsap.to(flapGroup.rotation, { x: Math.PI * 1.05, duration: 1.2, ease: "back.inOut(1.2)" });
-                gsap.to(cards.position, { 
-                    y: 2.5, 
-                    duration: 1.2, 
-                    delay: 0.3, 
-                    ease: "power2.inOut",
-                    onComplete: () => {
-                        // Redirect directly to the game setup
-                        window.location.href = '../../../index.html#frontier';
-                    }
-                });
+            // Animation
+            let isOpen = false;
+            const toggleBox = () => {
+                isOpen = !isOpen;
+                gsap.to(flapGroup.rotation, { x: isOpen ? Math.PI * 1.05 : 0, duration: 1.2, ease: "back.inOut(1.2)" });
+                gsap.to(cards.position, { y: isOpen ? 2.5 : -0.1, duration: 1.2, delay: isOpen ? 0.3 : 0, ease: "power2.inOut" });
             };
             
-            // Interaction triggers
+            
+            // Spacebar trigger
             window.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
                     e.preventDefault();
-                    openBox();
+                    toggleBox();
                 }
             });
-            
-            window.addEventListener('click', () => {
-                openBox();
-            });
-            
-            window.addEventListener('touchstart', (e) => {
-                // Ensure interaction registers on mobile
-                openBox();
-            }, { passive: true });
 
             function animate() {
                 requestAnimationFrame(animate);
@@ -767,11 +742,4 @@
                     setTimeout(() => { loader.style.display = 'none'; }, 500);
                 }
             }, 1000);
-        });
-        
-        // Handle Escape key to go back
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                window.location.href = '../../../index.html#games';
-            }
         });

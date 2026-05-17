@@ -19,12 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
         '#review-nuclear': 'review-nuclear',
         '#review-genesis': 'review-genesis',
         '#review-leadership': 'review-leadership',
-        '#review-ageofai': 'review-ageofai'
+        '#review-ageofai': 'review-ageofai',
+        '#african-pyramid': 'african-pyramid',
+        '#asian-elements': 'asian-elements'
     };
 
     // Keyboard Navigation logic
     document.addEventListener('keydown', (e) => {
         const key = e.key;
+        if (key === 'Escape') {
+            const hash = window.location.hash;
+            if (hash === '#frontier' || hash === '#skyscraper' || hash === '#african-pyramid' || hash === '#asian-elements' || hash === '#about-apc' || hash === '#about-skyscraper') {
+                window.location.hash = '#games';
+            } else if (hash.startsWith('#library-')) {
+                window.location.hash = '#journals';
+            } else if (hash !== '#start' && hash !== '') {
+                window.location.hash = '#start';
+            }
+            return;
+        }
         const activeView = document.querySelector('.view.active');
         if (!activeView) return;
 
@@ -137,14 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Frontier Initialization Fix: Ensure setup is shown on reload
             if (targetId === 'frontier' && typeof frontierGame !== 'undefined') {
                 if (frontierGame.phase === 'SETUP' || !frontierGame.players.length) {
-                    setTimeout(() => {
-                        frontierGame.showSetup();
-                    }, 50);
+                    frontierGame.showSetup();
                 }
             }
-
-            // Remove flash protection class once navigation is handled
-            document.documentElement.classList.remove('hide-start-flash');
 
             // Skyscraper Initialization Fix: Ensure resize is triggered
             if (targetId === 'skyscraper' && typeof skyscraperV3D !== 'undefined') {
@@ -180,6 +188,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof updateMiniPlayerVisibility === 'function') {
                 updateMiniPlayerVisibility(targetId);
             }
+
+            // Game Initializations
+            if (targetId === 'african-pyramid') {
+                if (typeof window.initPyramid === 'function') {
+                    window.initPyramid();
+                }
+            } else if (targetId === 'asian-elements') {
+                if (typeof window.initElements === 'function') {
+                    window.initElements();
+                }
+            }
         }
     }
 
@@ -208,12 +227,111 @@ document.addEventListener('DOMContentLoaded', () => {
     initChronicleGrid();
     initMusicPlayer();
     initMusicHandlers();
-
+    initIntroToggle();
     initLibraries();
     initChronicleNavigation(); // Add keyboard support
 
     // Listen for hash changes
     window.addEventListener('hashchange', navigate);
+
+    // ===== GALLERIES LOGIC =====
+    const btnGalleries = document.getElementById('btn-galleries');
+    const galleryPicker = document.getElementById('gallery-picker');
+    const galleryOptions = document.querySelectorAll('.gallery-option');
+    const originalGamesHTML = document.querySelector('.games-list').innerHTML;
+
+    if (btnGalleries && galleryPicker) {
+        btnGalleries.addEventListener('click', (e) => {
+            e.stopPropagation();
+            galleryPicker.classList.toggle('active');
+        });
+
+        // Close picker when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!galleryPicker.contains(e.target) && e.target !== btnGalleries) {
+                galleryPicker.classList.remove('active');
+            }
+        });
+    }
+
+    galleryOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+            const type = opt.dataset.portrait;
+            switchPortrait(type);
+            galleryPicker.classList.remove('active');
+        });
+    });
+
+    function switchPortrait(type) {
+        const body = document.body;
+        const logoContainer = document.getElementById('landing-logo-container');
+        const navLinks = document.querySelectorAll('.main-nav .nav-link');
+        const gamesList = document.querySelector('.games-list');
+
+        // Remove old classes
+        body.classList.remove('american-portrait', 'african-portrait', 'asian-portrait');
+        body.classList.add(`${type}-portrait`);
+
+        // Update Picker UI
+        galleryOptions.forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.portrait === type);
+        });
+
+        // Update Logo
+        if (type === 'american') {
+            logoContainer.innerHTML = '<img src="resources/logos/American Portrait Title Design/AmericanPortraitWhite.png" alt="American Portrait" class="landing-logo">';
+        } else {
+            const title = type === 'african' ? 'African Portrait' : 'Asian Portrait';
+            logoContainer.innerHTML = `<h1 class="landing-logo-text">${title.toUpperCase()}</h1>`;
+        }
+
+        // Update Nav Links
+        navLinks.forEach(link => {
+            let text = link.innerText.split(' [TBA]')[0];
+            if (type === 'american') {
+                link.classList.remove('disabled');
+                if (text === 'COMICS' || text === 'FILMS') {
+                    link.innerText = text + ' [TBA]';
+                } else {
+                    link.innerText = text;
+                }
+            } else {
+                if (text === 'GAMES') {
+                    link.classList.remove('disabled');
+                    link.innerText = 'GAMES';
+                } else {
+                    link.classList.add('disabled');
+                    link.innerText = text + ' [TBA]';
+                }
+            }
+        });
+
+        // Update Games List
+        if (type === 'african') {
+            gamesList.innerHTML = `
+                <div class="game-card" onclick="window.location.hash = '#african-pyramid'" style="cursor: pointer;">
+                    <h3>Pyramid</h3>
+                    <p>An ancient challenge from the sands.</p>
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                        <span class="game-btn clickable">PLAY</span>
+                    </div>
+                </div>
+            `;
+        } else if (type === 'asian') {
+            gamesList.innerHTML = `
+                <div class="game-card" onclick="window.location.hash = '#asian-elements'" style="cursor: pointer;">
+                    <h3>Elements</h3>
+                    <p>Master the balance of nature.</p>
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                        <span class="game-btn clickable">PLAY</span>
+                    </div>
+                </div>
+            `;
+        } else {
+            gamesList.innerHTML = originalGamesHTML;
+        }
+    }
+
 
     // Consolidated Global Escape Key Navigation
     document.addEventListener('keydown', (e) => {
@@ -1133,7 +1251,31 @@ function initMusicHandlers() {
     };
 }
 
+function initIntroToggle() {
+    const btnShow = document.getElementById('btn-show-galleries');
+    const btnHide = document.getElementById('btn-hide-galleries');
+    const mainContent = document.getElementById('intro-main-content');
+    const galleriesContent = document.getElementById('intro-galleries-content');
+    const title = document.getElementById('intro-title');
 
+    if (btnShow && btnHide && mainContent && galleriesContent) {
+        btnShow.onclick = () => {
+            mainContent.style.display = 'none';
+            galleriesContent.style.display = 'block';
+            btnShow.style.display = 'none';
+            btnHide.style.display = 'block';
+            title.innerText = 'About A Portrait';
+        };
+
+        btnHide.onclick = () => {
+            mainContent.style.display = 'block';
+            galleriesContent.style.display = 'none';
+            btnShow.style.display = 'block';
+            btnHide.style.display = 'none';
+            title.innerText = 'Introduction';
+        };
+    }
+}
 
 function initMusicPlayer() {
     const container = document.getElementById('audio-player-container');
