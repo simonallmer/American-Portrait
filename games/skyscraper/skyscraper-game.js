@@ -1433,23 +1433,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Initial resize trigger
-    setTimeout(() => { 
-        if (window.location.hash === '#skyscraper') {
-            skyscraperV2D.resize(); 
-            skyscraperV3D.resize(); 
-            game.onStateChange(); 
-        }
-    }, 100);
+    function reinitView3D() {
+        // Destroy and recreate View3D so WebGL context is fresh (fixes black screen
+        // when section was display:none during initial page load on iOS Safari).
+        if (skyscraperV3D) skyscraperV3D.destroy();
+        skyscraperV3D = new View3D(document.getElementById('skyscraper-canvas3d'), game);
+        skyscraperV3D.resize();
+        skyscraperV2D.resize();
+        game.onStateChange();
+    }
 
-    // Listen for hashchange to trigger resize when entering skyscraper view
+    // Initial trigger if landing directly on #skyscraper
+    setTimeout(() => {
+        if (window.location.hash === '#skyscraper') reinitView3D();
+    }, 150);
+
+    // Recreate View3D every time the user navigates to #skyscraper
     window.addEventListener('hashchange', () => {
         if (window.location.hash === '#skyscraper') {
-            setTimeout(() => {
-                skyscraperV2D.resize();
-                skyscraperV3D.resize();
-                game.onStateChange();
-            }, 100);
+            setTimeout(reinitView3D, 150);
         }
     });
 });

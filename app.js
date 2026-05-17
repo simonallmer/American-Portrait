@@ -154,20 +154,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Skyscraper Initialization Fix: Ensure resize is triggered and HUD is shown
+            // Skyscraper: auto-show HUD/header (View3D reinit handled in skyscraper-game.js)
             if (targetId === 'skyscraper') {
                 setTimeout(() => {
-                    if (typeof skyscraperV3D !== 'undefined') {
-                        skyscraperV3D.resize();
-                        if (skyscraperV2D) skyscraperV2D.resize();
-                    }
                     const trigger = document.getElementById('skyscraper-menu-trigger');
                     const header = document.getElementById('skyscraper-main-header');
                     const hud = document.getElementById('skyscraper-hud');
                     if (trigger) trigger.classList.add('active');
                     if (header) header.classList.add('visible');
                     if (hud) hud.classList.add('visible');
-                }, 150);
+                }, 200);
             }
 
             // State Quiz: Ensure map is loaded
