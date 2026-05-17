@@ -1237,34 +1237,28 @@ class View3D {
 }
 
 // --- App Bootstrap ---
-let skyscraperV2D, skyscraperV3D;
-
 document.addEventListener('DOMContentLoaded', () => {
-    const savedPlayers = 4;
-    const savedDifficulty = 'medium';
-    
-    const game = new SkyscraperGame(savedPlayers);
-    game.aiDifficulty = savedDifficulty;
-    
-    skyscraperV2D = new View2D(document.getElementById('skyscraper-canvas2d'), game);
-    skyscraperV3D = new View3D(document.getElementById('skyscraper-canvas3d'), game);
+    const game = new SkyscraperGame();
+    game.setMode(4);
+    game.aiDifficulty = 'medium';
+    let v2d = new View2D(document.getElementById('canvas2d'), game);
+    let v3d = new View3D(document.getElementById('canvas3d'), game);
 
-    const modeBtn = document.getElementById('skyscraper-mode-btn');
-    const modeMenu = document.getElementById('skyscraper-mode-menu');
+    const modeBtn = document.getElementById('mode-btn');
+    const modeMenu = document.getElementById('mode-menu');
+    modeBtn.textContent = '4 Players';
     modeBtn.onclick = () => modeMenu.classList.toggle('visible');
-    modeBtn.textContent = savedPlayers + ' Players';
 
     const setPlayers = (players) => {
         game.setMode(players);
-        localStorage.setItem('skyscraperPlayers', players);
         modeBtn.textContent = players + ' Players';
         modeMenu.classList.remove('visible');
-        document.getElementById('skyscraper-score-block-blue').style.display = players >= 3 ? 'flex' : 'none';
-        document.getElementById('skyscraper-score-block-green').style.display = players >= 4 ? 'flex' : 'none';
-        if (skyscraperV3D) skyscraperV3D.destroy();
-        skyscraperV3D = new View3D(document.getElementById('skyscraper-canvas3d'), game);
-        skyscraperV2D.resize();
-        skyscraperV3D.resize();
+        document.getElementById('score-block-blue').style.display = players >= 3 ? 'flex' : 'none';
+        document.getElementById('score-block-green').style.display = players >= 4 ? 'flex' : 'none';
+        if (v3d) v3d.destroy();
+        v3d = new View3D(document.getElementById('canvas3d'), game);
+        v2d.resize();
+        v3d.resize();
         if (game.onStateChange) game.onStateChange();
     };
 
@@ -1277,8 +1271,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     game.onStateChange = () => {
         ['white', 'red', 'blue', 'green'].forEach(c => {
-            const elScore = document.getElementById('skyscraper-score-' + c);
-            const elTurn = document.getElementById('skyscraper-turn-' + c);
+            const elScore = document.getElementById('score-' + c);
+            const elTurn = document.getElementById('turn-' + c);
             if (elScore) elScore.textContent = game.scores[c] || 0;
             if (elTurn) elTurn.style.opacity = game.turn === c ? '1' : '0.2';
         });
@@ -1287,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const limit = game.elevatorHeight;
         const round = game.currentRound;
 
-        skyscraperV2D.draw(); skyscraperV3D.update();
+        v2d.draw(); v3d.update();
         if (game.gameOver) {
             let winColor = game.colors[0];
             let maxSc = -1;
@@ -1303,26 +1297,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const colorNames = { white: 'Yellow', red: 'Red', blue: 'Blue', green: 'Green' };
             const winName = colorNames[winColor] || winColor.toUpperCase();
 
-            document.getElementById('skyscraper-msg-title').textContent = `${winName} Wins!`;
-            document.getElementById('skyscraper-msg-body').textContent =
+            document.getElementById('msg-title').textContent = `${winName} Wins!`;
+            document.getElementById('msg-body').textContent =
                 `${winName} controlled ${maxSc} field${maxSc !== 1 ? 's' : ''} — more than ${fraction} of the board.`;
-            document.getElementById('skyscraper-message-modal').style.display = 'flex';
+            document.getElementById('message-modal').style.display = 'flex';
         }
     };
 
     const toggleMenu = () => {
-        const trigger = document.getElementById('skyscraper-menu-trigger');
-        const header = document.getElementById('skyscraper-main-header');
-        const hud = document.getElementById('skyscraper-hud');
+        const trigger = document.getElementById('menu-trigger');
+        const header = document.getElementById('main-header');
+        const hud = document.getElementById('hud');
         trigger.classList.toggle('active');
         header.classList.toggle('visible');
         hud.classList.toggle('visible');
     };
 
-    document.getElementById('skyscraper-menu-trigger').onclick = toggleMenu;
+    document.getElementById('menu-trigger').onclick = toggleMenu;
 
     document.addEventListener('keydown', (e) => {
-        if (window.location.hash !== '#skyscraper') return;
         if (e.target !== document.body) return;
 
         // Space → open/close menu
@@ -1333,17 +1326,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Shift → toggle 2D / 3D view
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-            const is2d = document.getElementById('skyscraper-canvas2d').style.display === 'block';
+            const is2d = document.getElementById('canvas2d').style.display === 'block';
             if (is2d) {
-                document.getElementById('skyscraper-canvas2d').style.display = 'none';
-                document.getElementById('skyscraper-canvas3d').style.display = 'block';
+                document.getElementById('canvas2d').style.display = 'none';
+                document.getElementById('canvas3d').style.display = 'block';
                 viewBtn.textContent = 'View: 3D';
-                skyscraperV3D.resize();
+                v3d.resize();
             } else {
-                document.getElementById('skyscraper-canvas2d').style.display = 'block';
-                document.getElementById('skyscraper-canvas3d').style.display = 'none';
+                document.getElementById('canvas2d').style.display = 'block';
+                document.getElementById('canvas3d').style.display = 'none';
                 viewBtn.textContent = 'View: 2D';
-                skyscraperV2D.resize();
+                v2d.resize();
             }
         }
 
@@ -1353,51 +1346,49 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.code === 'Digit4') setPlayers(4);
     });
 
-    const aiBtn = document.getElementById('skyscraper-ai-btn');
-    const aiMenu = document.getElementById('skyscraper-ai-menu');
+    const aiBtn = document.getElementById('ai-btn');
+    const aiMenu = document.getElementById('ai-menu');
+    aiBtn.textContent = 'Opponent: Computer: Medium';
     aiBtn.onclick = () => aiMenu.classList.toggle('visible');
-    
-    // Set initial AI button text based on stored preference
-    const difficultyLabels = { none: 'Human', easy: 'Computer: Easy', medium: 'Computer: Medium', hard: 'Computer: Hard' };
-    aiBtn.textContent = difficultyLabels[savedDifficulty] || 'Opponent: Computer';
+
+    document.getElementById('score-block-blue').style.display = 'flex';
+    document.getElementById('score-block-green').style.display = 'flex';
 
     aiMenu.querySelectorAll('button').forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
             const diff = btn.getAttribute('data-diff');
             game.aiDifficulty = diff === 'none' ? null : diff;
-            localStorage.setItem('skyscraperDifficulty', diff);
             aiBtn.textContent = 'Opponent: ' + btn.textContent;
             aiMenu.classList.remove('visible');
             game.reset();
         };
     });
 
-    const viewBtn = document.getElementById('skyscraper-view-btn');
-    const viewMenu = document.getElementById('skyscraper-view-menu');
+    const viewBtn = document.getElementById('view-btn');
+    const viewMenu = document.getElementById('view-menu');
     viewBtn.onclick = () => viewMenu.classList.toggle('visible');
 
     viewMenu.querySelectorAll('button').forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
             const viewType = btn.getAttribute('data-view');
-            document.getElementById('skyscraper-canvas2d').style.display = viewType === '2d' ? 'block' : 'none';
-            document.getElementById('skyscraper-canvas3d').style.display = viewType === '3d' ? 'block' : 'none';
+            document.getElementById('canvas2d').style.display = viewType === '2d' ? 'block' : 'none';
+            document.getElementById('canvas3d').style.display = viewType === '3d' ? 'block' : 'none';
             viewBtn.textContent = 'View: ' + (viewType === '2d' ? '2D' : '3D');
             viewMenu.classList.remove('visible');
-            if (viewType === '2d') skyscraperV2D.resize(); else skyscraperV3D.resize();
+            if (viewType === '2d') v2d.resize(); else v3d.resize();
         };
     });
 
     // 2D Canvas interaction is now handled within the View2D class
 
-    document.getElementById('skyscraper-reset-btn').onclick = () => game.reset();
-    document.getElementById('skyscraper-rules-btn').onclick = () => document.getElementById('skyscraper-rules-modal').style.display = 'flex';
+    document.getElementById('reset-btn').onclick = () => game.reset();
+    document.getElementById('rules-btn').onclick = () => document.getElementById('rules-modal').style.display = 'flex';
 
 
     // Click outside to close menus
     document.addEventListener('pointerdown', (e) => {
-        if (window.location.hash !== '#skyscraper') return;
         // Dropdown menus
         const menus = [
             { btn: modeBtn, menu: modeMenu },
@@ -1414,9 +1405,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Main Menu / HUD
-        const trigger = document.getElementById('skyscraper-menu-trigger');
-        const header = document.getElementById('skyscraper-main-header');
-        const hud = document.getElementById('skyscraper-hud');
+        const trigger = document.getElementById('menu-trigger');
+        const header = document.getElementById('main-header');
+        const hud = document.getElementById('hud');
         if (header.classList.contains('visible')) {
             if (!header.contains(e.target) && !trigger.contains(e.target) && !hud.contains(e.target)) {
                 trigger.classList.remove('active');
@@ -1426,32 +1417,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    window.addEventListener('resize', () => { 
-        if (window.location.hash === '#skyscraper') {
-            if (skyscraperV2D) skyscraperV2D.resize(); 
-            if (skyscraperV3D) skyscraperV3D.resize(); 
-        }
-    });
-    
-    function reinitView3D() {
-        // Destroy and recreate View3D so WebGL context is fresh (fixes black screen
-        // when section was display:none during initial page load on iOS Safari).
-        if (skyscraperV3D) skyscraperV3D.destroy();
-        skyscraperV3D = new View3D(document.getElementById('skyscraper-canvas3d'), game);
-        skyscraperV3D.resize();
-        skyscraperV2D.resize();
-        game.onStateChange();
-    }
-
-    // Initial trigger if landing directly on #skyscraper
-    setTimeout(() => {
-        if (window.location.hash === '#skyscraper') reinitView3D();
-    }, 150);
-
-    // Recreate View3D every time the user navigates to #skyscraper
-    window.addEventListener('hashchange', () => {
-        if (window.location.hash === '#skyscraper') {
-            setTimeout(reinitView3D, 150);
-        }
-    });
+    window.onresize = () => { if (v2d) v2d.resize(); if (v3d) v3d.resize(); };
+    setTimeout(() => { v2d.resize(); v3d.resize(); game.onStateChange(); }, 100);
 });
