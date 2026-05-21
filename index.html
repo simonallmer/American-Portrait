@@ -403,9 +403,10 @@
                 <div class="game-card" onclick="location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()" style="cursor: pointer;">
                     <h3>American Playing Cards</h3>
                     <p>A New System for the Frontier.</p>
-                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px; flex-wrap: wrap;">
                         <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#frontier'; frontierGame.currentGame = 'FRONTIER'; frontierGame.edition = 'STANDARD'; frontierGame.showSetup()">PLAY</span>
                         <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-apc'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); openProductViewer()" style="background: rgba(40,40,40,0.8); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);">VIEW PRODUCT</span>
                     </div>
                 </div>
                 <div class="game-card" onclick="window.location.href='games/skyscraper/skyscraper.html'" style="cursor: pointer;">
@@ -1206,5 +1207,27 @@
     <link rel="stylesheet" href="games/african-pyramid/pyramid-style.css">
     <script src="games/african-pyramid/pyramid-game.js"></script>
     <script src="app.js"></script>
+
+    <!-- Product Viewer Modal -->
+    <div id="product-viewer-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9000; flex-direction:column;">
+        <a onclick="closeProductViewer()" style="position:absolute; top:20px; left:20px; z-index:9100; font-size:1rem; color:rgba(255,255,255,0.7); text-decoration:none; font-weight:300; text-transform:uppercase; letter-spacing:2px; border:1px solid rgba(255,255,255,0.2); padding:0.5rem 1rem; cursor:pointer; transition:all 0.3s;">← BACK TO GAMES</a>
+        <iframe id="product-viewer-iframe" src="" style="width:100%; height:100%; border:none; flex:1;" allowfullscreen></iframe>
+    </div>
+    <script>
+        function openProductViewer() {
+            const modal = document.getElementById('product-viewer-modal');
+            const iframe = document.getElementById('product-viewer-iframe');
+            iframe.src = 'games/american-playing-cards/3d-box/index.html';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeProductViewer() {
+            const modal = document.getElementById('product-viewer-modal');
+            const iframe = document.getElementById('product-viewer-iframe');
+            modal.style.display = 'none';
+            iframe.src = '';
+            document.body.style.overflow = '';
+        }
+    </script>
 </body>
 </html>

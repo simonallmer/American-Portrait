@@ -35,6 +35,14 @@
 
     <div id="canvas-container"></div>
 
+    <!-- Play button top-right -->
+    <a onclick="(function(){ if(window.parent !== window){ window.parent.closeProductViewer(); window.parent.location.hash='#frontier'; setTimeout(function(){ if(window.parent.frontierGame) window.parent.frontierGame.showSetup(); }, 100); } else { window.location.href='../index.html'; } })()" style="position:fixed; top:2rem; right:2rem; z-index:100; font-size:1.2rem; color:rgba(255,255,255,0.85); font-weight:300; text-decoration:none; text-transform:uppercase; letter-spacing:0.05em; padding:0.5rem 1rem; border:1px solid rgba(255,255,255,0.2); cursor:pointer; transition:all 0.3s ease;">PLAY</a>
+
+    <!-- Preorder TBA button centered bottom -->
+    <div style="position:fixed; bottom:30px; left:50%; transform:translateX(-50%); z-index:100; pointer-events:none; text-align:center;">
+        <span style="font-size:0.8rem; color:rgba(212,175,55,0.5); font-weight:300; letter-spacing:0.2em; text-transform:uppercase; padding:0.4rem 1.5rem; border:1px solid rgba(212,175,55,0.3);">PREORDER &mdash; COMING SOON</span>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
