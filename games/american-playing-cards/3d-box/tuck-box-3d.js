@@ -868,68 +868,63 @@
             ledge.castShadow = true;
             easelGroup.add(ledge);
 
-            // ── Steel pen resting on the easel ledge (enemy list card) ──
-            // Ledge top surface is at local Y = 0.028 + 0.055/2 = 0.0555
-            // Pen radius 0.016 → centre at Y = 0.0555 + 0.016 = 0.0715
+            // ── Steel pen lying on the enemy list card face ──
+            // introCard local space: X = left↔right, Y = bottom↔top, Z+ = front face
+            // Front face at local Z = +0.003; pen radius 0.016 → centre Z = 0.022
             {
                 const penSteelMat  = new THREE.MeshStandardMaterial({ color: 0xc2cad4, roughness: 0.10, metalness: 0.95 });
                 const penSteelDark = new THREE.MeshStandardMaterial({ color: 0x808090, roughness: 0.12, metalness: 0.90 });
-                const penEasel = new THREE.Group();
-                penEasel.position.set(-0.06, 0.072, 0.13); // on ledge, slightly in front
-                penEasel.rotation.y = 0.22; // diagonal across ledge
-                // Body lying along X: rotate cylinder (default Y-axis) around Z by π/2
-                const peBody = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.40, 12), penSteelMat);
-                peBody.rotation.z = Math.PI / 2; penEasel.add(peBody);
+                const penCard = new THREE.Group();
+                penCard.position.set(0.12, -0.40, 0.022); // lower-centre of card face
+                penCard.rotation.z = 0.18;                // slight diagonal
+                // Body along X (cylinder Y-axis → X via rotation.z = π/2)
+                const pcBody = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.40, 12), penSteelMat);
+                pcBody.rotation.z = Math.PI / 2; penCard.add(pcBody);
                 // Nib at +X end
-                const peNib = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.042, 10), penSteelDark);
-                peNib.rotation.z = -Math.PI / 2; peNib.position.x = 0.221; penEasel.add(peNib);
-                // Clip bar on top
-                const peClip = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.005, 0.007), penSteelMat);
-                peClip.position.set(-0.01, 0.019, 0.0); penEasel.add(peClip);
+                const pcNib = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.042, 10), penSteelDark);
+                pcNib.rotation.z = -Math.PI / 2; pcNib.position.x = 0.221; penCard.add(pcNib);
+                // Clip bar
+                const pcClip = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.005, 0.007), penSteelMat);
+                pcClip.position.set(-0.01, 0.019, 0.0); penCard.add(pcClip);
                 // Band ring near cap end
-                const peBand = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 8, 16), penSteelMat);
-                peBand.rotation.x = Math.PI / 2; peBand.position.x = -0.15; penEasel.add(peBand);
-                penEasel.children.forEach(c => { c.castShadow = true; });
-                easelGroup.add(penEasel);
+                const pcBand = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 8, 16), penSteelMat);
+                pcBand.rotation.x = Math.PI / 2; pcBand.position.x = -0.15; penCard.add(pcBand);
+                penCard.children.forEach(c => { c.castShadow = true; });
+                introCard.add(penCard); // moves with the intro card
             }
 
-            // (pen is added as a child of the paper mesh below)
-
             // ── White House call button (wooden box, golden SNACKS / DRINKS buttons) ──
+            const callBtnGroups = []; // exposed for click handler
             {
                 const cbGroup = new THREE.Group();
-                cbGroup.position.set(0.6, -7, 8.2); // front of table, visible to viewer
+                cbGroup.position.set(0.6, -7, 8.2);
                 cbGroup.rotation.y = -0.12;
 
                 const cbW = 0.58, cbH = 0.17, cbD = 0.36;
 
-                // Dark mahogany wood sides + bottom
+                // Dark mahogany wood body
                 const woodCallMat = new THREE.MeshStandardMaterial({ color: 0x4a1206, roughness: 0.78, metalness: 0.0 });
                 const cbBody = new THREE.Mesh(new THREE.BoxGeometry(cbW, cbH, cbD), woodCallMat);
                 cbBody.position.y = cbH / 2;
                 cbGroup.add(cbBody);
 
-                // Aged brass top plate (sits flush on top of box)
+                // Aged brass top plate
                 const brassMat2 = new THREE.MeshStandardMaterial({ color: 0x7a6828, roughness: 0.28, metalness: 0.82 });
                 const cbTop = new THREE.Mesh(new THREE.BoxGeometry(cbW, 0.018, cbD), brassMat2);
                 cbTop.position.y = cbH + 0.009;
                 cbGroup.add(cbTop);
 
-                // Button canvas factory
+                // Button label canvas factory
                 const makeBtnTex = (label) => {
                     const bc = document.createElement('canvas');
                     bc.width = 192; bc.height = 192;
                     const bx = bc.getContext('2d');
-                    // Outer gold ring
                     bx.fillStyle = '#c9a227';
                     bx.beginPath(); bx.arc(96, 96, 88, 0, Math.PI * 2); bx.fill();
-                    // Inner cream face
                     bx.fillStyle = '#f0e080';
                     bx.beginPath(); bx.arc(96, 96, 72, 0, Math.PI * 2); bx.fill();
-                    // Dark engraved ring
                     bx.strokeStyle = '#6a5010'; bx.lineWidth = 5;
                     bx.beginPath(); bx.arc(96, 96, 72, 0, Math.PI * 2); bx.stroke();
-                    // Label text
                     bx.fillStyle = '#1a0800';
                     bx.font = 'bold 28px serif'; bx.textAlign = 'center'; bx.textBaseline = 'middle';
                     bx.fillText(label, 96, 96);
@@ -939,25 +934,40 @@
                 };
 
                 const goldDomeMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.22, metalness: 0.92 });
+                const collarMat   = new THREE.MeshStandardMaterial({ color: 0xb8960a, roughness: 0.20, metalness: 0.95 });
 
                 [[-0.14, 'SNACKS'], [0.14, 'DRINKS']].forEach(([bx2, label]) => {
-                    // Dome button (upper hemisphere)
-                    const domeGeo = new THREE.SphereGeometry(0.065, 20, 10, 0, Math.PI * 2, 0, Math.PI * 0.5);
-                    const dome = new THREE.Mesh(domeGeo, goldDomeMat);
-                    dome.position.set(bx2, cbH + 0.018, 0);
-                    cbGroup.add(dome);
-                    // Flat label disc on dome face
-                    const lblDiskMat = new THREE.MeshStandardMaterial({ map: makeBtnTex(label), roughness: 0.35, metalness: 0.55 });
-                    const lblDisk = new THREE.Mesh(new THREE.CircleGeometry(0.058, 24), lblDiskMat);
+                    // Each button is its own group so the whole assembly animates together
+                    const btnGroup = new THREE.Group();
+                    const restY = cbH + 0.018;
+                    btnGroup.position.set(bx2, restY, 0);
+                    btnGroup.userData.restY   = restY;
+                    btnGroup.userData.pressing = false;
+
+                    // Dome (hemisphere)
+                    const dome = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.065, 20, 10, 0, Math.PI * 2, 0, Math.PI * 0.5),
+                        goldDomeMat);
+                    btnGroup.add(dome);
+
+                    // Label disc sits on top of dome (+0.065 = dome radius)
+                    const lblDisk = new THREE.Mesh(
+                        new THREE.CircleGeometry(0.058, 24),
+                        new THREE.MeshStandardMaterial({ map: makeBtnTex(label), roughness: 0.35, metalness: 0.55 }));
                     lblDisk.rotation.x = -Math.PI / 2;
-                    lblDisk.position.set(bx2, cbH + 0.083, 0);
-                    cbGroup.add(lblDisk);
-                    // Gold collar ring at base of dome
-                    const collarMat = new THREE.MeshStandardMaterial({ color: 0xb8960a, roughness: 0.20, metalness: 0.95 });
-                    const collar = new THREE.Mesh(new THREE.TorusGeometry(0.065, 0.009, 8, 20), collarMat);
+                    lblDisk.position.y = 0.065;
+                    btnGroup.add(lblDisk);
+
+                    // Collar ring at base
+                    const collar = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.065, 0.009, 8, 20),
+                        collarMat);
                     collar.rotation.x = Math.PI / 2;
-                    collar.position.set(bx2, cbH + 0.018, 0);
-                    cbGroup.add(collar);
+                    btnGroup.add(collar);
+
+                    btnGroup.children.forEach(c => { c.castShadow = true; c.receiveShadow = true; });
+                    cbGroup.add(btnGroup);
+                    callBtnGroups.push(btnGroup); // expose to click handler
                 });
 
                 cbGroup.children.forEach(c => { c.castShadow = true; c.receiveShadow = true; });
@@ -1144,6 +1154,32 @@
                 // Click the tuck box to open / close
                 const boxHits = raycaster.intersectObjects([body, flap, cards], false);
                 if (boxHits.length > 0) { toggleBox(); return; }
+
+                // Click call buttons — press down then spring back
+                const allBtnMeshes = callBtnGroups.flatMap(g => g.children);
+                const btnHits = raycaster.intersectObjects(allBtnMeshes, false);
+                if (btnHits.length > 0) {
+                    // Find the parent btnGroup
+                    const hitMesh = btnHits[0].object;
+                    const btnGroup = hitMesh.parent;
+                    if (btnGroup && !btnGroup.userData.pressing) {
+                        btnGroup.userData.pressing = true;
+                        const restY = btnGroup.userData.restY;
+                        gsap.to(btnGroup.position, {
+                            y: restY - 0.028,
+                            duration: 0.10, ease: 'power3.in',
+                            onComplete: () => {
+                                gsap.to(btnGroup.position, {
+                                    y: restY,
+                                    duration: 0.55, ease: 'elastic.out(1.3, 0.45)',
+                                    onComplete: () => { btnGroup.userData.pressing = false; }
+                                });
+                            }
+                        });
+                    }
+                    return;
+                }
+
                 const hits = raycaster.intersectObject(envelope);
                 if (hits.length > 0) {
                     paperOut = !paperOut;
