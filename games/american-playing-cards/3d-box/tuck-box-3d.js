@@ -1044,24 +1044,25 @@
                 const pSteelMat  = new THREE.MeshStandardMaterial({ color: 0xc0c8d2, roughness: 0.10, metalness: 0.94 });
                 const pSteelDark = new THREE.MeshStandardMaterial({ color: 0x80889a, roughness: 0.12, metalness: 0.90 });
                 const penOnPaper = new THREE.Group();
-                // Right side of paper, slight diagonal, resting on surface (Y = tiny offset above paper)
-                penOnPaper.position.set(0.88, 0.020, 0.10);
-                penOnPaper.rotation.y = 0.20; // slight angle
-                // Body
-                const pBody = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.55, 12), pSteelMat);
+                // Right side of paper, clearly above surface — Y = half-cylinder-radius above top face
+                // Paper top face is at local Y = +0.004; pen radius = 0.030 → center at Y = 0.004+0.030 = 0.034
+                penOnPaper.position.set(0.82, 0.038, 0.05);
+                penOnPaper.rotation.y = 0.18; // slight diagonal angle
+                // Body (lying flat: rotate axis from Y → Z)
+                const pBody = new THREE.Mesh(new THREE.CylinderGeometry(0.030, 0.030, 0.68, 14), pSteelMat);
                 pBody.rotation.x = Math.PI / 2; penOnPaper.add(pBody);
                 // Nib tip
-                const pNib = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.055, 10), pSteelDark);
+                const pNib = new THREE.Mesh(new THREE.ConeGeometry(0.030, 0.08, 12), pSteelDark);
                 pNib.rotation.x = -Math.PI / 2;
-                pNib.position.z = 0.302; penOnPaper.add(pNib);
+                pNib.position.z = 0.38; penOnPaper.add(pNib);
                 // Pocket clip bar
-                const pClip = new THREE.Mesh(new THREE.BoxGeometry(0.007, 0.22, 0.007), pSteelMat);
+                const pClip = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.30, 0.010), pSteelMat);
                 pClip.rotation.x = Math.PI / 2;
-                pClip.position.set(0.021, 0, -0.05); penOnPaper.add(pClip);
+                pClip.position.set(0.032, 0, -0.06); penOnPaper.add(pClip);
                 // Band ring near cap end
-                const pBand = new THREE.Mesh(new THREE.TorusGeometry(0.019, 0.005, 8, 16), pSteelMat);
+                const pBand = new THREE.Mesh(new THREE.TorusGeometry(0.032, 0.007, 8, 18), pSteelMat);
                 pBand.rotation.y = Math.PI / 2;
-                pBand.position.z = -0.21; penOnPaper.add(pBand);
+                pBand.position.z = -0.27; penOnPaper.add(pBand);
                 penOnPaper.children.forEach(c => { c.castShadow = true; });
                 paper.add(penOnPaper); // child of paper → moves/hides with it
             }
@@ -1140,13 +1141,3 @@
 
         init();
         
-        // Hide loading after a delay to ensure font/textures are ready
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loading');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.display = 'none'; }, 500);
-                }
-            }, 1000);
-        });
