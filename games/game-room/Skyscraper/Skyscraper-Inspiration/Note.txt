@@ -1,0 +1,3 @@
+@claude
+
+Make sure the displayed Skyscraper game has the full 5x10 layout as in 3/4 player mode and looks metallic and premium as in the images.
