@@ -1515,20 +1515,24 @@
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
 
-            // Track mousedown position so OrbitControls drags don't fire as clicks
+            // Track pointerdown position — pointerup fires more reliably than
+            // 'click' when OrbitControls is active on the same canvas element.
             let mouseDownX = 0, mouseDownY = 0;
-            renderer.domElement.addEventListener('mousedown', (e) => {
+            renderer.domElement.addEventListener('pointerdown', (e) => {
                 mouseDownX = e.clientX; mouseDownY = e.clientY;
             });
 
-            renderer.domElement.addEventListener('click', (e) => {
-                // Ignore if mouse moved more than 4px (orbit drag, not a real click)
+            renderer.domElement.addEventListener('pointerup', (e) => {
+                // Ignore if pointer moved more than 4px (orbit drag, not a tap)
                 const dx = e.clientX - mouseDownX, dy = e.clientY - mouseDownY;
                 if (Math.sqrt(dx * dx + dy * dy) > 4) return;
 
                 const rect = renderer.domElement.getBoundingClientRect();
                 mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
                 mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
+
+                // Ensure all world matrices are current before raycasting
+                scene.updateMatrixWorld(true);
                 raycaster.setFromCamera(mouse, camera);
 
                 // ① Envelope/paper → toggle letter first (highest priority — small target)
