@@ -4519,6 +4519,15 @@ body.asian-portrait .landing-logo-text {
     height: 1em;
 }
 
+/* ── Quiz back buttons ────────────────────────────────────────────────────
+   These are position:fixed so they sit above the quiz overlay's backdrop-filter
+   (which blurred them when they were position:absolute behind z-index:200).
+   Hidden by default; shown only when their section is the active view. */
+body:has(#state-quiz.active) a[href="#games"].back-abs,
+body:has(#president-quiz.active) a[href="#games"].back-abs {
+    display: block !important;
+}
+
 /* ── Demo Timer visibility ────────────────────────────────────────────────
    Hide the fixed timer on all non-game sections; show only when a game
    is the active view. Uses :has() which is supported in all modern browsers. */
