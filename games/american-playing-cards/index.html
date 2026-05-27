@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Playing Cards — American Portrait</title>
+    <!-- Base resolves all relative paths from the project root -->
+    <base href="../../">
+    <link rel="stylesheet" href="styles.css?v=1.2">
+    <style>
+        /* Standalone page: body fills viewport like a .view.active */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--bg-color, #060d26);
+        }
+        #standalone-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100dvh;
+            overflow: hidden;
+        }
+        /* Override .view show/hide — always visible here */
+        #frontier {
+            display: block !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        /* Back button for standalone — top left, styled to match rest of AP */
+        #standalone-back {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 200;
+            font-family: inherit;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-color, #f0f0f0);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(240,240,240,0.25);
+            transition: all 0.3s ease;
+            background: rgba(6, 13, 38, 0.6);
+            backdrop-filter: blur(8px);
+        }
+        #standalone-back:hover {
+            background: var(--text-color, #f0f0f0);
+            color: var(--bg-color, #060d26);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back to Games hub -->
+    <a id="standalone-back" href="index.html#games">← GAMES</a>
+
+    <div id="standalone-wrapper">
+        <section id="frontier" class="view active" style="position: relative;">
+            <div id="game-container">
+
+                <!-- Top HUD -->
+                <div class="hud" id="main-hud" style="display: none;">
+                    <div class="hud-item">
+                        <span class="label">Round</span>
+                        <span class="value"><span id="round-display">1</span> / 5</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="label">Pot</span>
+                        <span class="value" style="color: #10b981;" id="pot-display">$0</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="label">Current Bet</span>
+                        <span class="value" style="color: #f59e0b;" id="current-bet-display">$0</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="label">Deck</span>
+                        <span class="value" style="font-size: 1rem; color: #888;" id="deck-display">50</span>
+                    </div>
+                </div>
+
+                <!-- Burger Menu Button -->
+                <button id="frontier-menu-btn" onclick="frontierGame.toggleMenu()" title="Game Menu"
+                        style="top: 25px; right: 25px; position: absolute; z-index: 100;">
+                    <span>&#9776;</span>
+                </button>
+
+                <!-- Frontier Menu Dropdown -->
+                <div id="frontier-menu-dropdown">
+                    <button onclick="frontierGame.showSetup()" style="color: var(--gold); border-bottom: 1px solid #333;">NEW GAME</button>
+                    <button onclick="frontierGame.toggleRules()" style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">RULES</button>
+                    <button onclick="frontierGame.showAllCards()" style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">ALL CARDS</button>
+                    <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
+                    <a href="index.html#games" style="text-decoration: none; display: block; width: 100%;">
+                        <button style="color: var(--text-color);">BACK TO GAMES</button>
+                    </a>
+                    <a href="https://simonallmer.com" target="_top" style="text-decoration: none; display: block; width: 100%;">
+                        <button style="color: var(--red-accent); border-color: rgba(185, 28, 28, 0.3);">BACK TO SA</button>
+                    </a>
+                </div>
+
+                <div id="player-status-grid"></div>
+                <div id="message-area"></div>
+
+                <div id="play-area">
+                    <div class="cards-container" id="cards-container"></div>
+                    <button id="mulligan-btn" class="mulligan-btn" style="display: none;"
+                            onclick="frontierGame.useMulligan()">Free Mulligan (Once Per Game)</button>
+                </div>
+
+                <div id="controls-area" style="display: none;"></div>
+
+                <div id="history-panel">
+                    <h3 style="color: var(--gold); text-align: center; font-family: inherit; margin-bottom: 15px;">Showdown</h3>
+                    <div id="history-content"></div>
+                </div>
+
+                <div id="overlay">
+                    <h1 id="overlay-title">PASS DEVICE</h1>
+                    <p id="overlay-desc">Hand the device to player.</p>
+                    <button class="primary-btn" id="overlay-main-btn" onclick="frontierGame.startTurn()">REVEAL CARDS</button>
+                    <div id="overlay-actions" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;"></div>
+                </div>
+
+                <!-- ALL CARDS MODAL -->
+                <div id="all-cards-modal" class="modal">
+                    <div class="modal-content">
+                        <button class="modal-close" onclick="frontierGame.hideAllCards()">&times;</button>
+                        <h2 style="color: var(--gold); margin-bottom: 20px;">The Deck</h2>
+                        <div id="all-cards-grid"></div>
+                    </div>
+                </div>
+
+                <!-- RULES MODAL -->
+                <div id="rules-modal" class="modal">
+                    <div id="rules-inner-content-wrapper">
+                        <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
+                        <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The Frontier Rulebook</h2>
+                        <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
+                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. The Deck (50 Cards)</h3>
+                            <p>There are 5 categories, each containing 10 cards numbered 1 through 10:</p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li><span style="color: var(--deep-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--upper-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg></span> (Red Alliance)</li>
+                                <li><span style="color: var(--indust-east-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--west-frontier-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg></span> (Blue Alliance)</li>
+                                <li><span style="color: var(--border-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg></span> (Wildcards)</li>
+                            </ul>
+                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. Round Structure</h3>
+                            <p>The game lasts <strong>5 Rounds</strong>. Hand capacity scales up by 1 card each round.</p>
+                            <ol>
+                                <li><strong>Turns:</strong> Players TAKE TURNS to bet. You must CALL (match), RAISE (increase), or FOLD.</li>
+                                <li><strong>Resolution:</strong> After the last turn, the best hand takes the Pot.</li>
+                                <li><strong>Discard &amp; Draw:</strong> After each round, played cards are discarded. You keep your unplayed hand and draw cards to reach your capacity.</li>
+                            </ol>
+                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Victory &amp; Tie-Breakers</h3>
+                            <p>The winner is the player with the <strong>Most Cash</strong> at the end of Round 5!</p>
+                            <p><strong>Split Pots:</strong> If two or more commanders deploy hands of identical strength, the Pot is divided equally. Any remaining coin ($1) is awarded to the first tied commander in the turn order.</p>
+                            <p><strong>Hierarchy (Superior Volume Prevails):</strong> A configuration deploying a greater number of cards universally overcomes one deploying fewer.</p>
+                            <ul style="background: rgba(255,255,255,0.03); padding: 20px; border: 1px solid #333; list-style: none; font-size: 0.85rem;">
+                                <li><strong style="color: #e879f9;">Tier 1:</strong> 5 of a Rank, Pure Suit, Coalition (Alliance), or Campaign (Sequence)</li>
+                                <li><strong style="color: #fb923c;">Tier 2:</strong> 4 of a Rank, Pure, Coalition, or Campaign</li>
+                                <li><strong style="color: #c084fc;">Tier 3:</strong> 3 of a Rank, Pure, Coalition, or Campaign</li>
+                                <li><strong style="color: #34d399;">Tier 4:</strong> Pairs</li>
+                                <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards. Pure (Product x 2), Coalition (Product), Divided (Sum). <strong>Rank 1</strong> imitates the highest card in the hand.</li>
+                            </ul>
+                            <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /#game-container -->
+
+            <!-- PRESIDENT PROFILE PANEL -->
+            <div id="president-profile-panel">
+                <button class="panel-close" onclick="frontierGame.toggleProfilePanel()">
+                    <svg class="arrow-right" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <svg class="arrow-left" viewBox="0 0 24 24" fill="none" stroke-width="2" style="display:none;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <div id="profile-content">
+                    <div class="profile-placeholder">Select a President Card to view Profile</div>
+                </div>
+            </div>
+            <button class="panel-toggle-fab" onclick="frontierGame.toggleProfilePanel()">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+
+        </section><!-- /#frontier -->
+    </div><!-- /#standalone-wrapper -->
+
+    <!-- Data files (paths resolve via <base href="../../">) -->
+    <script src="games/quizzes/presidents_data.js"></script>
+    <script src="games/quizzes/states_data.js"></script>
+
+    <!-- Frontier game logic -->
+    <script src="games/american-playing-cards/frontier.js"></script>
+
+    <!-- Demo timer (bottom-left, matches Skyscraper style) -->
+    <script src="games/american-playing-cards/demo-timer.js"></script>
+
+    <script>
+        // Auto-start the game on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof frontierGame !== 'undefined') {
+                frontierGame.currentGame = 'FRONTIER';
+                frontierGame.edition = 'STANDARD';
+                frontierGame.showSetup();
+            }
+        });
+
+        // Override any hash-based "back to games" hrefs in frontier.js output
+        // so they resolve correctly when used standalone
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href="#games"]');
+            if (a) {
+                e.preventDefault();
+                window.location.href = 'index.html#games';
+            }
+        }, true);
+    </script>
+</body>
+</html>

@@ -1523,9 +1523,9 @@
             });
 
             renderer.domElement.addEventListener('pointerup', (e) => {
-                // Ignore if pointer moved more than 4px (orbit drag, not a tap)
+                // Ignore if pointer moved more than 8px (orbit drag, not a tap)
                 const dx = e.clientX - mouseDownX, dy = e.clientY - mouseDownY;
-                if (Math.sqrt(dx * dx + dy * dy) > 4) return;
+                if (Math.sqrt(dx * dx + dy * dy) > 8) return;
 
                 const rect = renderer.domElement.getBoundingClientRect();
                 mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;

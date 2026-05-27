@@ -154,6 +154,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Demo Timer: lazy-load on first game section visit so the clock
+            // only starts when the player actually navigates to a game (not
+            // on the start page / music / chronicle). Shared localStorage key
+            // means APC and Skyscraper count from the same pool.
+            if ((targetId === 'frontier' || targetId === 'skyscraper' || targetId === 'state-quiz' || targetId === 'president-quiz') && !window.demoTimerLoaded) {
+                window.demoTimerLoaded = true;
+                const demoScript = document.createElement('script');
+                demoScript.src = 'games/skyscraper/demo-timer.js';
+                document.body.appendChild(demoScript);
+            }
+
             // Skyscraper: auto-show HUD/header (View3D reinit handled in skyscraper-game.js)
             if (targetId === 'skyscraper') {
                 setTimeout(() => {

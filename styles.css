@@ -4518,3 +4518,16 @@ body.asian-portrait .landing-logo-text {
     width: 0.65em;
     height: 1em;
 }
+
+/* ── Demo Timer visibility ────────────────────────────────────────────────
+   Hide the fixed timer on all non-game sections; show only when a game
+   is the active view. Uses :has() which is supported in all modern browsers. */
+#permanent-demo-timer {
+    display: none !important;
+}
+body:has(#frontier.active) #permanent-demo-timer,
+body:has(#skyscraper.active) #permanent-demo-timer,
+body:has(#state-quiz.active) #permanent-demo-timer,
+body:has(#president-quiz.active) #permanent-demo-timer {
+    display: block !important;
+}

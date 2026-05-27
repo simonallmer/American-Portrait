@@ -15,7 +15,7 @@
             src: url('../../resources/simon-allmer/Azonix.otf') format('opentype');
         }
         body { margin: 0; padding: 0; overflow: hidden; background: #1a1c23; color: white; font-family: 'Optima Black', sans-serif; }
-        #canvas-container { width: 100vw; height: 100vh; cursor: move; }
+        #canvas-container { width: 100vw; height: 100vh; cursor: move; position: relative; z-index: 0; }
 
         h1 { color: #d4af37; letter-spacing: 2px; margin: 0; font-size: 1.5rem; }
         p { color: #ccc; margin: 5px 0; }
@@ -31,20 +31,20 @@
     <!-- Return to Games — top left -->
     <a id="ui-back" href="../../index.html#games"
        onclick="if(window.parent!==window){event.preventDefault();if(typeof window.parent.closeProductViewer==='function')window.parent.closeProductViewer();window.parent.location.hash='#games';}"
-       style="position:fixed;top:2rem;left:2rem;z-index:100;font-size:1rem;font-family:inherit;color:rgba(255,255,255,0.75);font-weight:300;text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 1rem;border:1px solid rgba(255,255,255,0.18);cursor:pointer;transition:all 0.3s ease;">← GAMES</a>
+       style="position:fixed;top:2rem;left:2rem;z-index:100;font-size:1rem;font-family:inherit;color:#fff;font-weight:300;text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 1rem;border:1px solid rgba(255,255,255,0.7);cursor:pointer;transition:all 0.3s ease;mix-blend-mode:difference;background:transparent;">← GAMES</a>
 
     <!-- Play button top-right — opens game selector -->
     <button id="ui-play" onclick="document.getElementById('game-select-overlay').style.display='flex'"
-       style="position:fixed;top:2rem;right:2rem;z-index:100;font-size:1.2rem;font-family:inherit;color:rgba(255,255,255,0.85);font-weight:300;background:none;border:1px solid rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 1.4rem;cursor:pointer;transition:all 0.3s ease;">PLAY</button>
+       style="position:fixed;top:2rem;right:2rem;z-index:100;font-size:1.2rem;font-family:inherit;color:#fff;font-weight:300;background:transparent;border:1px solid rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 1.4rem;cursor:pointer;transition:all 0.3s ease;mix-blend-mode:difference;">PLAY</button>
 
     <!-- Game selection overlay -->
     <div id="game-select-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
         <div style="color:rgba(255,255,255,0.45);font-size:0.8rem;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:12px;">Select Game</div>
-        <a href="../../index.html#frontier"
-           onclick="event.preventDefault();document.getElementById('game-select-overlay').style.display='none';if(window.parent!==window){window.parent.closeProductViewer&&window.parent.closeProductViewer();window.parent.location.hash='#frontier';setTimeout(function(){if(window.parent.frontierGame)window.parent.frontierGame.showSetup();},100);}else{window.location.href='../../index.html#frontier';}"
+        <a href="../american-playing-cards/index.html"
+           onclick="event.preventDefault();document.getElementById('game-select-overlay').style.display='none';window.location.href='../american-playing-cards/index.html';"
            style="font-size:1.4rem;font-family:inherit;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;padding:0.8rem 3rem;border:1px solid rgba(255,255,255,0.3);cursor:pointer;transition:all 0.3s ease;display:block;text-align:center;">American Playing Cards</a>
-        <a href="../../index.html#skyscraper"
-           onclick="event.preventDefault();document.getElementById('game-select-overlay').style.display='none';if(window.parent!==window){window.parent.closeProductViewer&&window.parent.closeProductViewer();window.parent.location.hash='#skyscraper';}else{window.location.href='../../index.html#skyscraper';}"
+        <a href="../skyscraper/skyscraper.html"
+           onclick="event.preventDefault();document.getElementById('game-select-overlay').style.display='none';window.location.href='../skyscraper/skyscraper.html';"
            style="font-size:1.4rem;font-family:inherit;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;padding:0.8rem 3rem;border:1px solid rgba(255,255,255,0.3);cursor:pointer;transition:all 0.3s ease;display:block;text-align:center;">Skyscraper</a>
         <span onclick="document.getElementById('game-select-overlay').style.display='none'"
               style="margin-top:20px;font-size:0.85rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.15em;cursor:pointer;">✕ CLOSE</span>
@@ -62,7 +62,7 @@
             <h2 style="font-size:2rem;color:#fff;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;margin:0 0 14px;">American<br>Playing Cards</h2>
             <p style="color:rgba(255,255,255,0.5);font-size:0.95rem;line-height:1.6;margin:0 0 36px;">A new system for the Frontier.<br>Fifty cards, four suits — reimagined from the ground up.</p>
             <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
-                <a onclick="(function(){document.getElementById('apc-modal').style.display='none';window.location.href='../../index.html#frontier';})()"
+                <a onclick="(function(){document.getElementById('apc-modal').style.display='none';window.location.href='../american-playing-cards/index.html';})()"
                    style="font-size:1rem;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:0.12em;padding:0.75rem 3rem;border:1px solid rgba(255,255,255,0.35);cursor:pointer;width:200px;">PLAY</a>
                 <a onclick="(function(){document.getElementById('apc-modal').style.display='none';window.location.href='../../index.html#about-apc';})()"
                    style="font-size:1rem;color:rgba(212,175,55,0.85);text-decoration:none;text-transform:uppercase;letter-spacing:0.12em;padding:0.75rem 3rem;border:1px solid rgba(212,175,55,0.3);cursor:pointer;width:200px;">ABOUT</a>
@@ -80,7 +80,7 @@
             <h2 style="font-size:2rem;color:#fff;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;margin:0 0 14px;">Skyscraper</h2>
             <p style="color:rgba(255,255,255,0.5);font-size:0.95rem;line-height:1.6;margin:0 0 36px;">To light up the New York skyline,<br>you must start at the ground floor.</p>
             <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
-                <a onclick="(function(){document.getElementById('sky-modal').style.display='none';window.location.href='../../index.html#skyscraper';})()"
+                <a onclick="(function(){document.getElementById('sky-modal').style.display='none';window.location.href='../skyscraper/skyscraper.html';})()"
                    style="font-size:1rem;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:0.12em;padding:0.75rem 3rem;border:1px solid rgba(255,255,255,0.35);cursor:pointer;width:200px;">PLAY</a>
                 <a onclick="(function(){document.getElementById('sky-modal').style.display='none';window.location.href='../../index.html#about-skyscraper';})()"
                    style="font-size:1rem;color:rgba(212,175,55,0.85);text-decoration:none;text-transform:uppercase;letter-spacing:0.12em;padding:0.75rem 3rem;border:1px solid rgba(212,175,55,0.3);cursor:pointer;width:200px;">ABOUT</a>
