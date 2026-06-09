@@ -232,13 +232,20 @@ document.addEventListener('DOMContentLoaded', () => {
         "Comic Book Part 1/4"
     );
     initPortraitGrid(
-        'carter-portrait', 
-        1925, 
-        1976, 
-        "The Blood Beneath the Soil", 
+        'carter-portrait',
+        1925,
+        1976,
+        "The Blood Beneath the Soil",
         "Comic Book Part 1/4"
     );
-    
+    initPortraitGrid(
+        'gordy-portrait',
+        1929,
+        1959,
+        "Berry Gordy",
+        "Comic Book Part 1/4"
+    );
+
     initChronicleGrid();
     initMusicPlayer();
     initMusicHandlers();
