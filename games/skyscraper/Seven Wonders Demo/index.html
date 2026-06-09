@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seven Wonders - Ancient Strategy Games</title>
+    <meta name="description"
+        content="Play all seven titles from the legendary Seven Wonders abstract strategy game series">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <a href="https://simonallmer.com/arcade" class="back-link">← Back to Arcade</a>
+
+    <div class="container">
+        <header class="main-header">
+            <h1 class="title">SEVEN WONDERS</h1>
+            <div id="menu-demo-welcome" class="menu-demo-welcome">
+                <p class="demo-subtitle">DEMO VERSION</p>
+                <p id="menu-demo-timer">Time remaining: <span id="menu-timer-span">--:--</span></p>
+            </div>
+        </header>
+
+        <div class="menu-container-3d">
+            <div class="menu-flipper">
+                <div class="menu-face menu-front">
+                    <nav class="game-menu">
+                        <ul class="game-list">
+                            <li><a href="#pyramid" class="game-link" data-id="pyramid">Pyramid</a></li>
+                            <li><a href="#gardens" class="game-link" data-id="gardens">Gardens</a></li>
+                            <li><a href="#temple" class="game-link" data-id="temple">Temple</a></li>
+                            <li><a href="#statue" class="game-link" data-id="statue">Statue</a></li>
+                            <li><a href="#mausoleum" class="game-link" data-id="mausoleum">Mausoleum</a></li>
+                            <li><a href="#colossus" class="game-link" data-id="colossus">Colossus</a></li>
+                            <li><a href="pharos.html" class="game-link" data-id="pharos">Pharos</a></li>
+                        </ul>
+                        <div class="menu-toggle-wrapper">
+                            <button id="show-new-wonders" class="action-btn menu-toggle-btn">New Seven Wonders</button>
+                        </div>
+                    </nav>
+                </div>
+                <div class="menu-face menu-back">
+                    <nav class="game-menu">
+                        <ul class="game-list">
+                            <li><a href="colosseum.html" class="game-link coming-soon" data-id="colosseum">Colosseum</a>
+                            </li>
+                            <li><a href="#" class="game-link coming-soon" data-id="great_wall">Great Wall</a></li>
+                            <li><a href="pagoda.html" class="game-link coming-soon" data-id="pagoda">Tower</a></li>
+                            <li><a href="citadel.html" class="game-link coming-soon" data-id="citadel">Citadel</a></li>
+                            <li><a href="basilica.html" class="game-link coming-soon" data-id="basilica">Cathedral</a>
+                            </li>
+                            <li><a href="palace.html" class="game-link coming-soon" data-id="palace">Palace</a></li>
+                            <li><a href="skyscraper.html" class="game-link" data-id="skyscraper">Skyscraper</a></li>
+                        </ul>
+                        <div class="menu-toggle-wrapper">
+                            <button id="show-old-wonders" class="action-btn menu-toggle-btn">Old Seven Wonders</button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="extra-buttons">
+            <a href="events.html" class="action-btn back-btn">Events</a>
+            <a href="store.html" class="action-btn back-btn">Store</a>
+        </div>
+
+        <footer class="copyright">
+            <p><a href="https://sevenwondersgames.com"
+                    style="color: inherit; text-decoration: none;">SevenWondersGames.com</a></p>
+            <p><a href="https://instagram.com/sevenwondersgames"
+                    style="color: inherit; text-decoration: none;">@SevenWondersGames</a></p>
+            <p>&copy; 2020-2026 Simon Allmer Entertainment</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="demo-timer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMenuDemoTimer();
+            setInterval(updateMenuDemoTimer, 1000);
+        });
+        
+        function updateMenuDemoTimer() {
+            const span = document.getElementById('menu-timer-span');
+            if (span) {
+                span.textContent = formatTime(getRemainingTime());
+                if (isDemoExpired()) {
+                    document.getElementById('menu-demo-timer').innerHTML = 'Demo time expired. <a href="https://simonallmer.com/arcade" target="_blank" rel="noopener noreferrer" style="color: #C5A059;">Subscribe</a>';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

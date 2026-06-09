@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple - Seven Wonders</title>
+    <meta name="description" content="Play Temple, an ancient strategy game from the Seven Wonders series">
+    <link rel="stylesheet" href="temple-style.css">
+</head>
+
+<body class="view-3d">
+    <!-- Back to Menu -->
+    <a href="index.html" class="back-link">← Menu</a>
+
+    <div id="menu-trigger">
+        <div class="sky-line"></div>
+        <div class="sky-line"></div>
+        <div class="sky-line"></div>
+    </div>
+
+    <header id="main-header">
+        <h1>TEMPLE</h1>
+    </header>
+
+    <div id="game-layout">
+        <div id="view-container">
+            <svg id="game-board" viewBox="0 0 100 120"></svg>
+            <div id="canvas3d"></div>
+        </div>
+
+        <button id="cancel-button" class="hidden">Cancel Move</button>
+
+        <div id="hud">
+            <div id="status-panel-top" style="position: absolute; top: -45px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; color: #4a4a4a; font-family: 'Cinzel', serif; font-size: 0.75rem; white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; font-weight: bold; text-shadow: 0 1px 2px rgba(255,255,255,0.8);">
+                <div id="player-color" style="width: 14px; height: 14px; border: 1px solid #a39e93; border-radius: 50%; background-color: #fff; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 5px rgba(255,255,255,0.5);"></div>
+                <span id="status-text">White to move</span>
+            </div>
+            <div id="temple-controls" class="controls">
+                <div class="players-dropdown">
+                    <button id="players-btn">2 Players</button>
+                    <div class="players-menu" id="players-menu">
+                        <button class="active">2 Players</button>
+                        <button disabled style="opacity: 0.6; cursor: not-allowed;">3 Players (Coming Soon)</button>
+                        <button disabled style="opacity: 0.6; cursor: not-allowed;">4 Players (Coming Soon)</button>
+                    </div>
+                </div>
+                <div class="opp-dropdown">
+                    <button id="opponent-btn">Opponent: Human</button>
+                    <div class="opp-menu" id="opponent-menu">
+                        <button id="btn-opp-human" data-opp="human">Human</button>
+                        <button id="btn-opp-easy" data-opp="easy">Computer: Easy</button>
+                        <button id="btn-opp-medium" data-opp="medium">Computer: Medium</button>
+                        <button id="btn-opp-hard" data-opp="hard">Computer: Hard</button>
+                    </div>
+                </div>
+                <div class="view-dropdown">
+                    <button id="view-btn">View: 3D</button>
+                    <div class="view-menu" id="view-menu">
+                        <button id="btn-view-3d" data-view="3d">3D View</button>
+                        <button disabled style="opacity: 0.6; cursor: not-allowed;">2D View (Coming Soon)</button>
+                    </div>
+                </div>
+                <button id="rules-btn">Rules</button>
+                <button id="reset-button">New Game</button>
+                <button id="close-hud-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Box -->
+    <div id="message-box" class="message-box hidden">
+        <!-- Game messages -->
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="message-overlay hidden">
+        <div class="message-content">
+            <h2 id="modal-title" class="message-title"></h2>
+            <p id="modal-text" class="message-text"></p>
+            <div class="modal-actions">
+                <button id="modal-new-game" class="modal-btn">New Game</button>
+                <button id="modal-menu" class="modal-btn">Back to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="rules-modal hidden">
+        <div class="rules-overlay" id="rules-overlay"></div>
+        <div class="rules-content">
+            <h2>Temple Rules</h2>
+            <div class="rules-body">
+                <p><strong>GOAL</strong>
+                    Bring one of your stones to the marked Artemis field on the opposite side of the board.</p>
+
+                <p><strong>SETUP</strong>
+                    Each player's 9 stones are automatically placed in the triangle surrounding their own Artemis field
+                    — 3 lines of stones at the start.</p>
+
+                <p><strong>GAMEPLAY</strong>
+                    White moves first. Players alternate turns. Each stone has two options:</p>
+
+                <p><strong>1 — WALK</strong>
+                    Move the stone to an unoccupied adjacent field by following the path. A stone can only move forwards
+                    or sideways — never backwards.</p>
+
+                <p><strong>2 — LEAP</strong>
+                    Leap over an adjacent stone to land on an unoccupied field beyond it. If you leap over an
+                    <em>opponent's</em> stone, that stone is removed. If you leap over a stone of your <em>own</em>
+                    color, nothing happens to it.
+                    <br>You may leap over more than one stone in a single turn, provided you always land on an
+                    unoccupied field in between. The direction may change by up to 45° after each landing. Stones cannot
+                    leap over 2 or more stones standing next to each other.
+                    <br><em>Leap of Faith:</em> A leap may also carry a stone outside the Temple entirely — that stone
+                    is then removed from the game.
+                </p>
+
+                <p><strong>WINNING</strong>
+                    The first player to place a stone on the opposing Artemis field wins. If a threefold repetition
+                    occurs, the game ends in a draw. A player may also concede at any time by skipping their turn.</p>
+            </div>
+            <button class="action-btn rules-close-btn" id="rules-close-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="game-footer" style="margin-top: 30px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #a39e93; letter-spacing: 2px; text-align: center;">
+        <p>Design: Simon Allmer</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+    <script src="temple-game.js"></script>
+    <script src="temple-3d.js"></script>
+    <script>
+        document.getElementById('rules-btn').addEventListener('click', function () {
+            document.getElementById('rules-modal').classList.remove('hidden');
+        });
+        document.getElementById('rules-close-btn').addEventListener('click', function () {
+            document.getElementById('rules-modal').classList.add('hidden');
+        });
+        document.getElementById('rules-overlay').addEventListener('click', function () {
+            document.getElementById('rules-modal').classList.add('hidden');
+        });
+    </script>
+    <script src="demo-timer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            addGameMenuTimer('temple-controls');
+        });
+    </script>
+</body>
+
+</html>
