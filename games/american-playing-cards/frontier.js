@@ -59,6 +59,14 @@ function cardDisplayVal(val) {
     return val;
 }
 
+const CARD_IMG_SUIT_ORDER = ['INDUST_EAST', 'WEST_FRONTIER', 'DEEP_SOUTH', 'UPPER_SOUTH', 'BORDER'];
+const CARD_IMG_SUIT_NAMES = { INDUST_EAST: 'Clubs', WEST_FRONTIER: 'Spades', DEEP_SOUTH: 'Hearts', UPPER_SOUTH: 'Diamonds', BORDER: 'Stars' };
+function getCardImageUrl(suitId, val) {
+    const fileNum = (CARD_IMG_SUIT_ORDER.indexOf(suitId) * 10) + val;
+    const valStr = val === 10 ? 'Cypher' : String(val);
+    return `resources/cards/${String(fileNum).padStart(2, '0')}_${CARD_IMG_SUIT_NAMES[suitId]}_${valStr}.png`;
+}
+
 // --- Helper Functions ---
 function createDeck(edition = 'STANDARD') {
     let newDeck = [];
@@ -556,13 +564,10 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                         </div>
                     `;
                 } else {
-                    div.innerHTML = `
-                        <div class="card-corner ${card.val === 10 ? 'is-cypher' : card.val === 1 ? 'is-one' : ''}">${cardDisplayVal(card.val)}</div>
-                        <div class="card-center">
-                            <div class="card-val">${card.suit.symbol}</div>
-                        </div>
-                        <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : card.val === 1 ? 'is-one' : ''}">${cardDisplayVal(card.val)}</div>
-                    `;
+                    div.style.width = "90px";
+                    div.style.height = "124px";
+                    div.classList.add('has-design');
+                    div.innerHTML = `<img src="${getCardImageUrl(card.suit.id, card.val)}" alt="${card.suit.id} ${card.val}" style="width:100%;height:100%;display:block;object-fit:fill;">`;
                 }
                 this.els.allCardsGrid.appendChild(div);
             }
@@ -580,6 +585,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
     }
 
     showSetup() {
+        const gameMenuBtn = document.getElementById('frontier-game-menu-btn');
+        if (gameMenuBtn) gameMenuBtn.style.display = 'none';
         this.els.mainHud.style.display = 'none';
         this.els.playerStatusGrid.innerHTML = '';
         this.els.cardsContainer.innerHTML = '';
@@ -645,18 +652,17 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         presQuizBtn.className = `toggle-btn ${this.currentGame === 'PRESIDENT_QUIZ' ? 'active' : ''}`;
         presQuizBtn.innerText = 'President Quiz';
 
-        const cowboyBtn = document.createElement('button');
-        cowboyBtn.className = 'toggle-btn';
-        cowboyBtn.innerText = 'Cowboy (TBA)';
-        cowboyBtn.style.opacity = '0.4';
-        cowboyBtn.style.cursor = 'not-allowed';
-        cowboyBtn.disabled = true;
+        const duelBtn = document.createElement('button');
+        duelBtn.className = `toggle-btn ${this.currentGame === 'DUEL' ? 'active' : ''}`;
+        duelBtn.innerText = 'Duel';
 
         frontierBtn.onclick = () => {
             this.currentGame = 'FRONTIER';
             frontierBtn.classList.add('active');
             quizBtn.classList.remove('active');
             presQuizBtn.classList.remove('active');
+            duelBtn.classList.remove('active');
+            editionRow.style.display = 'flex';
             stdBtn.disabled = false;
             presBtn.disabled = false;
             stateBtn.disabled = false;
@@ -670,7 +676,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
             quizBtn.classList.add('active');
             frontierBtn.classList.remove('active');
             presQuizBtn.classList.remove('active');
-            // Lock in State Edition
+            duelBtn.classList.remove('active');
+            editionRow.style.display = 'flex';
             stateBtn.disabled = false;
             stateBtn.style.opacity = '1';
             this.edition = 'STATE';
@@ -686,7 +693,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
             presQuizBtn.classList.add('active');
             frontierBtn.classList.remove('active');
             quizBtn.classList.remove('active');
-            // Lock in President Edition
+            duelBtn.classList.remove('active');
+            editionRow.style.display = 'flex';
             presBtn.disabled = false;
             presBtn.style.opacity = '1';
             this.edition = 'PRESIDENT';
@@ -697,10 +705,20 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
             stateBtn.style.opacity = '0.5';
         };
 
+        duelBtn.onclick = () => {
+            this.currentGame = 'DUEL';
+            duelBtn.classList.add('active');
+            frontierBtn.classList.remove('active');
+            quizBtn.classList.remove('active');
+            presQuizBtn.classList.remove('active');
+            // Duel has no editions — hide the edition selector.
+            editionRow.style.display = 'none';
+        };
+
         gameToggle.appendChild(frontierBtn);
+        gameToggle.appendChild(duelBtn);
         gameToggle.appendChild(presQuizBtn);
         gameToggle.appendChild(quizBtn);
-        gameToggle.appendChild(cowboyBtn);
         gameRow.appendChild(gameToggle);
 
         const editionRow = document.createElement('div');
@@ -760,6 +778,9 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         editionToggle.appendChild(stateBtn);
         editionRow.appendChild(editionToggle);
 
+        // Duel has no editions — hide the edition selector when it's active.
+        if (this.currentGame === 'DUEL') editionRow.style.display = 'none';
+
         const countLabel = document.createElement('div');
         countLabel.innerText = "PLAYER COUNT";
         countLabel.style.fontSize = "0.7rem";
@@ -814,7 +835,14 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         rulesBtn.style.transition = "color 0.3s";
         rulesBtn.onmouseover = () => rulesBtn.style.color = "var(--gold-bright)";
         rulesBtn.onmouseout = () => rulesBtn.style.color = "var(--gold)";
-        rulesBtn.onclick = () => this.showRules();
+        rulesBtn.onclick = () => {
+            if (this.currentGame === 'DUEL') {
+                navigateTo('duel');
+                duelGame.showRules();
+            } else {
+                this.showRules();
+            }
+        };
 
         const credit = document.createElement('div');
         credit.innerText = "GAME DESIGN: SIMON ALLMER";
@@ -949,7 +977,11 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                     name: c.input.value.trim(),
                     isAI: c.isAI
                 }));
-                if (this.currentGame === 'STATE_QUIZ') {
+                if (this.currentGame === 'DUEL') {
+                    this.els.overlay.classList.remove('visible');
+                    navigateTo('duel');
+                    duelGame.startWithPlayers(finalPlayers);
+                } else if (this.currentGame === 'STATE_QUIZ') {
                     this.els.overlay.classList.remove('visible');
                     location.hash = '#state-quiz';
                     stateQuiz.initGame(finalPlayers);
@@ -1002,6 +1034,9 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
         if (actions) actions.innerHTML = '';
         
         this.els.overlay.classList.remove('visible');
+
+        const gameMenuBtn = document.getElementById('frontier-game-menu-btn');
+        if (gameMenuBtn) gameMenuBtn.style.display = 'block';
 
         const colors = ['#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4'];
 
@@ -1244,13 +1279,8 @@ if (this.edition === 'PRESIDENT' || this.edition === 'STATE') div.classList.add(
                     </div>
                 `;
             } else {
-                div.innerHTML = `
-                    <div class="card-corner ${card.val === 10 ? 'is-cypher' : card.val === 1 ? 'is-one' : ''}">${cardDisplayVal(card.val)}</div>
-                    <div class="card-center">
-                        <div class="card-val">${card.suit.symbol}</div>
-                    </div>
-                    <div class="card-corner bottom ${card.val === 10 ? 'is-cypher' : card.val === 1 ? 'is-one' : ''}">${cardDisplayVal(card.val)}</div>
-                `;
+                div.classList.add('has-design');
+                div.innerHTML = `<img src="${getCardImageUrl(card.suit.id, card.val)}" alt="${card.suit.id} ${card.val}" style="width:100%;height:100%;display:block;object-fit:fill;">`;
             }
 
             if (isClickable) {

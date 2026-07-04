@@ -4,38 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>American Playing Cards — American Portrait</title>
-    <!-- Base resolves all relative paths from the project root -->
-    <base href="../../">
-    <link rel="stylesheet" href="styles.css?v=1.2">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Standalone page: body fills viewport like a .view.active */
-        body {
+        /* Standalone overrides — the game fills the full viewport */
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             background: var(--bg-color, #060d26);
         }
-        #standalone-wrapper {
-            position: relative;
-            width: 100vw;
-            height: 100dvh;
-            overflow: hidden;
-        }
-        /* Override .view show/hide — always visible here */
         #frontier {
             display: block !important;
             opacity: 1 !important;
             pointer-events: auto !important;
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 100dvh;
+            overflow: hidden;
         }
-        /* Back button for standalone — top left, styled to match rest of AP */
+        /* Back to Games hub — matches the rest of American Portrait */
         #standalone-back {
             position: fixed;
             top: 25px;
             left: 25px;
-            z-index: 200;
+            z-index: 600;
             font-family: inherit;
             font-size: 0.8rem;
             letter-spacing: 0.15em;
@@ -57,157 +51,258 @@
 <body>
 
     <!-- Back to Games hub -->
-    <a id="standalone-back" href="index.html#games">← GAMES</a>
+    <a id="standalone-back" href="../../index.html#games">← GAMES</a>
 
-    <div id="standalone-wrapper">
-        <section id="frontier" class="view active" style="position: relative;">
-            <div id="game-container">
+    <section id="frontier" class="view active" style="position: relative;">
+        <div id="game-container">
 
-                <!-- Top HUD -->
-                <div class="hud" id="main-hud" style="display: none;">
-                    <div class="hud-item">
-                        <span class="label">Round</span>
-                        <span class="value"><span id="round-display">1</span> / 5</span>
-                    </div>
-                    <div class="hud-item">
-                        <span class="label">Pot</span>
-                        <span class="value" style="color: #10b981;" id="pot-display">$0</span>
-                    </div>
-                    <div class="hud-item">
-                        <span class="label">Current Bet</span>
-                        <span class="value" style="color: #f59e0b;" id="current-bet-display">$0</span>
-                    </div>
-                    <div class="hud-item">
-                        <span class="label">Deck</span>
-                        <span class="value" style="font-size: 1rem; color: #888;" id="deck-display">50</span>
-                    </div>
+            <!-- Top HUD -->
+            <div class="hud" id="main-hud" style="display: none;">
+                <div class="hud-item">
+                    <span class="label">Round</span>
+                    <span class="value"><span id="round-display">1</span> / 5</span>
                 </div>
-
-                <!-- Burger Menu Button -->
-                <button id="frontier-menu-btn" onclick="frontierGame.toggleMenu()" title="Game Menu"
-                        style="top: 25px; right: 25px; position: absolute; z-index: 100;">
-                    <span>&#9776;</span>
-                </button>
-
-                <!-- Frontier Menu Dropdown -->
-                <div id="frontier-menu-dropdown">
-                    <button onclick="frontierGame.showSetup()" style="color: var(--gold); border-bottom: 1px solid #333;">NEW GAME</button>
-                    <button onclick="frontierGame.toggleRules()" style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">RULES</button>
-                    <button onclick="frontierGame.showAllCards()" style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">ALL CARDS</button>
-                    <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
-                    <a href="index.html#games" style="text-decoration: none; display: block; width: 100%;">
-                        <button style="color: var(--text-color);">BACK TO GAMES</button>
-                    </a>
-                    <a href="https://simonallmer.com" target="_top" style="text-decoration: none; display: block; width: 100%;">
-                        <button style="color: var(--red-accent); border-color: rgba(185, 28, 28, 0.3);">BACK TO SA</button>
-                    </a>
+                <div class="hud-item">
+                    <span class="label">Pot</span>
+                    <span class="value" style="color: #10b981;" id="pot-display">$0</span>
                 </div>
-
-                <div id="player-status-grid"></div>
-                <div id="message-area"></div>
-
-                <div id="play-area">
-                    <div class="cards-container" id="cards-container"></div>
-                    <button id="mulligan-btn" class="mulligan-btn" style="display: none;"
-                            onclick="frontierGame.useMulligan()">Free Mulligan (Once Per Game)</button>
+                <div class="hud-item">
+                    <span class="label">Current Bet</span>
+                    <span class="value" style="color: #f59e0b;" id="current-bet-display">$0</span>
                 </div>
-
-                <div id="controls-area" style="display: none;"></div>
-
-                <div id="history-panel">
-                    <h3 style="color: var(--gold); text-align: center; font-family: inherit; margin-bottom: 15px;">Showdown</h3>
-                    <div id="history-content"></div>
-                </div>
-
-                <div id="overlay">
-                    <h1 id="overlay-title">PASS DEVICE</h1>
-                    <p id="overlay-desc">Hand the device to player.</p>
-                    <button class="primary-btn" id="overlay-main-btn" onclick="frontierGame.startTurn()">REVEAL CARDS</button>
-                    <div id="overlay-actions" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;"></div>
-                </div>
-
-                <!-- ALL CARDS MODAL -->
-                <div id="all-cards-modal" class="modal">
-                    <div class="modal-content">
-                        <button class="modal-close" onclick="frontierGame.hideAllCards()">&times;</button>
-                        <h2 style="color: var(--gold); margin-bottom: 20px;">The Deck</h2>
-                        <div id="all-cards-grid"></div>
-                    </div>
-                </div>
-
-                <!-- RULES MODAL -->
-                <div id="rules-modal" class="modal">
-                    <div id="rules-inner-content-wrapper">
-                        <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
-                        <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The Frontier Rulebook</h2>
-                        <div id="rules-inner-content" style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
-                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. The Deck (50 Cards)</h3>
-                            <p>There are 5 categories, each containing 10 cards numbered 1 through 10:</p>
-                            <ul style="list-style: none; padding: 0;">
-                                <li><span style="color: var(--deep-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--upper-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg></span> (Red Alliance)</li>
-                                <li><span style="color: var(--indust-east-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--west-frontier-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg></span> (Blue Alliance)</li>
-                                <li><span style="color: var(--border-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg></span> (Wildcards)</li>
-                            </ul>
-                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. Round Structure</h3>
-                            <p>The game lasts <strong>5 Rounds</strong>. Hand capacity scales up by 1 card each round.</p>
-                            <ol>
-                                <li><strong>Turns:</strong> Players TAKE TURNS to bet. You must CALL (match), RAISE (increase), or FOLD.</li>
-                                <li><strong>Resolution:</strong> After the last turn, the best hand takes the Pot.</li>
-                                <li><strong>Discard &amp; Draw:</strong> After each round, played cards are discarded. You keep your unplayed hand and draw cards to reach your capacity.</li>
-                            </ol>
-                            <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Victory &amp; Tie-Breakers</h3>
-                            <p>The winner is the player with the <strong>Most Cash</strong> at the end of Round 5!</p>
-                            <p><strong>Split Pots:</strong> If two or more commanders deploy hands of identical strength, the Pot is divided equally. Any remaining coin ($1) is awarded to the first tied commander in the turn order.</p>
-                            <p><strong>Hierarchy (Superior Volume Prevails):</strong> A configuration deploying a greater number of cards universally overcomes one deploying fewer.</p>
-                            <ul style="background: rgba(255,255,255,0.03); padding: 20px; border: 1px solid #333; list-style: none; font-size: 0.85rem;">
-                                <li><strong style="color: #e879f9;">Tier 1:</strong> 5 of a Rank, Pure Suit, Coalition (Alliance), or Campaign (Sequence)</li>
-                                <li><strong style="color: #fb923c;">Tier 2:</strong> 4 of a Rank, Pure, Coalition, or Campaign</li>
-                                <li><strong style="color: #c084fc;">Tier 3:</strong> 3 of a Rank, Pure, Coalition, or Campaign</li>
-                                <li><strong style="color: #34d399;">Tier 4:</strong> Pairs</li>
-                                <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards. Pure (Product x 2), Coalition (Product), Divided (Sum). <strong>Rank 1</strong> imitates the highest card in the hand.</li>
-                            </ul>
-                            <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- /#game-container -->
-
-            <!-- PRESIDENT PROFILE PANEL -->
-            <div id="president-profile-panel">
-                <button class="panel-close" onclick="frontierGame.toggleProfilePanel()">
-                    <svg class="arrow-right" viewBox="0 0 24 24" fill="none" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <svg class="arrow-left" viewBox="0 0 24 24" fill="none" stroke-width="2" style="display:none;">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-                <div id="profile-content">
-                    <div class="profile-placeholder">Select a President Card to view Profile</div>
+                <div class="hud-item">
+                    <span class="label">Deck</span>
+                    <span class="value" style="font-size: 1rem; color: #888;" id="deck-display">50</span>
                 </div>
             </div>
-            <button class="panel-toggle-fab" onclick="frontierGame.toggleProfilePanel()">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
+
+            <!-- Back to Menu -->
+            <button id="frontier-game-menu-btn" onclick="frontierGame.showSetup();"
+                    style="display:none; position: absolute; top: 15px; left: 15px; z-index: 50; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-color); padding: 0.4rem 0.9rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; font-family: inherit;">&#8592; MENU</button>
+
+            <!-- Burger Menu -->
+            <button id="frontier-menu-btn" onclick="frontierGame.toggleMenu()" title="Game Menu"
+                    style="top: 25px; right: 25px; position: absolute; z-index: 100;">
+                <span>&#9776;</span>
             </button>
 
-        </section><!-- /#frontier -->
-    </div><!-- /#standalone-wrapper -->
+            <!-- Menu Dropdown -->
+            <div id="frontier-menu-dropdown">
+                <button onclick="frontierGame.showSetup()"
+                        style="color: var(--gold); border-bottom: 1px solid #333;">NEW GAME</button>
+                <button onclick="frontierGame.toggleRules()"
+                        style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">RULES</button>
+                <button onclick="frontierGame.showAllCards()"
+                        style="color: var(--text-color); font-weight: bold; letter-spacing: 1px;">ALL CARDS</button>
+                <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
+                <a href="../../index.html#games"
+                   style="text-decoration: none; display: block; width: 100%;">
+                    <button style="color: var(--red-accent); border-color: rgba(185,28,28,0.3);">BACK TO GAMES</button>
+                </a>
+            </div>
 
-    <!-- Data files (paths resolve via <base href="../../">) -->
-    <script src="games/quizzes/presidents_data.js"></script>
-    <script src="games/quizzes/states_data.js"></script>
+            <div id="player-status-grid"></div>
+            <div id="message-area"></div>
 
-    <!-- Frontier game logic -->
-    <script src="games/american-playing-cards/frontier.js"></script>
+            <div id="play-area">
+                <div class="cards-container" id="cards-container"></div>
+                <button id="mulligan-btn" class="mulligan-btn" style="display: none;"
+                        onclick="frontierGame.useMulligan()">Free Mulligan (Once Per Game)</button>
+            </div>
+
+            <div id="controls-area" style="display: none;"></div>
+
+            <div id="history-panel">
+                <h3 style="color: var(--gold); text-align: center; font-family: inherit; margin-bottom: 15px;">Showdown</h3>
+                <div id="history-content"></div>
+            </div>
+
+            <div id="overlay">
+                <h1 id="overlay-title">PASS DEVICE</h1>
+                <p id="overlay-desc">Hand the device to player.</p>
+                <button class="primary-btn" id="overlay-main-btn"
+                        onclick="frontierGame.startTurn()">REVEAL CARDS</button>
+                <div id="overlay-actions"
+                     style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;"></div>
+            </div>
+
+            <!-- ALL CARDS MODAL -->
+            <div id="all-cards-modal" class="modal">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="frontierGame.hideAllCards()">&times;</button>
+                    <h2 style="color: var(--gold); margin-bottom: 20px;">The Deck</h2>
+                    <div id="all-cards-grid"></div>
+                </div>
+            </div>
+
+            <!-- RULES MODAL -->
+            <div id="rules-modal" class="modal">
+                <div id="rules-inner-content-wrapper">
+                    <button class="modal-close" onclick="frontierGame.toggleRules()">&times;</button>
+                    <h2 style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;">The Frontier Rulebook</h2>
+                    <div id="rules-inner-content"
+                         style="text-align: left; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #ccc;">
+                        <h3 style="color: var(--gold-bright); margin-top: 2rem;">1. The Deck (50 Cards)</h3>
+                        <p>There are 5 categories, each containing 10 cards numbered 1 through 10:</p>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><span style="color: var(--deep-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 Q 5 65 5 40 A 25 25 0 0 1 50 25 A 25 25 0 0 1 95 40 Q 95 65 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--upper-south-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 5 A 60 60 0 0 0 95 50 A 60 60 0 0 0 50 95 A 60 60 0 0 0 5 50 A 60 60 0 0 0 50 5 Z" fill="currentColor"/></svg></span> (Red Alliance)</li>
+                            <li><span style="color: var(--indust-east-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 95 C 40 80, 2 50, 10 25 A 30 30 0 0 0 50 8 A 30 30 0 0 0 90 25 C 98 50, 60 80, 50 95 Z" fill="currentColor"/></svg></span> &amp; <span style="color: var(--west-frontier-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 45 22 L 45 35 Q 45 45 35 45 L 22 45 L 22 55 L 35 55 Q 45 55 45 65 L 45 78 L 55 78 L 55 65 Q 55 55 65 55 L 78 55 L 78 45 L 65 45 Q 55 45 55 35 L 55 22 Z"/><circle cx="50" cy="14" r="12"/><circle cx="39" cy="23" r="9"/><circle cx="61" cy="23" r="9"/><circle cx="50" cy="86" r="12"/><circle cx="39" cy="77" r="9"/><circle cx="61" cy="77" r="9"/><circle cx="14" cy="50" r="12"/><circle cx="23" cy="39" r="9"/><circle cx="23" cy="61" r="9"/><circle cx="86" cy="50" r="12"/><circle cx="77" cy="39" r="9"/><circle cx="77" cy="61" r="9"/></svg></span> (Blue Alliance)</li>
+                            <li><span style="color: var(--border-border)"><svg class="suit-icon" viewBox="0 0 100 100"><path d="M 50 12 L 61 31 L 83 31 L 72 50 L 83 69 L 61 69 L 50 88 L 39 69 L 17 69 L 28 50 L 17 31 L 39 31 Z" fill="currentColor"/><circle cx="50" cy="12" r="8" fill="currentColor"/><circle cx="83" cy="31" r="8" fill="currentColor"/><circle cx="83" cy="69" r="8" fill="currentColor"/><circle cx="50" cy="88" r="8" fill="currentColor"/><circle cx="17" cy="69" r="8" fill="currentColor"/><circle cx="17" cy="31" r="8" fill="currentColor"/></svg></span> (Wildcards)</li>
+                        </ul>
+                        <h3 style="color: var(--gold-bright); margin-top: 2rem;">2. Round Structure</h3>
+                        <p>The game lasts <strong>5 Rounds</strong>. Hand capacity scales up by 1 card each round.</p>
+                        <ol>
+                            <li><strong>Turns:</strong> Players take turns to bet. You must CALL, RAISE, or FOLD.</li>
+                            <li><strong>Resolution:</strong> After the last turn, the best hand takes the Pot.</li>
+                            <li><strong>Discard &amp; Draw:</strong> After each round, played cards are discarded. Keep your unplayed hand and draw to reach capacity.</li>
+                        </ol>
+                        <h3 style="color: var(--gold-bright); margin-top: 2rem;">3. Victory &amp; Tie-Breakers</h3>
+                        <p>Winner is the player with the <strong>Most Cash</strong> at the end of Round 5.</p>
+                        <ul style="background: rgba(255,255,255,0.03); padding: 20px; border: 1px solid #333; list-style: none; font-size: 0.85rem;">
+                            <li><strong style="color: #e879f9;">Tier 1:</strong> 5 of a Rank, Pure Suit, Coalition, or Campaign</li>
+                            <li><strong style="color: #fb923c;">Tier 2:</strong> 4 of a Rank, Pure, Coalition, or Campaign</li>
+                            <li><strong style="color: #c084fc;">Tier 3:</strong> 3 of a Rank, Pure, Coalition, or Campaign</li>
+                            <li><strong style="color: #34d399;">Tier 4:</strong> Pairs</li>
+                            <li><strong style="color: #a3e635;">Tier 5 (Skirmishes):</strong> Unmatched cards.</li>
+                        </ul>
+                        <p style="text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">DESIGN: SIMON ALLMER</p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /#game-container -->
+
+        <!-- PRESIDENT PROFILE PANEL -->
+        <div id="president-profile-panel">
+            <button class="panel-close" onclick="frontierGame.toggleProfilePanel()">
+                <svg class="arrow-right" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <svg class="arrow-left" viewBox="0 0 24 24" fill="none" stroke-width="2" style="display:none;">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            <div id="profile-content">
+                <div class="profile-placeholder">Select a President Card to view Profile</div>
+            </div>
+        </div>
+        <button class="panel-toggle-fab" onclick="frontierGame.toggleProfilePanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+
+    </section>
+
+    <!-- DUEL -->
+    <section id="duel" class="view">
+        <button onclick="navigateTo('frontier'); frontierGame.showSetup();"
+                style="position: absolute; top: 15px; left: 15px; z-index: 500; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-color); padding: 0.4rem 0.9rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; font-family: inherit;">&#8592; MENU</button>
+        <div id="duel-setup"></div>
+        <div id="duel-board"></div>
+        <div id="duel-challenge"></div>
+        <div id="duel-gate"></div>
+        <div id="duel-card-select"></div>
+        <div id="duel-reveal"></div>
+        <div id="duel-gamble"></div>
+        <div id="duel-over"></div>
+        <div id="duel-rules"></div>
+    </section>
+
+    <!-- STATE QUIZ -->
+    <section id="state-quiz" class="view" style="background: #0a0a0b; overflow: hidden;">
+        <button onclick="navigateTo('frontier'); frontierGame.showSetup();"
+                style="position: absolute; top: 15px; left: 15px; z-index: 500; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-color); padding: 0.4rem 0.9rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; font-family: inherit;">&#8592; MENU</button>
+        <div id="quiz-hud" class="hud" style="top: 25px; width: auto; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; padding: 15px 40px; border-radius: 50px; background: rgba(20, 20, 25, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div class="hud-item"><span class="label">Round</span><span class="value" id="quiz-round">1 / 5</span></div>
+            <div class="hud-item"><span class="label">Pot</span><span class="value" style="color: #10b981;" id="quiz-pot">$0</span></div>
+            <div class="hud-item"><span class="label">Target</span><span class="value" style="color: var(--gold-bright);" id="quiz-target-state">???</span></div>
+        </div>
+        <div id="quiz-map-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 80px 40px 40px 40px; box-sizing: border-box;">
+            <div id="map-svg-wrapper" style="width: 100%; max-width: 1100px; height: 80vh; position: relative;"></div>
+        </div>
+        <div id="quiz-player-turn" style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+            <div id="quiz-current-player-name" style="font-size: 1.5rem; color: #fff; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;">PLAYER NAME</div>
+            <div style="font-size: 0.8rem; color: var(--gold-dim); letter-spacing: 3px; text-transform: uppercase;">Your Turn to Guess</div>
+        </div>
+        <div id="quiz-card-display" style="position: absolute; bottom: 40px; left: 40px; z-index: 5;"></div>
+        <div id="quiz-overlay" class="quiz-overlay visible" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200;">
+            <h1 id="quiz-overlay-title" style="color: var(--gold-bright); font-size: 3rem; margin-bottom: 10px;">STATE QUIZ</h1>
+            <p id="quiz-overlay-desc" style="color: #888; margin-bottom: 30px; letter-spacing: 2px;">Test your knowledge of the Union.</p>
+            <div id="quiz-overlay-content" style="width: 100%; max-width: 500px;"></div>
+            <button id="quiz-overlay-btn" class="primary-btn" style="margin-top: 30px; padding: 15px 50px;">START GAME</button>
+        </div>
+    </section>
+
+    <!-- PRESIDENT QUIZ -->
+    <section id="president-quiz" class="view" style="background: linear-gradient(135deg, #1f140e, #0a0604); overflow: hidden;">
+        <button onclick="navigateTo('frontier'); frontierGame.showSetup();"
+                style="position: absolute; top: 15px; left: 15px; z-index: 500; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-color); padding: 0.4rem 0.9rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; font-family: inherit;">&#8592; MENU</button>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90vw; height: 85vh; background: #141f17; border-radius: 40px; border: 2px solid rgba(212, 175, 55, 0.1); box-shadow: inset 0 0 80px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.5);"></div>
+        <div id="pres-quiz-hud" style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); display: flex; gap: 60px; font-family: 'Cinzel', serif; color: var(--gold-dim); letter-spacing: 3px; text-transform: uppercase; z-index: 10;">
+            <div style="text-align: center;">Round<br><span id="pres-quiz-round" style="color: var(--gold-bright); font-size: 1.5rem;">1 / 5</span></div>
+            <div style="text-align: center;">Pot<br><span id="pres-quiz-pot" style="color: #10b981; font-size: 1.5rem;">$0</span></div>
+            <div style="text-align: center;">Target<br><span id="pres-quiz-target" style="color: #fff; font-size: 1.5rem;">???</span></div>
+        </div>
+        <div id="pres-quiz-main-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box;">
+            <div id="pres-quiz-card-display" style="transform: rotate(-3deg); transition: transform 0.5s; z-index: 5;"></div>
+            <div id="pres-quiz-input-container" style="display: none; position: absolute; bottom: 8%; right: 15%; flex-direction: column; align-items: center; background: #0c0c0c; padding: 30px 40px; border-radius: 30px; box-shadow: inset 0 2px 10px rgba(255,255,255,0.05), 0 30px 60px rgba(0,0,0,0.9); border: 2px solid #1a1a1a; transform: perspective(1000px) rotateX(15deg) rotateY(-10deg); z-index: 20;">
+                <div style="width: 70%; height: 25px; background: linear-gradient(to bottom, #222, #000); border-radius: 12px; margin-bottom: 25px;"></div>
+                <div id="pres-quiz-display" style="font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold-bright); letter-spacing: 10px; margin-bottom: 30px; background: #050505; padding: 15px 40px; border-radius: 8px; box-shadow: inset 0 0 15px rgba(0,0,0,1); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);"><span id="pres-quiz-digits">____</span></div>
+                <div id="pres-quiz-keypad" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;"></div>
+            </div>
+        </div>
+        <div id="pres-quiz-player-turn" style="position: absolute; bottom: 10%; left: 15%; text-align: left; z-index: 10;">
+            <div style="font-size: 0.8rem; color: var(--gold-dim); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px;">Awaiting Input From</div>
+            <div id="pres-quiz-current-player-name" style="font-size: 2rem; color: #fff; font-family: 'Cinzel', serif; letter-spacing: 2px;">PLAYER NAME</div>
+        </div>
+        <div id="pres-quiz-overlay" class="quiz-overlay visible" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(31, 20, 14, 0.95), rgba(10, 6, 4, 0.98)); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200;">
+            <div style="background: #e8dfc8; padding: 60px 80px; border-radius: 2px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); max-width: 600px; width: 90%; text-align: center; position: relative;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; border: 2px dashed #b59f71; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center;"><div style="width: 60px; height: 60px; border-radius: 50%; border: 1px solid #b59f71;"></div></div>
+                <h1 id="pres-quiz-overlay-title" style="color: #2c3e50; font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase;">President Quiz</h1>
+                <p id="pres-quiz-overlay-desc" style="color: #5d6d7e; margin-bottom: 40px; font-style: italic; font-family: Georgia, serif;">Identify the tenure of the Presidents.</p>
+                <div id="pres-quiz-overlay-content" style="color: #2c3e50; text-align: left; margin-bottom: 40px; font-family: monospace; font-size: 1.1rem; border-top: 1px solid #d5cabd; padding-top: 20px;"></div>
+                <button id="pres-quiz-overlay-btn" style="background: #2c3e50; color: #e8dfc8; border: none; padding: 15px 40px; font-family: 'Cinzel', serif; font-size: 1.2rem; cursor: pointer; letter-spacing: 2px; transition: background 0.3s;" onmouseover="this.style.background='#1a252f'" onmouseout="this.style.background='#2c3e50'">START GAME</button>
+            </div>
+        </div>
+        <div id="pres-quiz-reveal" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 150; padding: 40px; box-sizing: border-box;">
+            <div id="pres-quiz-reveal-content" style="max-width: 1000px; width: 100%; max-height: 90vh; overflow-y: auto;"></div>
+            <button id="pres-quiz-continue-btn" class="primary-btn" style="position: absolute; bottom: 40px; right: 40px; z-index: 160;">CONTINUE</button>
+        </div>
+    </section>
+
+    <!-- All data and logic files are local to this folder -->
+    <script src="presidents_data.js"></script>
+    <script src="states_data.js"></script>
+    <script src="us_map_data.js"></script>
+    <script src="frontier.js"></script>
+    <script src="duel.js"></script>
+    <script src="state-quiz.js"></script>
+    <script src="president-quiz.js"></script>
 
     <!-- Demo timer (bottom-left, matches Skyscraper style) -->
-    <script src="games/american-playing-cards/demo-timer.js"></script>
+    <script src="demo-timer.js"></script>
 
     <script>
-        // Auto-start the game on page load
+        function navigateTo(view) {
+            ['frontier', 'duel', 'state-quiz', 'president-quiz'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('active', id === view);
+            });
+            if (history.replaceState) history.replaceState(null, null, window.location.pathname);
+        }
+
+        window.addEventListener('hashchange', () => {
+            const hash = location.hash.replace('#', '');
+            if (hash === 'state-quiz' || hash === 'president-quiz' || hash === 'duel') {
+                navigateTo(hash);
+                if (hash === 'duel') duelGame.showSetup();
+            } else {
+                navigateTo('frontier');
+                frontierGame.showSetup();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof frontierGame !== 'undefined') {
                 frontierGame.currentGame = 'FRONTIER';
@@ -215,16 +310,6 @@
                 frontierGame.showSetup();
             }
         });
-
-        // Override any hash-based "back to games" hrefs in frontier.js output
-        // so they resolve correctly when used standalone
-        document.addEventListener('click', (e) => {
-            const a = e.target.closest('a[href="#games"]');
-            if (a) {
-                e.preventDefault();
-                window.location.href = 'index.html#games';
-            }
-        }, true);
     </script>
 </body>
 </html>
