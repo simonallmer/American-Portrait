@@ -1150,6 +1150,7 @@ function initChronicleNavigation() {
 window.musicState = {
     tracks: [
         { file: 'AllmerMusicAmericanAnthem.mp3', title: 'American Anthem' },
+        { file: 'AllmerMusicToBeLoved.mp3', title: 'To Be Loved' },
         { file: 'Allmer Music American Portrait A World Destroyed.mp3', title: 'A World Destroyed' },
         { file: 'AllmerMusic Kissinger The Pentarchy .mp3', title: 'The Pentarchy' },
         { file: 'AllmerMusicAmericanPortraitTheLivingAndTheDead.mp3', title: 'The Living And The Dead' },
