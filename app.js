@@ -1309,11 +1309,14 @@ function initMusicPlayer() {
         const wrap = document.createElement('div');
         wrap.className = 'audio-track-card';
 
-        // Symbol (top right): microphone for sung tracks, orchestra for instrumental
+        // Symbol (top right): radiating voice arcs for sung tracks, tuning fork for instrumental
         const symbol = document.createElement('span');
         symbol.className = 'audio-type-symbol';
-        symbol.innerText = track.vocal ? '🎤' : '🎻';
+        symbol.innerHTML = track.vocal
+            ? `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"/><path d="M11 8.2a5.5 5.5 0 0 1 0 7.6"/><path d="M14.5 5.5a10 10 0 0 1 0 13"/></svg>`
+            : `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4v7.5a3 3 0 0 0 6 0V4"/><path d="M12 14.5V20"/></svg>`;
         symbol.title = track.vocal ? 'Vocal' : 'Instrumental';
+        symbol.setAttribute('role', 'img');
         symbol.setAttribute('aria-label', track.vocal ? 'Vocal' : 'Instrumental');
 
         const title = document.createElement('h3');

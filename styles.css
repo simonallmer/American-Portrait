@@ -1000,9 +1000,9 @@ body.asian-portrait .landing-logo-text {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    font-size: 1.5rem;
-    line-height: 1;
-    opacity: 0.85;
+    display: flex;
+    color: var(--red-accent);
+    opacity: 0.9;
 }
 
 .audio-writer-credit {
