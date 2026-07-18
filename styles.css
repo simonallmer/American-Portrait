@@ -983,6 +983,7 @@ body.asian-portrait .landing-logo-text {
 }
 
 .audio-track-card {
+    position: relative;
     background: rgba(40,40,40,0.5);
     padding: 1.5rem;
     border-radius: 8px;
@@ -993,6 +994,23 @@ body.asian-portrait .landing-logo-text {
     align-items: flex-start;
     gap: 1rem;
     transition: transform 0.2s;
+}
+
+.audio-type-symbol {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    opacity: 0.85;
+}
+
+.audio-writer-credit {
+    margin-top: -0.5rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.7;
+    color: var(--text-color);
 }
 
 .audio-track-card:hover {
@@ -1009,6 +1027,7 @@ body.asian-portrait .landing-logo-text {
 .audio-title {
     font-size: 1.4rem;
     color: var(--text-color);
+    padding-right: 2rem;
 }
 
 .custom-audio {

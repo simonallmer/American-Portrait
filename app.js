@@ -1149,8 +1149,8 @@ function initChronicleNavigation() {
 // Global Music State
 window.musicState = {
     tracks: [
-        { file: 'AllmerMusicAmericanAnthem.mp3', title: 'American Anthem' },
-        { file: 'AllmerMusicToBeLoved.mp3', title: 'To Be Loved' },
+        { file: 'AllmerMusicAmericanAnthem.mp3', title: 'American Anthem', vocal: true, writer: 'Simon Allmer' },
+        { file: 'AllmerMusicToBeLoved.mp3', title: 'To Be Loved', vocal: true, writer: 'Berry Gordy' },
         { file: 'Allmer Music American Portrait A World Destroyed.mp3', title: 'A World Destroyed' },
         { file: 'AllmerMusic Kissinger The Pentarchy .mp3', title: 'The Pentarchy' },
         { file: 'AllmerMusicAmericanPortraitTheLivingAndTheDead.mp3', title: 'The Living And The Dead' },
@@ -1308,11 +1308,25 @@ function initMusicPlayer() {
     window.musicState.tracks.forEach((track, idx) => {
         const wrap = document.createElement('div');
         wrap.className = 'audio-track-card';
-        
+
+        // Symbol (top right): microphone for sung tracks, orchestra for instrumental
+        const symbol = document.createElement('span');
+        symbol.className = 'audio-type-symbol';
+        symbol.innerText = track.vocal ? '🎤' : '🎻';
+        symbol.title = track.vocal ? 'Vocal' : 'Instrumental';
+        symbol.setAttribute('aria-label', track.vocal ? 'Vocal' : 'Instrumental');
+
         const title = document.createElement('h3');
         title.innerText = track.title;
         title.className = 'audio-title';
-        
+
+        let credit = null;
+        if (track.writer) {
+            credit = document.createElement('p');
+            credit.className = 'audio-writer-credit';
+            credit.innerText = `Written by ${track.writer}`;
+        }
+
         const btn = document.createElement('button');
         btn.className = 'play-trigger-btn';
         btn.innerText = 'PLAY';
@@ -1328,7 +1342,9 @@ function initMusicPlayer() {
         
         btn.onclick = () => playTrack(idx);
 
+        wrap.appendChild(symbol);
         wrap.appendChild(title);
+        if (credit) wrap.appendChild(credit);
         wrap.appendChild(btn);
         container.appendChild(wrap);
     });
