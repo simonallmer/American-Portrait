@@ -135,10 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
             stopReviewAudio();
         }
 
-        // Wire up review audio button
-        const reviewBtn = document.getElementById('review-audio-btn');
-        if (reviewBtn) {
-            reviewBtn.onclick = toggleReviewAudio;
+        // Wire up review audio controls
+        if (targetId === 'review-hisverybest') {
+            initReviewAudioHandlers();
         }
 
         // Hide current
@@ -1532,10 +1531,23 @@ document.addEventListener('keydown', (e) => {
 // Review Audio Player
 let reviewAudio = null;
 
+function formatTime(s) {
+    if (isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
 function toggleReviewAudio() {
     if (!reviewAudio) {
         reviewAudio = new Audio();
-        reviewAudio.src = 'journals/carter/his-very-best-audio.mp3';
+        reviewAudio.src = 'journals/carter/his-very-best-audio.m4a';
+        reviewAudio.addEventListener('timeupdate', updateReviewProgress);
+        reviewAudio.addEventListener('loadedmetadata', updateReviewProgress);
+        reviewAudio.addEventListener('ended', function() {
+            const btn = document.getElementById('review-audio-btn');
+            if (btn) btn.innerText = '▶';
+        });
     }
 
     const btn = document.getElementById('review-audio-btn');
@@ -1549,11 +1561,24 @@ function toggleReviewAudio() {
             updateMusicUI();
         }
         reviewAudio.play();
-        btn.innerText = '⏸ Pause Audio';
+        btn.innerText = '⏸';
     } else {
         reviewAudio.pause();
-        btn.innerText = '▶ Play Audio';
+        btn.innerText = '▶';
     }
+}
+
+function updateReviewProgress() {
+    if (!reviewAudio) return;
+    const seek = document.getElementById('review-audio-seek');
+    const bar = document.getElementById('review-audio-progress');
+    const time = document.getElementById('review-audio-time');
+    if (!seek || !bar || !time) return;
+
+    const pct = reviewAudio.duration ? (reviewAudio.currentTime / reviewAudio.duration) * 100 : 0;
+    seek.value = pct;
+    bar.style.width = pct + '%';
+    time.innerText = formatTime(reviewAudio.currentTime) + ' / ' + formatTime(reviewAudio.duration);
 }
 
 function stopReviewAudio() {
@@ -1561,7 +1586,30 @@ function stopReviewAudio() {
         reviewAudio.pause();
         reviewAudio.currentTime = 0;
         const btn = document.getElementById('review-audio-btn');
-        if (btn) btn.innerText = '▶ Play Audio';
+        if (btn) btn.innerText = '▶';
+        updateReviewProgress();
+    }
+}
+
+function initReviewAudioHandlers() {
+    const btn = document.getElementById('review-audio-btn');
+    const skipBack = document.getElementById('review-skip-back');
+    const skipFwd = document.getElementById('review-skip-fwd');
+    const seek = document.getElementById('review-audio-seek');
+
+    if (btn) btn.onclick = toggleReviewAudio;
+    if (skipBack) skipBack.onclick = function() {
+        if (reviewAudio) { reviewAudio.currentTime = Math.max(0, reviewAudio.currentTime - 15); }
+    };
+    if (skipFwd) skipFwd.onclick = function() {
+        if (reviewAudio) { reviewAudio.currentTime = Math.min(reviewAudio.duration || 0, reviewAudio.currentTime + 30); }
+    };
+    if (seek) {
+        seek.oninput = function() {
+            if (reviewAudio && reviewAudio.duration) {
+                reviewAudio.currentTime = (seek.value / 100) * reviewAudio.duration;
+            }
+        };
     }
 }
 

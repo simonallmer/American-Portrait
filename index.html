@@ -1102,7 +1102,14 @@
                 <h3 style="color: #bbb; font-size: 1.3rem; margin-bottom: 3rem; font-weight: normal;">Review from Simon Allmer</h3>
 
                 <div class="review-audio-player">
-                    <button id="review-audio-btn" class="review-audio-btn">▶ Play Audio</button>
+                    <button id="review-audio-btn" class="review-audio-play">▶</button>
+                    <button id="review-skip-back" class="review-audio-skip">-15s</button>
+                    <div class="review-audio-progress-wrap">
+                        <div class="review-audio-progress" id="review-audio-progress"></div>
+                        <input type="range" id="review-audio-seek" class="review-audio-seek" min="0" max="100" value="0" step="0.1">
+                    </div>
+                    <span id="review-audio-time" class="review-audio-time">0:00 / 0:00</span>
+                    <button id="review-skip-fwd" class="review-audio-skip">+30s</button>
                     <span class="review-audio-credit">Narration by ElevenLabs</span>
                 </div>
 
