@@ -130,6 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!targetId) targetId = 'start-page';
 
+        // Stop review audio when leaving review pages
+        if (targetId !== 'review-hisverybest') {
+            stopReviewAudio();
+        }
+
+        // Wire up review audio button
+        const reviewBtn = document.getElementById('review-audio-btn');
+        if (reviewBtn) {
+            reviewBtn.onclick = toggleReviewAudio;
+        }
+
         // Hide current
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
@@ -1189,6 +1200,9 @@ function updateMiniPlayerVisibility(viewId) {
 function playTrack(index) {
     if (index < 0 || index >= window.musicState.tracks.length) return;
     
+    // Stop review audio if playing
+    stopReviewAudio();
+
     const track = window.musicState.tracks[index];
     const isSameTrack = window.musicState.currentIndex === index;
 
@@ -1516,23 +1530,38 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Review Audio Player
+let reviewAudio = null;
+
 function toggleReviewAudio() {
-    const audio = document.getElementById('review-audio');
+    if (!reviewAudio) {
+        reviewAudio = new Audio();
+        reviewAudio.src = 'journals/carter/his-very-best-audio.mp3';
+    }
+
     const btn = document.getElementById('review-audio-btn');
-    if (!audio || !btn) return;
-    audio.onerror = function() {
-        btn.innerText = 'Audio not found';
-        console.error('Audio failed to load:', audio.src);
-    };
-    if (audio.paused) {
-        audio.play().catch(function(e) {
-            btn.innerText = 'Audio error';
-            console.error('Audio play error:', e);
-        });
+    if (!btn) return;
+
+    if (reviewAudio.paused) {
+        // Pause music if playing
+        if (window.musicState && window.musicState.isPlaying) {
+            window.musicState.audio.pause();
+            window.musicState.isPlaying = false;
+            updateMusicUI();
+        }
+        reviewAudio.play();
         btn.innerText = '⏸ Pause Audio';
     } else {
-        audio.pause();
+        reviewAudio.pause();
         btn.innerText = '▶ Play Audio';
+    }
+}
+
+function stopReviewAudio() {
+    if (reviewAudio && !reviewAudio.paused) {
+        reviewAudio.pause();
+        reviewAudio.currentTime = 0;
+        const btn = document.getElementById('review-audio-btn');
+        if (btn) btn.innerText = '▶ Play Audio';
     }
 }
 
