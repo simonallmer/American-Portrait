@@ -1376,6 +1376,7 @@ function initLibraries() {
     ];
 
     const carterBooks = [
+        { year: 2020, title: 'His Very Best: Jimmy Carter, a Life', reviewed: true, reviewId: 'review-hisverybest' },
         { year: 2018, title: 'Faith: A Journey for All' },
         { year: 2015, title: 'A Full Life: Reflections at Ninety' },
         { year: 2014, title: 'A Call to Action' },
@@ -1513,4 +1514,25 @@ document.addEventListener('keydown', (e) => {
         nextQuote();
     }
 });
+
+// Review Audio Player
+function toggleReviewAudio() {
+    const audio = document.getElementById('review-audio');
+    const btn = document.getElementById('review-audio-btn');
+    if (!audio || !btn) return;
+    audio.onerror = function() {
+        btn.innerText = 'Audio not found';
+        console.error('Audio failed to load:', audio.src);
+    };
+    if (audio.paused) {
+        audio.play().catch(function(e) {
+            btn.innerText = 'Audio error';
+            console.error('Audio play error:', e);
+        });
+        btn.innerText = '⏸ Pause Audio';
+    } else {
+        audio.pause();
+        btn.innerText = '▶ Play Audio';
+    }
+}
 

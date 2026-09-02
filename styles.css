@@ -1184,11 +1184,46 @@ body.asian-portrait .landing-logo-text {
     border-top: 1px solid #444;
     padding-top: 2rem;
     font-size: 1rem;
-    color: #999;
+    color: #bbb;
 }
 
 .review-footnotes p {
     margin-bottom: 0.8rem;
+}
+
+/* ===== REVIEW AUDIO PLAYER ===== */
+.review-audio-player {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--red-accent);
+}
+
+.review-audio-btn {
+    background: var(--red-accent);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.review-audio-btn:hover {
+    opacity: 0.85;
+}
+
+.review-audio-credit {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #888;
 }
 
 /* ===== MOBILE RESPONSIVENESS ===== */

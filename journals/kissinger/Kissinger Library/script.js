@@ -198,6 +198,13 @@ const yearImages = {
         type: 'book',
         displayText: '📚'
     },
+    'Carter-2020': {
+        image: 'book_placeholder.jpg',
+        caption: 'His Very Best: Jimmy Carter, a Life (2020)',
+        type: 'book',
+        displayText: '📚',
+        reviewLink: '#review-hisverybest'
+    },
     'Carter-2018': {
         image: 'book_placeholder.jpg',
         caption: 'Faith: A Journey for All (2018)',
