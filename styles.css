@@ -1727,6 +1727,39 @@ body.asian-portrait .landing-logo-text {
     margin-bottom: 2rem;
 }
 
+.characters-summary {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.characters-summary h3 {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.characters-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    text-align: center;
+}
+
+.characters-list > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.characters-list strong {
+    color: var(--text-color);
+}
+
+.characters-list span:last-child {
+    color: var(--gold);
+}
+
 /* Galleries Summary in Introduction */
 .galleries-summary {
     display: grid;
@@ -1787,6 +1820,11 @@ body.asian-portrait .landing-logo-text {
     }
     .about-content {
         font-size: 1.1rem;
+    }
+
+    .characters-list {
+        flex-direction: column;
+        gap: 1.25rem;
     }
 }
 

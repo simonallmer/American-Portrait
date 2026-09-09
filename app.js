@@ -249,10 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
         "Comic Book Part 1/4"
     );
     initPortraitGrid(
-        'gordy-portrait',
-        1929,
+        'greenspan-portrait',
+        1926,
         1959,
-        "Berry Gordy",
+        "Alan Greenspan",
         "Comic Book Part 1/4"
     );
 
