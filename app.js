@@ -1420,8 +1420,16 @@ function initLibraries() {
         { year: 1975, title: 'Why Not the Best?' }
     ];
 
+    const greenspanBooks = [
+        { year: 2018, title: 'Capitalism in America' },
+        { year: 2013, title: 'The Map and the Territory' },
+        { year: 2007, title: 'The Age of Turbulence' },
+        { year: 1966, title: 'Capitalism: The Unknown Ideal' }
+    ];
+
     renderBooks('kissinger-books', kissingerBooks, 'kissinger');
     renderBooks('carter-books', carterBooks, 'carter');
+    renderBooks('greenspan-books', greenspanBooks, 'greenspan');
 
     function renderBooks(containerId, books, authorTag) {
         const container = document.getElementById(containerId);

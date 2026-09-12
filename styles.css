@@ -2015,6 +2015,15 @@ body.asian-portrait .landing-logo-text {
     object-fit: contain;
 }
 
+.portrait-img.greenspan-portrait {
+    width: 50%; /* Twice as small relative to 100%, matching the visual scale */
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0.9) contrast(1.1); /* Match black levels to background */
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 75%);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 75%);
+}
+
 .society-logo {
     width: 80px;
     height: auto;
