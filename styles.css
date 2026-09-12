@@ -881,6 +881,28 @@ body.asian-portrait .landing-logo-text {
     transform: translateY(-5px);
 }
 
+.american-level {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, rgba(60,59,110,0.72) 0 22%, rgba(178,34,52,0.55) 22% 100%);
+}
+
+.american-level::before {
+    content: "★  ★  ★  ★  ★  ★  ★";
+    position: absolute;
+    top: 0.8rem;
+    left: 0.9rem;
+    color: rgba(255,255,255,0.42);
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+    pointer-events: none;
+}
+
+.american-level > * {
+    position: relative;
+    z-index: 1;
+}
+
 .game-card h3 {
     font-size: 2.2rem;
     margin-bottom: 0.5rem;

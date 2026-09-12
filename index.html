@@ -488,6 +488,14 @@
                         <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); window.location.href='https://simonallmer.com/store/p/skyscraper'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">BUY</span>
                     </div>
                 </div>
+                <div class="game-card" onclick="location.hash='#crosslink-menu'" style="cursor: pointer;">
+                    <h3>Crosslink</h3>
+                    <p>Connect America.</p>
+                    <div class="game-actions" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 15px;">
+                        <span class="game-btn clickable" onclick="event.stopPropagation(); location.hash='#crosslink-menu'">PLAY</span>
+                        <span class="game-btn secondary-btn clickable" onclick="event.stopPropagation(); location.hash='#about-crosslink'" style="background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);">ABOUT</span>
+                    </div>
+                </div>
                 <div class="game-card" style="cursor: default;">
                     <h3>Equilibrium</h3>
                     <p>What if the Cold War turns Hot?<br><span style="color: var(--red-accent);">More information coming soon</span></p>
@@ -552,6 +560,61 @@
             <div style="text-align: center; margin-top: 4rem; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="window.location.href='games/skyscraper/skyscraper.html'">PLAY</span>
                 <span class="game-btn secondary-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer; background: rgba(40,40,40,0.8); border: 1px solid var(--gold-dim); color: var(--gold);" onclick="window.location.href='https://simonallmer.com/store/p/skyscraper'">BUY</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crosslink Menu View -->
+    <section id="crosslink-menu" class="view" style="overflow-y: auto;">
+        <a href="#games" class="back-abs">BACK TO GAMES</a>
+        <div class="about-container" style="max-width: 800px; margin: 0 auto; padding-top: 100px; padding-bottom: 50px;">
+            <h2 class="section-title">Crosslink</h2>
+            <p style="text-align: center; color: #ccc; margin-bottom: 2rem;">Select an American Portrait puzzle to play:</p>
+            <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                <div class="game-card american-level" onclick="window.location.href='games/crosslink/Crosslink Demo/index.html#play-08-rebel-land'" style="cursor: pointer; width: 100%; max-width: 500px; border: 1px solid var(--gold-dim);">
+                    <h3 style="margin-top: 0; color: var(--gold-bright);">Rebel Land</h3>
+                    <p style="margin: 5px 0;">3×3 · ★☆☆</p>
+                </div>
+                <div class="game-card american-level" onclick="window.location.href='games/crosslink/Crosslink Demo/index.html#play-09-general-command'" style="cursor: pointer; width: 100%; max-width: 500px; border: 1px solid var(--gold-dim);">
+                    <h3 style="margin-top: 0; color: var(--gold-bright);">General Command</h3>
+                    <p style="margin: 5px 0;">3×3 · ★☆☆</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Crosslink View -->
+    <section id="about-crosslink" class="view" style="overflow-y: auto;">
+        <a href="#games" class="back-abs">BACK TO GAMES</a>
+        <div class="about-container" style="max-width: 800px; margin: 0 auto; padding-top: 100px; padding-bottom: 50px;">
+            <h2 class="section-title">Crosslink</h2>
+            <div class="about-content" style="color: #ccc; line-height: 1.6; font-size: 1.1rem; text-align: left;">
+                <p>Crosslink is a node-based word puzzle where every word is defined by its relationship to the words around it. By reading the connections between empty squares, you deduce what words belong there. The whole network is visible from the start, and you can fill in squares in any order you like.</p>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Grids and Shapes</h3>
+                <p>Puzzles come in various shapes and sizes, from standard grids like the Mini (3x3), Midi (4x4), and Maxi (5x5), to unique thematic forms. No matter the shape, the goal remains the same: deduce the words based on how they connect.</p>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Reading Connections</h3>
+                <p>Between the squares lie the connections that form sentences. There are a few different types you will encounter:</p>
+                <ul>
+                    <li><strong>Standard Arrows:</strong> Read in the direction of the arrow (e.g., A &rarr; B means "A is the father of B").</li>
+                    <li><strong>Mutual Lines:</strong> A two-way relationship where the order does not matter (e.g., C &mdash; D means "C is the cousin of D").</li>
+                    <li><strong>Colored Chains:</strong> These connections continue a single sentence across three squares. Follow the colored arrows or lines to read the complete statement.</li>
+                </ul>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Polysemy & Wordplay</h3>
+                <p>Expect elegant misdirection. Many puzzles employ polysemy&mdash;words with multiple meanings. A board might use one definition of a word for an incoming connection, and a completely different definition for an outgoing one. The more difficulty stars a board has, the more likely you are to encounter words wearing two coats.</p>
+
+                <h3 style="color: var(--gold-bright); margin-top: 2rem;">Assistance & Tools</h3>
+                <p>If you get stuck, the board offers a few ways to help:</p>
+                <ul>
+                    <li><strong>Alternative Connections:</strong> Connections with a dotted line underneath can be clicked to flip them over. This reveals a different clue for the same relationship. It costs nothing to peek!</li>
+                    <li><strong>Error Check:</strong> Turned on by default, wrong words turn red immediately. You can turn this off if you prefer a classic, unassisted solving experience.</li>
+                    <li><strong>Hints:</strong> You can reveal a single letter or an entire word if you are truly stuck, though the board will remember that you asked for help.</li>
+                </ul>
+            </div>
+            <div style="text-align: center; margin-top: 4rem; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <span class="game-btn clickable" style="padding: 15px 40px; font-size: 1.2rem; cursor: pointer;" onclick="location.hash='#crosslink-menu'">PLAY</span>
             </div>
         </div>
     </section>
