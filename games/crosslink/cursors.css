@@ -1,0 +1,28 @@
+/* The cursors, drawn as pixel art by tools/make-cursors.py. This file OWNS the
+   cursor: style.css must not set one anywhere, because a rule like
+   `button.ghost { cursor: pointer }` outranks the plain `button` here and drops
+   that control back to the system arrow. Both sizes are the same drawing
+   enlarged twice, so a retina screen gets crisp edges and not a blurred-up
+   nine-pixel arrow. Every rule keeps a system keyword as the last fallback, so
+   a browser that refuses the image still has a cursor. */
+:root {
+  --arrow: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAXCAYAAADUUxW8AAAAbklEQVR42rWTSw6AIBBDe/8zeghXbMfEhZFPoVOUhBV9j4QyABDYWLEjiHIetuCGXcEDO4IKzgo6OCMYwqqAwopgCq8ES3gmkGAmkOGRIAW3AiXIdv89rapewVxVTUCHyaHW8x+j+u2sW7ezd7kAh3vgRIeXVLcAAAAASUVORK5CYII=) 0 0;
+  --hand:  url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAYAAADNX8xBAAAAZElEQVR42mNgwA3+QzFF4P+3D3fAmFLDRpBBZBuIYhAlhuI0CIuhlBuELQzRbSDaIHTDMJwM4+PCBA1CV0QMxvAetQxiQA5AqhhEKsaVDAbGIEKJcvAZxEBsoiQp41JsEJEYDAD/1pvyr28/nAAAAABJRU5ErkJggg==) 6 0;
+}
+
+/* Everything, including the SVG in the middle of the front page — an element
+   the rules missed once, and the cursor changed back to the system one the
+   moment you crossed the emblem. */
+*, *::before, *::after { cursor: var(--arrow), default; }
+* { cursor: image-set(url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAXCAYAAADUUxW8AAAAbklEQVR42rWTSw6AIBBDe/8zeghXbMfEhZFPoVOUhBV9j4QyABDYWLEjiHIetuCGXcEDO4IKzgo6OCMYwqqAwopgCq8ES3gmkGAmkOGRIAW3AiXIdv89rapewVxVTUCHyaHW8x+j+u2sW7ezd7kAh3vgRIeXVLcAAAAASUVORK5CYII=) 1x, url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAuCAYAAAA/SqkPAAAAjElEQVR42u3YMQqAMAyF4dz/jD2Ek6uCdCylqcnLS6iQ0X7/IjSKiDx94E84DA+Ihe+rfYMM4ICRAVwwIoAT9gzghj0CcsCWAblgi4Cc8J+A3PBOQA1YE1ALXgmoCc8CcsKDhWB1SGHPyyAXPDjQPIADnhxQDFa8aBYQDsOXvDD47NUH1n6O2N9VWvgFR0GBOvpXCCIAAAAASUVORK5CYII=) 2x) 0 0, default; }
+
+a, button, .tile, .tile *, .noun, .noun *, .win-x, .tool,
+.toggle, .toggle *, select#which, .wordgrid button, .lex-list button, .lex-play,
+.ti-link, .routes, .routes *, .hero.numbered .cell, .hero.numbered .cell *,
+.script li em, .sentences li .n, [data-lex], .gut.spent, .gut.spent *,
+.gut.turnable .label {
+  cursor: image-set(url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAYAAADNX8xBAAAAZElEQVR42mNgwA3+QzFF4P+3D3fAmFLDRpBBZBuIYhAlhuI0CIuhlBuELQzRbSDaIHTDMJwM4+PCBA1CV0QMxvAetQxiQA5AqhhEKsaVDAbGIEKJcvAZxEBsoiQp41JsEJEYDAD/1pvyr28/nAAAAABJRU5ErkJggg==) 1x, url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAsCAYAAAANUxr1AAAAhUlEQVR42u3XQQrAIAwEQP//Rh/RU68WemsoRtvVJLqBvSjIgItgSv1TRMzHDegGnEd+xBJGEEEEESRA0x/MWCAL6BqgBihB1fU/sOkgrYRDQDWYT5BWQrnfm/VA2kGohAB9Ku+WoFcYQa1XR5AVjCAExC1oKIygrUBQGPLjSFBMEDC+QRc1hW/j7Uq7LAAAAABJRU5ErkJggg==) 2x) 6 0, pointer;
+}
+button:disabled, .tool:disabled, .hero.numbered .cell.empty,
+.hero.numbered .cell.empty * { cursor: var(--arrow), default; }
+.noun.selected, .noun.selected * { cursor: var(--arrow), text; }

@@ -1,0 +1,44 @@
+{
+  "id": "de-03-verrueckte-tiere",
+  "title": "Verrückte Tiere",
+  "nummer": "Brett № 3",
+  "size": 3,
+  "centre": [1, 1],
+  "stars": 2,
+  "rueckseiten": "",
+  "einseitig": true,
+  "widmung": "",
+  "fuer": "Crosslink · Allmer Games",
+  "schluss": "Neun Tiere, zwölf Verbindungen — und kein einziges Feld meint das Tier, das dort steht.",
+  "nouns": [
+    ["MAUS",   "SCHLANGE", "KREBS"],
+    ["UHU",    "HAHN",     "TAUBE"],
+    ["FLIEGE", "KATER",    "BULLE"]
+  ],
+  "h": [
+    [
+      { "dir": "right", "verb": "stellt sich hinter Reptilien an und wird dabei selbst Teil der" },
+      { "dir": "right", "verb": "weicht im seichten Wasser den Scheren aus vom" }
+    ],
+    [
+      { "kind": "eq",   "verb": "erblickt nur einen schlafenden" },
+      { "dir": "left",  "verb": "hören nicht das Krähen vom lauten" }
+    ],
+    [
+      { "dir": "left",  "verb": "ist in modebewusster, gestiefelter Form auch anzutreffen mit" },
+      { "dir": "left",  "verb": "sorgt, aus beruflichen Gründen, für den Aufhalt und Entzug von Herr" }
+    ]
+  ],
+  "v": [
+    [
+      { "dir": "up",   "verb": "sorgt bei Falschanwendung zum Cursorstillstand der" },
+      { "dir": "down", "verb": "steht im Festzelt und wird nur kürzer durch einen zweiten" },
+      { "dir": "down", "verb": "steht in den schicksalhaften Sternen über jedem weltlichen Flug einer" }
+    ],
+    [
+      { "dir": "up",   "verb": "kann, als Befehl verstanden, ausgeführt werden vom" },
+      { "dir": "down", "verb": "spendet Leitungswasser zur Vertreibung des" },
+      { "dir": "down", "verb": "hält im Rat den Zins tief; darüber freut sich an der Börse der" }
+    ]
+  ]
+}

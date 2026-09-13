@@ -1,0 +1,58 @@
+{
+  "id": "de-02-tiere-klein",
+  "title": "Im Reich der Tiere",
+  "nummer": "Brett № 1",
+  "size": 3,
+  "centre": [1, 1],
+  "stars": 1,
+  "rueckseiten": "Vorne die Szene. Hinten der Satz, den man kaum glaubt.",
+  "notiz": {
+    "titel": "Der Bär, gegen den Strich gelesen",
+    "text": "Eisbär und Braunbär sind <b>zwei verschiedene Arten</b> — nicht ein Bär in zwei Fellfarben. Sie sind aber so nah verwandt, dass ihre gemeinsamen Jungen selbst wieder Junge bekommen können; der Eisbär stammt vom Braunbären ab. <b>Hund und Wolf</b> dagegen sind wirklich <b>dasselbe Tier</b>: derselbe Artname, nur zahm. Die beiden Verbindungen stehen deshalb nebeneinander auf dem Brett — sie sehen gleich aus und sind es nicht."
+  },
+  "widmung": "",
+  "fuer": "Crosslink · Allmer Games",
+  "schluss": "Neun Tiere, elf Verbindungen — vom Eis bis zur Weide, und keines steht für sich.",
+  "nouns": [
+    ["BRAUNBÄR", "EISBÄR", "PINGUIN"],
+    ["LACHS",    "ROBBE",  "SCHWAN"],
+    ["WOLF",     "HUND",   "SCHAF"]
+  ],
+  "h": [
+    [
+      { "kind": "eq",   "verb": "ist so nah verwandt, dass es gemeinsame Junge gibt: er und ein",
+                        "verb2": "ist der ältere von beiden: aus ihm wurde vor langer Zeit ein" },
+      { "kind": "eq",   "verb": "lebt zwar auch auf dem Eis, sieht aber nur im Tiergarten je einen",
+                        "verb2": "hat zwischen sich und ihm die ganze Erdkugel: den Süden hält ein" }
+    ],
+    [
+      { "dir": "left",  "verb": "wartet an der Flussmündung auf einen",
+                        "verb2": "hält zwanzig Minuten die Luft an für einen einzigen" },
+      null
+    ],
+    [
+      { "kind": "eq",   "verb": "ist von der Art her dasselbe Tier wie ein",
+                        "verb2": "heult zehn Kilometer weit; so weit kommt nie ein" },
+      { "dir": "right", "verb": "läuft im Kreis um die Herde und bringt heim jedes",
+                        "verb2": "bewacht heute, was seine wilden Verwandten reißen: ein" }
+    ]
+  ],
+  "v": [
+    [
+      { "dir": "down",  "verb": "steht in Nordamerika im Wasserfall und fängt einen",
+                        "verb2": "braucht vierzig am Tag, um den Winter zu verschlafen: den" },
+      { "dir": "down",  "verb": "wartet stundenlang reglos am Loch im Eis auf eine",
+                        "verb2": "riecht sie noch unter einem Meter Schnee, die verborgene" },
+      { "kind": "eq",   "verb": "ist ein Vogel, der nicht fliegen kann, anders als ein",
+                        "verb2": "schlägt unter Wasser mit den Flügeln wie in der Luft ein" }
+    ],
+    [
+      { "dir": "up",    "verb": "frisst an der Küste Kanadas nur den Kopf von einem",
+                        "verb2": "schwimmt dafür von Insel zu Insel, kilometerweit, für einen" },
+      { "dir": "down",  "verb": "trägt in einem ihrer beiden Namen ein ganz anderes Tier: einen",
+                        "verb2": "bellt auch so, wenn sie auf einem Felsen liegt, wie ein" },
+      { "kind": "eq",   "verb": "ist schwarz eine Sensation; schwarz nur der Außenseiter ist ein",
+                        "verb2": "kannte man schwarz erst seit Australien, seit je dagegen ein" }
+    ]
+  ]
+}

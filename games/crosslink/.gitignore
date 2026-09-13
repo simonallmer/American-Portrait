@@ -1,0 +1,15 @@
+.DS_Store
+
+# Die deutschen Bretter sind eigenständige Dateien und gehören nicht zum
+# Hauptspiel; gebaut werden sie aus brett.json und den Vorlagen, die im Repo
+# liegen. Was sich mit einem Befehl neu bauen lässt, wird nicht versioniert:
+#
+#   python3 "Archive/Im Reich der Tiere/bauen.py" "Verrückte Tiere" --pdf
+#
+Verrückte Tiere/*.html
+Verrückte Tiere/*.pdf
+Archive/Im Reich der Tiere/*.html
+Archive/Im Reich der Tiere/*.pdf
+Archive/Im Reich der Tiere 3x3/*.html
+Archive/Im Reich der Tiere 3x3/*.pdf
+!Archive/Im Reich der Tiere/vorlage-*.html

@@ -1,0 +1,1038 @@
+/* Crosslink — the 1994 hypertext dress.
+   The board is a page of links: a word you can reach is an unvisited link,
+   a word you have placed is a visited one, and the verbs are the anchors
+   between them, set small, because the wiring should never outweigh the words. */
+
+:root {
+  --page:      #8E8E86;          /* the grey behind the document */
+  --sheet:     #C6C6BE;          /* the document itself: 1994 default grey */
+  --card:      #FFFFFF;          /* a link box, a panel, anything you can read into */
+  --face:      #C0C0C0;          /* chrome: buttons, status bar */
+  --bevel-hi:  #FFFFFF;
+  --bevel-lo:  #808080;
+  --bevel-lo2: #4C4C4C;
+
+  --ink:       #000000;
+  --ink-soft:  #333333;
+  --ink-faint: #767676;
+
+  --link:      #0000EE;          /* unvisited */
+  --visited:   #551A8B;          /* placed */
+  --active:    #EE0000;
+  --hl:        #FFFFCC;          /* the square you are standing in */
+
+  --rule:      #B4B4AC;
+  --barred:    #9A9A92;
+  --wrong:     #CC0000;
+  --wrong-bg:  #FFDEDE;
+
+  --wire:      #8F8F86;
+  --caught:    #0B6B34;
+  --red:       #B3251F;   --red-pale:   #F6DEDC;
+  --gold:      #A97400;   --gold-pale:  #F7EBCC;
+  --green:     #1F6B33;   --green-pale: #DEEFE0;
+  --navy:      #1B3A8C;   --navy-pale:  #DEE4F6;
+  --serif: "Times New Roman", Times, Georgia, serif;
+  --mono:  "Courier New", Courier, monospace;
+  --sans:  Verdana, Geneva, Tahoma, Arial, Helvetica, sans-serif;
+}
+/* Dark is offered two ways: the system asks for it, or the sun/moon in the
+   toolbar says so. A manual choice wins over the system either way, which is
+   why the media query steps aside for [data-theme="light"]. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page:      #0E0E0D;
+    --sheet:     #232320;
+    --card:      #121212;
+    --face:      #2E2E2E;
+    --bevel-hi:  #565656;
+    --bevel-lo:  #000000;
+    --bevel-lo2: #000000;
+    --ink:       #E8E8E4;
+    --ink-soft:  #BDBDB8;
+    --ink-faint: #8A8A84;
+    --link:      #6FA8FF;
+    --visited:   #C79BFF;
+    --active:    #FF7B7B;
+    --hl:        #3A3620;
+    --rule:      #3C3C38;
+    --barred:    #4A4A44;
+    --wrong:     #FF8A8A;
+    --wrong-bg:  #3A1616;
+    --wire:      #55554E;
+    --caught:    #63CE90;
+    --red:       #E58A84;   --red-pale:   #33201F;
+    --gold:      #D9AE4A;   --gold-pale:  #322A16;
+    --green:     #6FC684;   --green-pale: #16281A;
+    --navy:      #8AA4E8;   --navy-pale:  #1A1F33;
+  }
+}
+:root[data-theme="dark"] {
+    --page:      #0E0E0D;
+    --sheet:     #232320;
+    --card:      #121212;
+    --face:      #2E2E2E;
+    --bevel-hi:  #565656;
+    --bevel-lo:  #000000;
+    --bevel-lo2: #000000;
+    --ink:       #E8E8E4;
+    --ink-soft:  #BDBDB8;
+    --ink-faint: #8A8A84;
+    --link:      #6FA8FF;
+    --visited:   #C79BFF;
+    --active:    #FF7B7B;
+    --hl:        #3A3620;
+    --rule:      #3C3C38;
+    --barred:    #4A4A44;
+    --wrong:     #FF8A8A;
+    --wrong-bg:  #3A1616;
+    --wire:      #55554E;
+    --caught:    #63CE90;
+    --red:       #E58A84;   --red-pale:   #33201F;
+    --gold:      #D9AE4A;   --gold-pale:  #322A16;
+    --green:     #6FC684;   --green-pale: #16281A;
+    --navy:      #8AA4E8;   --navy-pale:  #1A1F33;
+  }
+
+/* ---- one board, one colour ---------------------------------------- */
+
+/* Six boards, six papers. The tint lands on `--sheet` and nothing else, which
+   is enough: the sheet is the document, the two side windows, and the little
+   chips the wires pass behind, so all of it turns at once and nothing has to be
+   re-tinted by hand. `--card` stays white, because a square you write into is
+   paper and must not be tinted, and `--page` stays grey, because the desktop
+   the window sits on does not belong to the puzzle.
+
+   Every value is picked at roughly the luminance of the default #C6C6BE, so the
+   two-tone bevels keep working and black type keeps its contrast. A colour that
+   is merely darker reads as a different UI; a colour at the same weight reads
+   as different paper, which is the intention.
+
+   Specificity note. These sit on `body`, and the palettes sit on `:root`. Body
+   is a child of root, so its own declaration shadows the inherited one whatever
+   the selectors weigh — which means the dark rules cannot be left out, or a
+   dark board would inherit the light tint. They are written twice for the same
+   reason the palette is: once for the system preference, once for the toggle. */
+/* The desktop behind the window takes the same colour, carried down by the same
+   amount the default grey sits below the default paper — #C6C6BE over #8E8E86,
+   which is 0x38 off every channel. Applying the measured distance rather than
+   picking a second colour by eye is what keeps the pair reading as one surface
+   under another, and not as two colours that happen to be nearby. */
+body[data-hue="sand"]  { --sheet: #D6CBA4; --page: #9E936C; }   /* No. 1, the desert */
+body[data-hue="blue"]  { --sheet: #B6C4D2; --page: #7E8C9A; }   /* No. 2, the sea */
+body[data-hue="crust"] { --sheet: #C9B597; --page: #917D5F; }   /* No. 3, a baked crust */
+body[data-hue="green"] { --sheet: #B7C7AC; --page: #7F8F74; }   /* No. 4, the garden */
+body[data-hue="grey"]  { --sheet: #B9B9B6; --page: #81817E; }   /* No. 5, newsprint and lead */
+body[data-hue="red"]   { --sheet: #CDAFA6; --page: #95776E; }   /* No. 6, firebrick */
+/* The English run is sand through to firebrick — six warm earths in a line.
+   The German shelf opens outside it on purpose: a new shelf reads as a new
+   shelf before a word of it is read. Brett № 1, nine creatures leading double
+   lives in a city. */
+body[data-hue="plum"]  { --sheet: #C6B0BC; --page: #8E7884; }   /* de № 1, a sour plum */
+body[data-hue="america"] { --sheet: #C5CBE0; --page: #8B93AD; } /* american flag blue */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body[data-hue="sand"]  { --sheet: #272318; --page: #100E08; }
+  :root:not([data-theme="light"]) body[data-hue="blue"]  { --sheet: #1B2129; --page: #090C11; }
+  :root:not([data-theme="light"]) body[data-hue="crust"] { --sheet: #272019; --page: #100D09; }
+  :root:not([data-theme="light"]) body[data-hue="green"] { --sheet: #1D2620; --page: #0A100C; }
+  :root:not([data-theme="light"]) body[data-hue="grey"]  { --sheet: #242424; --page: #0F0F0F; }
+  :root:not([data-theme="light"]) body[data-hue="red"]   { --sheet: #2B1E1C; --page: #120C0B; }
+  :root:not([data-theme="light"]) body[data-hue="plum"]  { --sheet: #261C22; --page: #0F0A0D; }
+  :root:not([data-theme="light"]) body[data-hue="america"] { --sheet: #1A1D30; --page: #0D0F1A; }
+}
+:root[data-theme="dark"] body[data-hue="sand"]  { --sheet: #272318; --page: #100E08; }
+:root[data-theme="dark"] body[data-hue="blue"]  { --sheet: #1B2129; --page: #090C11; }
+:root[data-theme="dark"] body[data-hue="crust"] { --sheet: #272019; --page: #100D09; }
+:root[data-theme="dark"] body[data-hue="green"] { --sheet: #1D2620; --page: #0A100C; }
+:root[data-theme="dark"] body[data-hue="grey"]  { --sheet: #242424; --page: #0F0F0F; }
+:root[data-theme="dark"] body[data-hue="red"]   { --sheet: #2B1E1C; --page: #120C0B; }
+:root[data-theme="dark"] body[data-hue="plum"]  { --sheet: #261C22; --page: #0F0A0D; }
+:root[data-theme="dark"] body[data-hue="america"] { --sheet: #1A1D30; --page: #0D0F1A; }
+
+/* American-themed puzzles: blue background with stars */
+body[data-hue="america"] {
+  background-color: var(--page);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z' fill='%23ffffff' opacity='.22'/%3E%3Cpath d='M10 35l1.5 4.5h4.5l-3.5 3 1.5 4.5-3.5-3-3.5 3 1.5-4.5-3.5-3h4.5z' fill='%23ffffff' opacity='.16'/%3E%3Cpath d='M50 40l1.5 4.5h4.5l-3.5 3 1.5 4.5-3.5-3-3.5 3 1.5-4.5-3.5-3h4.5z' fill='%23ffffff' opacity='.16'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] body[data-hue="america"],
+:root:not([data-theme="light"]) body[data-hue="america"] {
+  background-color: var(--page);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z' fill='%23ffffff' opacity='.22'/%3E%3Cpath d='M10 35l1.5 4.5h4.5l-3.5 3 1.5 4.5-3.5-3-3.5 3 1.5-4.5-3.5-3h4.5z' fill='%23ffffff' opacity='.16'/%3E%3Cpath d='M50 40l1.5 4.5h4.5l-3.5 3 1.5 4.5-3.5-3-3.5 3 1.5-4.5-3.5-3h4.5z' fill='%23ffffff' opacity='.16'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0;
+  -webkit-text-size-adjust: 100%;
+  color: var(--ink);
+  font-family: var(--serif); font-size: 16px; line-height: 1.45;
+  background-color: var(--page);
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.05)       0 1px, transparent 1px 3px);
+}
+
+/* Anything printed with a `data-lex` opens the Lexicon when clicked, so it is
+   dressed as a link wherever it stands — blue and underlined, the unvisited
+   colour, because a name in the epigraph is not a word you have placed. The
+   sentences overrule this further down: a word set on the board is a link you
+   have been down, and goes purple. */
+[data-lex] { color: var(--link); text-decoration: underline; }
+
+/* The document sits on the grey like a window on a desktop, and two more
+   windows may be opened either side of it. */
+.desktop {
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 14px; padding: 18px 14px 40px; flex-wrap: wrap;
+}
+main {
+  flex: 0 1 auto; width: 100%; max-width: 700px; padding: 0 26px;
+  background: var(--sheet);
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo2) var(--bevel-lo2) var(--bevel-hi);
+}
+body.wide main { max-width: 1000px; }
+
+.win {
+  flex: 0 0 240px; width: 240px;
+  background: var(--sheet);
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo2) var(--bevel-lo2) var(--bevel-hi);
+}
+/* The side windows flank the board only when all three genuinely fit; below
+   that they fall in underneath it, in the order they were opened, rather than
+   wrapping above the page they belong to. */
+.wrap-break { flex: 0 0 100%; height: 0; }
+@media (min-width: 1240px) {
+  body:not(.wide) #win-script  { order: -1; }
+  body:not(.wide) #win-lex     { order:  1; }
+  body:not(.wide) .wrap-break  { display: none; }
+}
+@media (min-width: 1540px) {
+  body.wide #win-script { order: -1; }
+  body.wide #win-lex    { order:  1; }
+  body.wide .wrap-break { display: none; }
+}
+
+/* title bars */
+.win-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: linear-gradient(90deg, #000080, #2A72C8);
+  color: #FFFFFF; padding: 3px 3px 3px 7px;
+  font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .01em;
+}
+.win-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main-bar { margin: 0 -26px 18px; }
+.win-x {
+  flex: 0 0 auto; width: 17px; height: 15px; padding: 0;
+  font-family: var(--sans); font-size: 8px; line-height: 1; color: var(--ink);
+  background: var(--face); border-radius: 0;
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+}
+.win-x:active { border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+
+.win-body {
+  margin: 8px; padding: 8px; background: var(--card);
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+  max-height: 74vh; overflow-y: auto;
+}
+
+/* left window: the written form */
+.script { list-style: none; margin: 0; padding: 0; }
+.script li { font-family: var(--serif); font-size: 14px; line-height: 1.35; margin: 0 0 8px; }
+.script li.open { color: var(--ink-faint); }
+.script li.closed { color: var(--ink); }
+.script li em { font-style: normal; color: var(--visited); text-decoration: underline; }
+.script li em:hover { color: var(--active); }
+.script li .gap { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); letter-spacing: .1em; }
+
+/* right window: the lexicon */
+.lex-word { font-family: var(--serif); font-size: 21px; font-weight: 700; margin: 0; }
+.lex-pos { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; }
+.lex-senses { margin: 0 0 4px; padding: 0 0 0 18px; }
+.lex-senses li { font-family: var(--serif); font-size: 14px; line-height: 1.35; margin: 0 0 5px; }
+.lex-note { font-family: var(--sans); font-size: 11px; color: var(--ink-faint); margin: 0; }
+.lex-head {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-faint); margin: 14px 0 6px; border-top: 1px solid var(--rule); padding-top: 8px;
+}
+.lex-list { list-style: none; margin: 0; padding: 0; }
+.lex-list li { display: inline; }
+.lex-list button {
+  font-family: var(--serif); font-size: 14px; color: var(--visited);
+  background: none; border: 0; padding: 0 8px 3px 0;
+  text-decoration: underline;
+}
+.lex-list button.here { color: var(--active); font-weight: 700; }
+.lex-list .gap { font-family: var(--sans); font-size: 11px; color: var(--ink-faint); }
+
+/* ---- masthead ---------------------------------------------------- */
+
+header { border-bottom: 2px ridge var(--bevel-hi); padding-bottom: 12px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--ink-faint); margin: 0 0 6px;
+}
+.eyebrow::before { content: "\2190 \2192  "; letter-spacing: 0; }
+h1 { font-family: var(--serif); font-size: 34px; font-weight: 700; margin: 0 0 8px; line-height: 1.1; }
+.standfirst { margin: 0; color: var(--ink-soft); font-size: 15px; max-width: 60ch; }
+
+/* ---- chrome ------------------------------------------------------ */
+
+.controls { display: flex; align-items: center; gap: 14px; margin: 14px 0 18px; flex-wrap: wrap; }
+.toggle {
+  font-family: var(--sans); font-size: 11px; color: var(--ink-soft);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+select#which, button.ghost {
+  font-family: var(--sans); font-size: 11px; color: var(--ink);
+  background: var(--face); padding: 4px 10px; min-height: 26px;
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  border-radius: 0;
+}
+select#which { padding: 3px 4px; }
+button.ghost:active:not(:disabled) {
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+button.ghost:disabled { color: var(--ink-faint); }
+button.ghost.solid:not(:disabled) { font-weight: 700; }
+
+/* ---- the board --------------------------------------------------- */
+
+.board-scroll { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+.board { display: grid; gap: 2px; width: max-content; }
+.board > div { display: flex; align-items: center; justify-content: center; text-align: center; }
+
+/* Every square can be written in, so every square is a box: white paper on the
+   grey, raised, waiting. There is no longer such a thing as a square you cannot
+   reach — only one you have not reached yet. */
+.noun {
+  position: relative; background: var(--card); border: 2px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+}
+/* The frontier used to be marked here — `outline: 1px dashed var(--link)` on
+   every square a placed word touched. Cut at 3.12. Inset four pixels and dashed,
+   it read as a ring of blue dots loose inside the box rather than as a property
+   of the square, and it was the only decoration on the board that was not
+   either a word or a wire. The class is still set on the element, so a hint
+   that wants those squares can have them without going back through app.js. */
+.noun.selected {
+  background: var(--hl);
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.noun .slots { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--link); line-height: 1.1; }
+.noun .slots span {
+  display: inline-block; width: 12px; margin: 0 2px; text-align: center;
+  border-bottom: 2px solid var(--wire);
+}
+.noun .slots .rev { color: var(--active); border-bottom-color: var(--active); }
+.noun .slots .caret { border-bottom-color: var(--active); animation: caret .9s steps(1) infinite; }
+/* the caret blinks between red and the wire grey — never to nothing, so the
+   number of slots stays countable while you type */
+@keyframes caret { 50% { border-bottom-color: var(--wire); } }
+
+/* The entered word stands in the same boxes the letters were typed into, at the
+   same size: entering a word must not move it. Only the hand changes — Courier
+   while you are writing it, Times once the board has taken it. */
+.noun .word { font-family: var(--serif); font-size: 15px; line-height: 1.1; }
+.noun .word span { display: inline-block; width: 12px; margin: 0 2px; text-align: center; }
+/* A placed word is marked by an underline beneath each of its letters rather
+   than beneath the whole block. A container underline wraps to the bottom of
+   the last line only, so a word that folded onto two rows read as a single
+   link-line beneath two lines of letters; letter by letter, every row carries
+   its own even rule and the word keeps its marking whether it sits on one row
+   or two. */
+.noun.done-clean   .word { color: var(--visited); }
+.noun.done-clean   .word span { border-bottom: 1px solid var(--visited); }
+.noun.done-partial .word { color: var(--visited); }
+.noun.done-partial .word span { border-bottom: 1px dotted var(--visited); }
+.noun.done-given   .word { color: var(--ink-faint); font-style: italic; }
+.noun.wrong { background: var(--wrong-bg); }
+.noun.wrong .word { color: var(--wrong); text-decoration: line-through; }
+.noun.wrong .word span { border-bottom-color: var(--wrong); }
+/* The 3x3 sheet (the small lattice) sets its words a touch smaller and a touch
+   tighter than the 5x5, so a long noun still fits its syllables instead of
+   crowding against the box. It is applied to the typed slots and the placed
+   word alike, so entering a word never moves it. */
+.board[data-size="3"] .noun .slots { font-size: 13px; }
+.board[data-size="3"] .noun .slots span { width: 10px; margin: 0 1.5px; }
+.board[data-size="3"] .noun .word  { font-size: 13px; }
+.board[data-size="3"] .noun .word span { width: 10px; margin: 0 1.5px; }
+.board[data-size="5"] .noun .slots { font-size: 13px; }
+.board[data-size="5"] .noun .slots span { width: 9px; margin: 0 1.5px; }
+.board[data-size="5"] .noun .word  { font-size: 13px; }
+.board[data-size="5"] .noun .word span { width: 9px; margin: 0 1.5px; }
+
+.noun .tick { position: absolute; top: 2px; right: 4px; font-family: var(--mono); font-size: 10px; color: var(--ink-soft); }
+.noun .tick::before { content: "["; }
+.noun .tick::after  { content: "]"; }
+
+/* the wiring: small, monospaced, and out of the way */
+.gut { border: none; }
+.gut.shown { position: relative; padding: 0 2px; }
+
+/* the wire itself, running the length of the gutter */
+.gut.shown::before { content: ""; position: absolute; background: var(--wire); }
+.gut.shown.h::before { left: 0; right: 0; top: 50%; height: 1px; }
+.gut.shown.v::before { top: 0; bottom: 0; left: 50%; width: 1px; }
+
+/* the head, sitting where the wire enters the square it points at */
+.gut.shown .arrow { position: absolute; width: 0; height: 0; border: 5px solid transparent; }
+.gut.to-right .arrow { right: 0; top: 50%; margin-top: -5px; border-right-width: 0; border-left-color: var(--link); }
+.gut.to-left  .arrow { left: 0;  top: 50%; margin-top: -5px; border-left-width: 0;  border-right-color: var(--link); }
+.gut.to-down  .arrow { bottom: 0; left: 50%; margin-left: -5px; border-bottom-width: 0; border-top-color: var(--link); }
+.gut.to-up    .arrow { top: 0;    left: 50%; margin-left: -5px; border-top-width: 0;    border-bottom-color: var(--link); }
+/* R2, the equivalence: a plain line, no head. Specced in §2 at 0.3 and built at
+   3.1. The arrowhead is not hidden but never drawn — an eq has no direction to
+   hide — and the wire is drawn a shade heavier so a headless line reads as a
+   deliberate kind of join rather than as an arrow that failed to render. */
+.gut.level .arrow { display: none; }
+.gut.shown.level::before { background: var(--ink-faint); }
+.gut.shown.level.h::before { height: 2px; margin-top: -1px; }
+.gut.shown.level.v::before { width: 2px; margin-left: -1px; }
+
+/* the verb, printed on the wire */
+.gut.shown .label {
+  position: relative; z-index: 1; background: var(--sheet);
+  font-family: var(--sans); font-size: 10px; line-height: 1.25;
+  color: var(--ink); padding: 0 3px;
+}
+
+/* The room a label must leave for its arrowhead depends on which way the wire
+   runs, and for a long time it did not: one `max-width: calc(100% - 22px)` was
+   applied to both axes. On a horizontal gutter that is right — the head sits at
+   the left or the right end, so the width is what has to be given up. On a
+   VERTICAL gutter the head sits at top or bottom centre, so twenty-two pixels of
+   width buys nothing and costs a line: "is soft enough to cast and hard enough
+   for" was squeezed into 76px, wrapped to four lines, overflowed a 42px gutter
+   and printed itself over its own arrow.
+
+   So the reserve now follows the axis. A vertical label gets the full column
+   and gives up height instead, and the gutter rows are a few pixels taller so
+   three lines and an arrowhead both fit without touching. */
+.gut.shown.h .label { max-width: calc(100% - 20px); }
+.gut.shown.v .label { max-width: calc(100% - 4px);  }
+
+/* A verb whose two words are both down leaves only its wire — and comes back,
+   like a tooltip, the moment you go looking for it. */
+/* A connection whose two words are both down stays written out. It fades, so
+   the eye goes to the open ones first, but it is never taken away: the board is
+   a page of sentences, and a sentence you have earned should still be readable
+   without hovering for it. */
+.gut.spent { opacity: .55; }
+
+/* ---- a connection with two faces ---------------------------------- */
+/* A turnable gutter is marked, and marked quietly: a dotted underline on the
+   label, which is what 1994 used for a thing you could click that was not a
+   link. No icon, no badge — the board already has as many marks as it can
+   carry, and this one has to sit under 34 of them at once without shouting. */
+.gut.turnable .label {
+  /* no cursor here: cursors.css owns it outright, and a rule in this file would
+     outrank the one over there. The hand is added to its list instead.
+
+     text-decoration, not border-bottom: a border is part of the box and adds a
+     pixel of height, which is a pixel these gutters do not have — it pushed
+     "is soft enough to cast and hard enough for" over the A2d line the moment
+     the mark was added. An underline lives inside the line box and costs
+     nothing. */
+  text-decoration: underline dotted var(--ink-faint);
+  text-underline-offset: 2px;
+}
+
+/* ---- the trifecta ----------------------------------------------------- */
+/* A trifecta board's gutter is a span of one of its six lines. The line's
+   sentence is split at its word seats, so each gutter carries the stretch that
+   runs up to the next word — written on its own coloured wire, exactly as a
+   net's gutter carries its verb between two squares — and the whole sentence
+   reads across the two wires with the middle word seated between them. Six
+   lines, six colours, one per unique sentence; the arrowhead tells the reading
+   order and the wire tells which line the span belongs to. */
+
+.gut.shown.trifecta { padding: 0 2px; }
+.gut.shown.trifecta.h::before { background: var(--ln); height: 3px; margin-top: -1.5px; }
+.gut.shown.trifecta.v::before { background: var(--ln); width: 3px; margin-left: -1.5px; }
+
+.gut.trifecta.to-right .arrow { border-left-color: var(--ln); }
+.gut.trifecta.to-left  .arrow { border-right-color: var(--ln); }
+.gut.trifecta.to-down  .arrow { border-top-color: var(--ln); }
+.gut.trifecta.to-up    .arrow { border-bottom-color: var(--ln); }
+
+.gut.trifecta.line-r0, .line-r0 { --ln: #C4423A; }
+.gut.trifecta.line-r1, .line-r1 { --ln: #3E7A3E; }
+.gut.trifecta.line-r2, .line-r2 { --ln: #7A4A9E; }
+.gut.trifecta.line-c0, .line-c0 { --ln: #2E6FA0; }
+.gut.trifecta.line-c1, .line-c1 { --ln: #C07A1E; }
+.gut.trifecta.line-c2, .line-c2 { --ln: #2A8A86; }
+
+/* In the clue panel, the script window and the closing page, a line reads as a
+   coloured swatch before its words — the same signal as the wire on the board. */
+ul#routes li.line, ul#script-list li.line, ul#sentences li.line {
+  border-left: 4px solid var(--ln); padding-left: 8px; margin-left: 2px; }
+.gut.turnable:hover .label {
+  color: var(--link); text-decoration-color: var(--link);
+}
+
+/* The face that is showing. `over` is the back, and it is tinted rather than
+   restyled — same size, same face, so a turned board still reads as one board
+   and you can see at a glance which gutters you have been into. */
+.gut.over .label {
+  color: var(--visited);
+  text-decoration: underline dashed var(--visited);
+  text-underline-offset: 2px;
+}
+
+/* The turn. Scaling X to zero and back is the whole trick, and it is the right
+   trick: it is what a card does, it costs one property, and it degrades to an
+   instant swap wherever the animation does not run. The label is repainted at
+   the midpoint by the redraw, so the text changes while the card is edge-on. */
+@keyframes gut-turn {
+  0%   { transform: scaleX(1); }
+  49%  { transform: scaleX(.04); }
+  50%  { transform: scaleX(.04); }
+  100% { transform: scaleX(1); }
+}
+/* Only the gutter that was just clicked, never all thirty-four: the board is
+   rebuilt from scratch on every keystroke, so an animation on `.turnable` would
+   set the whole page shivering each time a letter went in. */
+.gut.turning .label { animation: gut-turn 260ms ease-in-out; }
+@media (prefers-reduced-motion: reduce) {
+  .gut.turning .label { animation: none; }
+}
+.gut.barred::after { content: ""; width: 46%; height: 2px; background: var(--barred); }
+.board[data-size="3"] .gut.shown .label { font-size: 11px; }
+.dead::after { content: "+"; font-family: var(--mono); font-size: 9px; color: var(--rule); }
+
+#ghost-input {
+  position: fixed; top: 0; left: 0;
+  width: 1px; height: 1px; padding: 0; border: 0;
+  font-size: 16px; opacity: 0.01; background: transparent; color: transparent;
+  pointer-events: none;
+}
+
+/* ---- the panel: the browser's own little report ------------------- */
+
+.panel {
+  margin-top: 18px; min-height: 96px; background: var(--card); padding: 10px 12px;
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+.panel-empty { color: var(--ink-faint); font-family: var(--sans); font-size: 12px; margin: 0; }
+.panel-head {
+  margin: 0 0 8px; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
+}
+.routes { list-style: none; margin: 0 0 12px; padding: 0; }
+.routes li { font-family: var(--serif); font-size: 16px; margin: 0 0 4px; color: var(--ink); }
+.routes li::before { content: "\25B8 "; color: var(--link); }
+.routes li em { font-style: normal; color: var(--visited); text-decoration: underline; }
+.routes li .gap { font-family: var(--mono); color: var(--ink-faint); }
+.routes li.more { font-family: var(--sans); font-size: 11px; color: var(--link); text-decoration: underline; margin-top: 8px; }
+.routes li.more::before { content: none; }
+.hint-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.note { font-family: var(--sans); font-size: 11px; color: var(--ink-faint); }
+.message { margin: 10px 0 0; font-family: var(--sans); font-size: 12px; min-height: 18px; color: var(--wrong); }
+.message.ok { color: var(--ink-soft); }
+
+/* ---- the close --------------------------------------------------- */
+
+.finish { margin-top: 26px; border-top: 2px ridge var(--bevel-hi); padding-top: 18px; }
+.finish h2 { font-family: var(--serif); font-weight: 700; font-size: 24px; margin: 0 0 6px; }
+.finish-sub { margin: 0 0 14px; color: var(--ink-soft); font-family: var(--sans); font-size: 12px; }
+.sentences { list-style: none; margin: 0; padding: 0; }
+.sentences li { font-family: var(--serif); font-size: 16px; margin: 0 0 5px; color: var(--ink-soft); }
+.sentences li .n { color: var(--visited); text-decoration: underline; }
+
+/* ---- status bar --------------------------------------------------- */
+
+/* Two panes, as a status bar of the period had: what the page is doing on the
+   left, whose page it is on the right. */
+footer {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 22px -26px 0; background: var(--face); padding: 4px 8px;
+  border-top: 2px solid; border-color: var(--bevel-lo) transparent transparent;
+}
+footer p { margin: 0; font-family: var(--mono); font-size: 10px; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+footer p:first-child { flex: 1 1 auto; }
+footer .notice { flex: 0 0 auto; }
+/* A trailing space inside `content` is collapsed away, so the flag sat against
+   the first word with nothing between them. The gap has to be a margin. */
+footer p:first-child::before { content: "\2691"; margin-right: 7px; }
+
+@media (max-width: 640px) {
+  /* Two panes do not fit; the notice is the one that goes, being the one a
+     reader can find in the source and does not need on a phone. */
+  footer .notice { display: none; }
+}
+
+@media (max-width: 640px) {
+  .desktop { padding: 0 0 30px; gap: 10px; }
+  main { padding: 0 14px; border-width: 0; }
+  .main-bar { margin: 0 -14px 16px; }
+  h1 { font-size: 26px; }
+  footer { margin: 18px -14px 0; }
+  .win { flex: 1 1 auto; width: auto; align-self: stretch; margin: 0 8px; }
+}
+
+/* ======================================================================
+   The site around the board: a toolbar, a front page, and three indexes.
+   ====================================================================== */
+
+.toolbar {
+  position: relative;
+  display: flex; align-items: center; gap: 6px;
+  margin: 0 -26px 18px; padding: 4px 8px;
+  background: var(--face); border-bottom: 1px solid var(--bevel-lo);
+}
+/* Every control in the bar is 26px tall and nothing it contains may change
+   that. The heights used to come out of the content, and so there were seven
+   of them across eight buttons: 40px for `\u25C0 Back`, because the triangle
+   carries a taller glyph box than the letters beside it; 33px for the language
+   button, which sets 8px around an 11px span; 21px for the icon button, which
+   sets `line-height: 0`. The bar read as a row of buttons at different
+   altitudes. A declared height and a centring box settle all of it at once,
+   and 26px is not a new number — it is what `button.ghost` has always used. */
+.tool {
+  height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--sans); font-size: 11px; color: var(--ink);
+  background: var(--face); padding: 0 9px; border-radius: 0;
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+}
+.tool:active:not(:disabled) { border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+.tool:disabled { color: var(--ink-faint); }
+.loc-label { font-family: var(--sans); font-size: 11px; color: var(--ink-soft); margin-left: 6px; }
+.tool.arrow { padding: 0 6px; font-size: 8px; line-height: 1; }
+#sound-toggle { min-width: 54px; }
+#sound-toggle.off { color: var(--ink-faint); }
+.tool.ico { padding: 0 6px; line-height: 0; }
+/* Same pixel hand as the sun and the moon above, and crisp for the same
+   reason: it is a drawing of an arrow on a grid, not a letterform, and it must
+   not be softened into one. It greys out with the word beside it, because a
+   disabled button whose arrow stayed black would read as half-live. */
+.tool .ico-back {
+  flex: 0 0 auto; width: 4px; height: 7px; margin-right: 6px;
+  fill: var(--ink); shape-rendering: crispEdges;
+}
+.tool:disabled .ico-back { fill: var(--ink-faint); }
+.tool.ico svg { width: 13px; height: 13px; display: block; fill: var(--ink); shape-rendering: crispEdges; }
+#theme-toggle .ico-moon { display: none; }
+#theme-toggle.is-dark .ico-sun { display: none; }
+#theme-toggle.is-dark .ico-moon { display: block; }
+.sitelist {
+  position: absolute; z-index: 20; right: 8px; top: 100%; margin: 0; padding: 3px;
+  list-style: none; min-width: 236px; background: var(--card);
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo2) var(--bevel-lo2) var(--bevel-hi);
+  box-shadow: 2px 2px 0 rgba(0,0,0,.28);
+}
+.sitelist a {
+  display: block; padding: 3px 8px; text-decoration: none;
+  font-family: var(--mono); font-size: 11px; color: var(--link);
+}
+.sitelist a:hover { background: #000080; color: #FFFFFF; }
+
+/* The language list hangs in the same drawer as the site list — one toolbar,
+   one kind of menu — but its rows are buttons and not links, because a
+   language is not somewhere you go. */
+.langlist { min-width: 132px; }
+.sitelist button {
+  display: block; width: 100%; text-align: left; padding: 3px 8px;
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: 11px; color: var(--link);
+}
+.sitelist button:hover { background: #000080; color: #FFFFFF; }
+#lang-toggle { font-size: 8px; }
+#lang-toggle #lang-now { font-size: 11px; }
+
+/* Changing language turns the page rather than blinking it: the whole desktop
+   fades out, every string is replaced while nothing is legible, and it fades
+   back. Only opacity moves — the strings are written into a document that
+   keeps its shape — so there is nothing to see between the two halves. */
+.desktop { transition: opacity 150ms ease-in-out; }
+.desktop.turning { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .desktop { transition: none; }
+  .desktop.turning { opacity: 1; }
+}
+.loc {
+  flex: 1 1 auto; min-width: 0; height: 26px;
+  display: flex; align-items: center;
+  background: var(--card); padding: 0 6px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.view { padding-bottom: 8px; }
+
+/* ---- the front page ---- */
+
+/* The masthead. One face, one case, three sizes: the only differences between
+   the three lines are how big they are and how far apart the letters stand.
+   The kicker in Courier and the subtitle in italic were three ideas in a box. */
+.banner {
+  position: relative; overflow: hidden; text-align: center;
+  padding: 26px 14px 24px; margin-bottom: 18px;
+  border: 3px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+  background: #0D2A48;
+}
+.banner-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.banner-art .rays { fill: #2A6E96; opacity: .30; }
+.banner-sub::before, .banner-sub::after {
+  content: ""; display: inline-block; vertical-align: middle;
+  width: 34px; height: 2px; background: #E7C45A; opacity: .8;
+}
+.banner-sub::before { margin-right: 14px; }
+.banner-sub::after  { margin-left: 6px; }
+
+.banner-type { position: relative; }
+.banner-kicker, .banner-name, .banner-sub {
+  font-family: var(--serif); text-transform: uppercase; color: #F6F0DC;
+}
+.banner-kicker {
+  margin: 0 0 10px; font-size: 12px; letter-spacing: .34em; text-indent: .34em;
+  color: #9DC4DC;
+}
+.banner-name {
+  margin: 0; font-size: 54px; font-weight: 700; line-height: 1;
+  letter-spacing: .14em; text-indent: .14em;
+  text-shadow: 3px 3px 0 #06172B;
+}
+.banner-sub {
+  margin: 12px 0 0; font-size: 13px; letter-spacing: .38em; text-indent: .38em;
+  color: #E7C45A;
+}
+
+/* Two tiles, the emblem, two tiles. It was a wrapping flex row, and a wrapping
+   flex row breaks it asymmetrically: at any width between "all three fit" and
+   "nothing fits" only the right-hand column drops, and the front page reads as
+   two buttons beside the emblem and two stranded underneath it. A phone held
+   sideways lands in that gap almost exactly.
+
+   A grid instead, with two states and no third. Wide: three columns, two tiles
+   each side. Narrow: two columns, the emblem spanning both, and the tile
+   columns dissolved with `display: contents` so their four tiles place
+   themselves two above the emblem and two below. Either way the four buttons
+   sit in a square, which is the only arrangement that looks deliberate. */
+.frontispiece {
+  display: grid; grid-auto-flow: column;
+  align-items: center; justify-content: center;
+  gap: 18px; margin-bottom: 18px;
+}
+.tile-col { display: flex; flex-direction: column; gap: 14px; }
+.hero {
+  justify-self: center;
+  width: 240px; padding: 10px; background: var(--card);
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+/* 620px of tiles and emblem, plus the sheet's padding and the desktop's — below
+   that the three-across state cannot hold, so it does not try to. */
+@media (max-width: 700px) {
+  .frontispiece {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 172px));
+    justify-content: center; gap: 14px 14px;
+  }
+  .tile-col { display: contents; }
+  /* Named through the parent so the fixed widths further down the sheet, which
+     come later in source order, do not win them back. */
+  .frontispiece .hero { grid-column: 1 / -1; width: 100%; max-width: 240px; }
+  .frontispiece .tile { width: auto; }
+  /* Swap Word List and Puzzles so the top row is Play Daily | Puzzles
+     and the bottom row is Word List | Rulebook. */
+  .frontispiece .tile[data-go="daily"]   { order: 1; }
+  .frontispiece .tile[data-go="puzzles"] { order: 2; }
+  .frontispiece .hero                    { order: 3; }
+  .frontispiece .tile[data-go="words"]   { order: 4; }
+  .frontispiece .tile[data-go="rules"]   { order: 5; }
+}
+.hero svg { display: block; width: 100%; height: auto; }
+.hero .p { fill: var(--card); stroke: var(--ink-soft); stroke-width: 2; }
+.hero .p.red   { fill: var(--red-pale);   stroke: var(--red); }
+.hero .p.gold  { fill: var(--gold-pale);  stroke: var(--gold); }
+.hero .p.green { fill: var(--green-pale); stroke: var(--green); }
+.hero .p.navy  { fill: var(--navy-pale);  stroke: var(--navy); }
+.hero .p.f { fill: var(--hl); stroke: var(--link); stroke-width: 3; }
+.hero .w { stroke: var(--wire); stroke-width: 1.5; fill: none; }
+.hero .h { fill: var(--link); }
+
+.tile {
+  display: flex; align-items: center; gap: 10px; width: 172px;
+  padding: 8px 10px; text-decoration: none;
+  background: var(--face); color: var(--ink);
+  border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+}
+.tile:active { border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+.tile-art { flex: 0 0 auto; width: 32px; height: 32px; }
+.tile-art svg { display: block; width: 32px; height: 32px; }
+.tile-art .s { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
+.tile-art .s.f { fill: var(--link); stroke: var(--link); }
+.t-red   .tile-art .s.f { fill: var(--red);   stroke: var(--red); }
+.t-gold  .tile-art .s.f { fill: var(--gold);  stroke: var(--gold); }
+.t-green .tile-art .s.f { fill: var(--green); stroke: var(--green); }
+.t-navy  .tile-art .s.f { fill: var(--navy);  stroke: var(--navy); }
+.t-red   .tile-art .s, .t-red   .tile-art .w { stroke: var(--red); }
+.t-gold  .tile-art .s, .t-gold  .tile-art .w { stroke: var(--gold); }
+.t-green .tile-art .s, .t-green .tile-art .w { stroke: var(--green); }
+.t-navy  .tile-art .s, .t-navy  .tile-art .w { stroke: var(--navy); }
+.tile-art .w { stroke: var(--ink); stroke-width: 2.5; fill: none; stroke-linecap: square; }
+.tile-name {
+  font-family: var(--sans); font-size: 12px; font-weight: 700;
+  letter-spacing: .02em; color: var(--link); text-decoration: underline;
+}
+
+.front-note {
+  margin: 0; text-align: center; font-family: var(--serif); font-size: 15px;
+  color: var(--ink-soft); border-top: 2px ridge var(--bevel-hi); padding-top: 14px;
+}
+.front-out { margin: 8px 0 0; text-align: center; }
+/* the bullet is furniture, not part of the link: it is neither blue nor clickable */
+.front-out .dot { color: var(--ink-faint); font-size: 11px; vertical-align: 1px; }
+.front-note .out, .front-out .out { color: var(--link); white-space: nowrap; font-family: var(--serif); font-size: 15px; }
+
+
+/* ---- page furniture shared by the indexes ---- */
+
+.page-title { font-family: var(--serif); font-size: 30px; font-weight: 700; margin: 0 0 6px; }
+.page-sub { margin: 0 0 16px; font-family: var(--serif); font-size: 15px; color: var(--ink-soft); }
+.page-foot { margin: 14px 0 0; font-family: var(--sans); font-size: 11px; color: var(--ink-faint); }
+
+.index { width: 100%; border-collapse: collapse; background: var(--card); }
+.index td {
+  padding: 7px 8px; border-bottom: 1px solid var(--rule);
+  font-family: var(--serif); font-size: 15px; vertical-align: middle;
+}
+.index .no { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); width: 42px; }
+.index .ti { font-weight: 700; }
+.ti-link {
+  font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--link);
+  background: none; border: 0; padding: 0; text-decoration: underline;
+  text-align: left;
+}
+.ti-link:hover { color: var(--active); }
+.index .sz { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); width: 48px; }
+.index .st { font-family: var(--serif); font-size: 13px; color: var(--ink-soft); }
+.index .flag { width: 28px; text-align: center; }
+.flag-link { display: inline-block; color: inherit; text-decoration: none; line-height: 0; }
+.flag-icon {
+  display: inline-block;
+  width: 16px;
+  height: 11px;
+  border: 1px solid #333;
+  vertical-align: middle;
+  position: relative;
+  background: repeating-linear-gradient(
+    to bottom,
+    #B22234 0px, #B22234 1.5px,
+    #FFF 1.5px, #FFF 3px
+  );
+}
+.flag-icon b {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 7px; height: 6px;
+  background: #3C3B6E;
+}
+.index .ac { width: 96px; text-align: right; }
+
+/* ---- the word list ---- */
+
+.legend { margin: 0 0 12px; font-family: var(--sans); font-size: 11px; color: var(--ink-faint); }
+.legend .key { margin-right: 14px; white-space: nowrap; }
+.legend .key::before { content: "\25A0 "; }
+.legend .open::before { color: var(--link); }
+.legend .none::before { color: var(--ink-faint); }
+
+.wordgrid {
+  list-style: none; margin: 0; padding: 10px 12px; background: var(--card);
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+  column-count: 4; column-gap: 20px;
+}
+.wordgrid li { break-inside: avoid; line-height: 1.55; }
+.wordgrid button.w {
+  font-family: var(--serif); font-size: 15px; background: none; border: 0; padding: 0; color: var(--ink-faint);
+}
+.wordgrid li.open button.w { color: var(--link); text-decoration: underline; }
+.wordgrid button.b {
+  font-family: var(--mono); font-size: 10px; color: var(--visited);
+  background: none; border: 0; padding: 0 0 0 5px; text-decoration: underline;
+}
+
+/* ---- the rulebook ---- */
+
+.rules { background: var(--card); padding: 14px 16px;
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+.rules h2 { font-family: var(--serif); font-size: 17px; font-weight: 700; margin: 16px 0 4px; }
+.rules h2:first-child { margin-top: 0; }
+.rules p { font-family: var(--serif); font-size: 15px; line-height: 1.5; margin: 0 0 4px; max-width: 62ch; }
+.rules em { font-style: normal; font-weight: 700; }
+/* The line the whole note is walking towards. It gets a rule above it and room
+   to stand: on a page of two short paragraphs, a closing line set in the body
+   size is not a close, it is a fourth sentence. */
+.rules p.closer {
+  margin: 14px 0 2px; padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 17px; font-weight: 700;
+}
+
+/* ---- the note's figure: the argument, drawn as a board -------------- */
+
+/* Berners-Lee set his 1989 proposal as a graph of boxes joined by labelled
+   arrows, which is a Crosslink board four years before there was one. The
+   figure repeats that shape in this game's own dress, so every value here is
+   lifted from the board rather than invented: `--card` squares with the same
+   two-tone bevel, a `--wire` line, a `--link` head, and the verb printed on a
+   chip the wire passes behind. Nothing is hard-coded, so it turns over with
+   the rest of the page when the theme changes. */
+.fig-wrap { margin: 0 0 14px; }
+.fig-scroll {
+  overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+  background: var(--card); padding: 10px;
+  border: 2px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+/* It scales to whatever column it is given, down to a floor. Below that floor
+   the labels stop being readable and the panel scrolls instead — the same
+   bargain `.board-scroll` strikes for a 5x5, and for the same reason. The floor
+   was 660px and had to come down: the main column is about 630px, so the figure
+   scrolled on a full-size desktop and clipped HYPERMEDIA and A BROWSER off the
+   right-hand edge, which are two of the words the argument is made of. */
+.fig { display: block; width: 100%; min-width: 540px; height: auto; }
+/* The floor comes off on a phone. 540px was the width below which the labels
+   stop being readable, and it was the right floor while the alternative was a
+   figure with two of its words cut off — but on a 375px screen it bought
+   readable labels at the price of a drawing you had to drag sideways to see,
+   which is the one thing a diagram of a shape must not ask for. So the same
+   bargain the board now offers with its own button is struck here by default:
+   the whole picture, smaller. It is an argument about structure, and the
+   structure is what survives the shrinking. */
+@media (max-width: 640px) {
+  .fig { min-width: 0; }
+  .fig-scroll { padding: 8px; }
+}
+
+.fig .cells rect {
+  fill: var(--card); stroke: var(--bevel-lo); stroke-width: 1.5;
+}
+.fig .cells .hub rect { stroke: var(--ink); stroke-width: 2.5; }
+.fig .cells text {
+  font-family: var(--serif); font-size: 13px; fill: var(--ink);
+  text-anchor: middle; letter-spacing: .04em;
+}
+.fig .cells .hub text { font-weight: 700; font-size: 15px; }
+
+.fig .wires line { stroke: var(--wire); stroke-width: 1; }
+.fig .head { fill: var(--link); }
+.fig .lbl rect { fill: var(--card); }
+.fig .lbl text {
+  font-family: var(--sans); font-size: 10px; fill: var(--ink); text-anchor: middle;
+}
+
+.fig-wrap figcaption {
+  margin: 6px 0 0; font-family: var(--sans); font-size: 11px;
+  color: var(--ink-faint); max-width: 62ch;
+}
+
+/* ---- lexicon: where the word lives ---- */
+
+.lex-where { margin: 8px 0 0; font-family: var(--sans); font-size: 11px; color: var(--ink-faint); }
+.lex-play {
+  font-family: var(--serif); font-size: 13px; color: var(--link);
+  background: none; border: 0; padding: 0; text-decoration: underline;
+}
+
+@media (max-width: 900px) { .wordgrid { column-count: 3; } }
+@media (max-width: 640px) {
+  .toolbar { margin: 0 -14px 16px; }
+
+  /* The bar was 396px of controls in a 375px window, and the 21px it could not
+     hold became a horizontal scrollbar on the whole document: every page on a
+     phone could be dragged sideways into blank space, because one button hung
+     over the edge and the page grew to cover it.
+
+     Nothing here shrinks — flex will not take a button below the width of the
+     word printed on it — so something has to go, and it is the location field
+     and its label. That is not a loss. The field was measured at 16px wide on
+     a phone: it had already been squeezed past the point of showing a single
+     character, so all it contributed was the 51px label announcing it. The
+     dropdown stays, because it is the way to the other sites and the field was
+     never the way to anything.
+
+     What is left is six controls at 26px: back, home and the site list at the
+     left, and the three that set how the page behaves at the right. */
+  .loc-label, .loc { display: none; }
+  #sound-toggle { margin-left: auto; }
+
+  .banner { padding: 18px 10px 16px; }
+  .banner-name { font-size: 34px; text-shadow: 2px 2px 0 #06172B; }
+  .banner-kicker { font-size: 10px; letter-spacing: .24em; text-indent: .24em; }
+  .banner-sub { font-size: 11px; letter-spacing: .26em; text-indent: .26em; }
+  .wordgrid { column-count: 2; }
+  .index td { padding: 6px 4px; }
+  .index .no { width: 32px; font-size: 11px; }
+  .ti-link { font-size: 14px; }
+  .index .sz { width: 36px; font-size: 10px; }
+  .index .st { font-size: 10px; }
+  .index .st.stars { font-size: 12px; letter-spacing: 0; }
+  .index .ac { width: auto; }
+  .index .ac .ghost { padding: 4px 8px; font-size: 11px; }
+}
+
+/* ---- the emblem, which is also the index ---- */
+.hero .cell text {
+  display: none; font-family: var(--serif); font-size: 15px; font-weight: 700;
+  text-anchor: middle; fill: var(--ink);
+}
+.hero.numbered .cell text { display: block; }
+.hero.numbered .cell { }
+.hero.numbered .cell:hover rect { fill: var(--hl); stroke: var(--active); }
+.hero.numbered .cell.empty { opacity: .4; }
+.hero.numbered .cell.empty:hover rect { fill: none; stroke: var(--ink-faint); }
+.hero-note {
+  margin: 6px 0 0; text-align: center; font-family: var(--sans);
+  font-size: 10px; color: var(--ink-faint);
+}
+
+/* ---- the emblem: the masthead, square ------------------------------
+   Square because the drawing is: a 1:1 viewBox and `height: auto`, so nothing
+   is told twice. It takes the width the sheet gives it, capped against the
+   viewport height so the whole image is on screen at once — a promotional
+   image that needs scrolling is not one. The frame is the masthead's own
+   3px bevel, not the white panel the board sits in. */
+.promo {
+  width: min(100%, 78vh); margin: 0 auto;
+  border: 3px solid; border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+.promo svg { display: block; width: 100%; height: auto; }
+.promo .rays { fill: #2A6E96; opacity: .30; }
+
+/* The masthead's own values, scaled to a 600-unit square: one face, one case,
+   three sizes (A7), and the colours are literals here exactly as they are
+   there — the banner does not follow the light or dark palette and neither
+   does this, because it is a printed thing that happens to be on a screen. */
+.promo text { font-family: "Times New Roman", Times, Georgia, serif; text-anchor: middle; }
+.promo .em-kick { font-size: 15px; letter-spacing: 5.1px; fill: #9DC4DC; }
+.promo .em-name { font-size: 68px; font-weight: 700; letter-spacing: 9.5px; fill: #F6F0DC; }
+.promo .em-name.em-shadow { fill: #06172B; }
+.promo .em-sub  { font-size: 16px; letter-spacing: 6.1px; fill: #E7C45A; }
+.promo .em-rule { fill: #E7C45A; opacity: .8; }
+
+/* ---- difficulty ---- */
+.index .st.stars { font-size: 15px; color: var(--gold); letter-spacing: .1em; font-family: var(--sans); }
+
+/* ---- the rulebook's epigraph and credit ---- */
+.epigraph {
+  margin: 0 0 14px; padding: 12px 16px; max-width: 62ch; background: var(--card);
+  border-left: 4px solid var(--rule);
+}
+.epigraph p {
+  margin: 0 0 6px; font-family: var(--serif); font-size: 17px; font-style: italic;
+  line-height: 1.4; color: var(--ink);
+}
+.epigraph cite {
+  font-family: var(--sans); font-size: 11px; font-style: normal; color: var(--ink-faint);
+}
+.credit {
+  margin: 14px 0 0; text-align: right; font-family: var(--serif);
+  font-size: 13px; font-style: italic; color: var(--ink-soft);
+}

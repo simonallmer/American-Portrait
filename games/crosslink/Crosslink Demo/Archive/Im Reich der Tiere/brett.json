@@ -1,0 +1,117 @@
+{
+  "id": "de-01-tiere",
+  "title": "Im Reich der Tiere",
+  "nummer": "Brett № 2",
+  "standfirst": "Ein Brett für dich",
+  "size": 5,
+  "centre": [2, 2],
+  "stars": 2,
+  "rueckseiten": "Vorne die Szene. Hinten der Satz, den man kaum glaubt.",
+  "notiz": {
+    "titel": "Der Bär, gegen den Strich gelesen",
+    "text": "Eisbär und Braunbär sind <b>zwei verschiedene Arten</b> — nicht ein Bär in zwei Fellfarben. Sie sind aber so nah verwandt, dass ihre gemeinsamen Jungen selbst wieder Junge bekommen können; der Eisbär stammt vom Braunbären ab. <b>Hund und Wolf</b> dagegen sind wirklich <b>dasselbe Tier</b>: derselbe Artname, nur zahm. Die beiden Verbindungen stehen deshalb nebeneinander auf dem Brett — sie sehen gleich aus und sind es nicht."
+  },
+  "widmung": "Für meine Schwester, zum dreizehnten Jahr.",
+  "fuer": "Für meine Schwester",
+  "nouns": [
+    ["ADLER",   "RABE",      "BRAUNBÄR", "EISBÄR", "PINGUIN"],
+    ["EULE",    "WOLF",      "LACHS",         "ROBBE",       "WAL"],
+    ["KATZE",   "HUND",      "MENSCH",        "DELFIN",      "HAI"],
+    ["MAUS",    "SCHAF",     "SCHWAN",        "FLEDERMAUS",  "KRAKE"],
+    ["ELEFANT", "KROKODIL",  "FROSCH",        "FLIEGE",      "SPINNE"]
+  ],
+  "h": [
+    [
+      { "dir": "left",  "verb": "vertreibt, halb so groß, aus dem eigenen Revier einen",
+                        "verb2": "zupft im Flug von hinten die Schwanzfedern von einem" },
+      { "dir": "left",  "verb": "frisst nie alles auf; den Rest holt sich ein",
+                        "verb2": "beißt die dicke Haut auf; allein schafft das nie ein" },
+      { "kind": "eq",   "verb": "ist so nah verwandt, dass es gemeinsame Junge gibt: er und ein",
+                        "verb2": "ist der ältere von beiden: aus ihm wurde vor langer Zeit ein" },
+      { "kind": "eq",   "verb": "lebt zwar auch auf dem Eis, sieht aber nur im Tiergarten je einen",
+                        "verb2": "hat zwischen sich und ihm die ganze Erdkugel: den Süden hält ein" }
+    ],
+    [
+      null,
+      null,
+      { "dir": "left",  "verb": "wartet an der Flussmündung auf einen",
+                        "verb2": "hält zwanzig Minuten die Luft an für einen einzigen" },
+      { "kind": "eq",   "verb": "muss zum Atmen auftauchen, genau wie ein",
+                        "verb2": "hatte einen Vorfahren, der an Land auf vier Beinen lief, genau wie ein" }
+    ],
+    [
+      { "kind": "eq",   "verb": "verträgt sich sprichwörtlich nicht mit einem",
+                        "verb2": "wedelt mit dem Schwanz, wenn sie wütend ist, anders als ein" },
+      { "dir": "left",  "verb": "teilt sein Feuer seit fünfzehntausend Jahren mit einem",
+                        "verb2": "hat ihm den Blick angezüchtet, dem keiner widerstehen kann: dem" },
+      { "dir": "right", "verb": "verdankt sein Leben manchmal einem Stups von unten, von einem",
+                        "verb2": "sieht sich im Spiegel und weiß, dass er es ist; das kann auch ein" },
+      { "kind": "eq",   "verb": "sieht ihm zum Verwechseln ähnlich, atmet aber Luft, anders als ein",
+                        "verb2": "schlägt den Schwanz auf und ab, nie hin und her wie ein" }
+    ],
+    [
+      null,
+      { "kind": "eq",   "verb": "trägt Schwarz als Schandfleck, als Wunder dagegen ein",
+                        "verb2": "kennt man schwarz seit je, ihn dagegen erst seit Australien: den" },
+      null,
+      null
+    ],
+    [
+      { "dir": "right", "verb": "verliert am Wasserloch schon mal den Rüssel an ein",
+                        "verb2": "frisst sechzehn Stunden am Tag; ein Jahr ohne alles schafft dagegen ein" },
+      { "kind": "eq",   "verb": "trägt die Augen oben auf dem Kopf, genau wie ein",
+                        "verb2": "ist mit einem Huhn näher verwandt als mit einem" },
+      { "dir": "right", "verb": "schnellt die klebrige Zunge heraus und hat schon eine",
+                        "verb2": "drückt beim Schlucken die Augen ein — so rutscht hinunter eine" },
+      { "dir": "left",  "verb": "hängt ein klebriges Netz auf und wartet auf eine",
+                        "verb2": "heißt nach dem, was sie tut — genau wie eine" }
+    ]
+  ],
+  "v": [
+    [
+      { "dir": "down",  "verb": "jagt bei Tag, was bei Nacht jagt eine",
+                        "verb2": "sieht achtmal so scharf wie wir, hört aber schlechter als eine" },
+      { "dir": "down",  "verb": "fliegt einem Rudel hinterher und zeigt die Beute einem",
+                        "verb2": "zwickt ihn im Spiel in den Schwanz und springt weg vor dem" },
+      { "dir": "down",  "verb": "steht in Nordamerika im Wasserfall und fängt einen",
+                        "verb2": "braucht vierzig am Tag, um den Winter zu verschlafen: den" },
+      { "dir": "down",  "verb": "wartet stundenlang reglos am Loch im Eis auf eine",
+                        "verb2": "riecht sie noch unter einem Meter Schnee, die verborgene" },
+      { "kind": "eq",   "verb": "lebt vom selben zwei Zentimeter kleinen Krebs wie ein",
+                        "verb2": "taucht fünfhundert Meter tief, so tief wie mancher" }
+    ],
+    [
+      { "dir": "down",  "verb": "greift aus der Luft, was am Boden erwischt eine",
+                        "verb2": "fliegt so lautlos, dass sie sich anschleichen kann wie eine" },
+      { "kind": "eq",   "verb": "ist von der Art her dasselbe Tier wie ein",
+                        "verb2": "heult zehn Kilometer weit; so weit kommt nie ein" },
+      { "dir": "up",    "verb": "legt ihn geräuchert und teuer auf sein Brot, den",
+                        "verb2": "fängt ihn auf dem Weg zurück in den Fluss seiner Geburt: den" },
+      null,
+      { "dir": "down",  "verb": "wiegt hundertmal so viel und frisst doch nur Krill, anders als ein",
+                        "verb2": "hat eine Zunge, die schwerer ist als ein ausgewachsener" }
+    ],
+    [
+      { "dir": "down",  "verb": "legt sie als Geschenk vor die Tür, die tote",
+                        "verb2": "hört ihr Fiepen noch durch die Wand, so hoch quiekt eine" },
+      { "dir": "down",  "verb": "läuft im Kreis um die Herde und bringt heim jedes",
+                        "verb2": "bewacht heute, was seine wilden Verwandten reißen: ein" },
+      { "dir": "down",  "verb": "kennt aus dem Märchen das hässliche Junge und danach den",
+                        "verb2": "zählt in England jeden herrenlosen zum Besitz des Königs: den" },
+      { "kind": "eq",   "verb": "hört sich im Dunkeln zurecht, mit demselben Trick wie eine",
+                        "verb2": "schläft immer nur mit einer Hirnhälfte, kopfüber dagegen hängt eine" },
+      { "dir": "down",  "verb": "schnappt nach ihr, und übrig bleibt die Tintenwolke einer",
+                        "verb2": "verliert dabei nur einen Zahn, einen ganzen Arm dagegen eine" }
+    ],
+    [
+      { "dir": "up",    "verb": "soll, sagt man, vor nichts so erschrecken wie vor einer",
+                        "verb2": "erschrickt vor allem, was plötzlich zuckt, nicht nur vor einer" },
+      null,
+      null,
+      { "dir": "down",  "verb": "sammelt in einer Nacht tausend Insekten ein, darunter manche",
+                        "verb2": "ist das einzige Säugetier, das fliegt, und jagt damit sogar eine" },
+      { "kind": "eq",   "verb": "hat acht Arme und zählt damit so viele Beine wie eine",
+                        "verb2": "passt durch jedes Loch, weil sie keinen harten Panzer hat wie eine" }
+    ]
+  ]
+}

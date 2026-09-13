@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Crosslink Format - Official Specification</title>
+    <style>
+        @page { margin: 1in; size: A4; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-top: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        h3 {
+            font-size: 1.3em;
+            color: #34495e;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 10px 15px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Crosslink Format</h1>
+    <div class="subtitle">Official Puzzle Specification & Design Guidelines</div>
+
+    <p><strong>Crosslink</strong> is a node-based word puzzle format invented by <strong>Simon Allmer in 2026</strong>. Inspired by the interconnected nature of Tim Berners-Lee's World Wide Web and the classic structural appeal of Crosswords, Crosslink challenges players to deduce words based on their relationships to neighboring words.</p>
+    
+    <p>A core tenet of the Crosslink Format is its analog compatibility: while it can feature interactive elements on digital platforms, <strong>a well-designed Crosslink puzzle must be fully playable on paper without the need for a digital device.</strong></p>
+
+    <h2>1. Grid & Layout</h2>
+    <p>Puzzles are constructed on a grid, representing nodes (words) and edges (connections). Diagonal connections are strictly <strong>prohibited</strong> to maintain visual clarity.</p>
+    
+    <h3>Standard Sizes</h3>
+    <ul>
+        <li><strong>Mini:</strong> 3x3 Grid (9 nodes)</li>
+        <li><strong>Midi:</strong> 4x4 Grid (16 nodes)</li>
+        <li><strong>Maxi:</strong> 5x5 Grid (25 nodes)</li>
+    </ul>
+
+    <h3>Unique Forms</h3>
+    <p>Custom shapes are permitted and encouraged to fit thematic elements (e.g., The Cross, or The Pyramid using rows of 1, 2, 3, 4, 5). However, to preserve layout integrity and readability, the <strong>widest part of any shape must not exceed 5 blocks</strong>.</p>
+
+    <h2>2. Vocabulary & Content Rules</h2>
+    <p>The foundation of Crosslink relies on clear, universally understood vocabulary. Elegant riddles frequently employ <strong>polysemy</strong> (words with multiple meanings) to misdirect or delight the solver.</p>
+
+    <ul>
+        <li><strong>Form:</strong> Words should generally be in the singular form.</li>
+        <li><strong>Prohibited Terms:</strong> Utterances, slang, or filler words (e.g., "Hmm", "Yo") are not allowed.</li>
+        <li><strong>Base Dictionary:</strong> Standard dictionary words and recognized proper nouns (e.g., UN Member States) form the standard lexicon.</li>
+    </ul>
+
+    <h3>Thematic Puzzles</h3>
+    <p>Puzzles can be strictly structural (Non-thematic), or <strong>Thematic</strong> (sharing an overarching theme). In thematic puzzles, specific proper nouns related to the theme are welcomed (e.g., a "Cold War" puzzle might include <em>Sputnik</em> or <em>Castro</em>; a "Nintendo" puzzle might include <em>Wii</em> or <em>Zelda</em>).</p>
+
+    <h2>3. Connections (Edges)</h2>
+    <p>Connections define the relationships between adjacent blocks. There are four primary ways to link nodes.</p>
+
+    <table>
+        <tr>
+            <th style="width: 25%">Connection Type</th>
+            <th style="width: 75%">Description & Example</th>
+        </tr>
+        <tr>
+            <td><strong>Standard Arrow</strong><br><em>(Directional)</em></td>
+            <td>Connects two words in a specific direction. <br><em>Example:</em> A &rarr; B (A is the father of B).</td>
+        </tr>
+        <tr>
+            <td><strong>Mutual Line</strong><br><em>(Standard Line)</em></td>
+            <td>Connects two words where order does not matter. <br><em>Example:</em> C &mdash; D (C is the cousin of D, which inherently means D is the cousin of C).</td>
+        </tr>
+        <tr>
+            <td><strong>Colored Arrows</strong><br><em>(Chained Sentences)</em></td>
+            <td>Placed like standard arrows but act as a continuous sentence spanning three nodes. To prevent cognitive overload, chains should not exceed 3 nodes (2 connections). For visual elegance, they should ideally follow a straight line.<br><em>Example:</em> E &rarr; F &rarr; G (E betrayed F because of her affair with G).</td>
+        </tr>
+        <tr>
+            <td><strong>Colored Lines</strong><br><em>(Mixed Chains)</em></td>
+            <td>Rarely used, these can follow a Colored Arrow to complete a sentence with a mutual relationship.<br><em>Example:</em> E &rarr; F &mdash; G (E visited Italy and met F and G).</td>
+        </tr>
+    </table>
+    
+    <div class="note">
+        <strong>Purity Guideline:</strong> While colored and standard connections can be mixed within the same puzzle, it is usually recommended to keep the puzzle pure to one style if possible.
+    </div>
+
+    <h2>4. Hints & Assistance Tools</h2>
+    <p>To assist players, especially on higher difficulties, creators can employ the following hint mechanics:</p>
+    <ul>
+        <li><strong>Crossword-Style Clues:</strong> Individual blocks can feature direct questions or clues (like a traditional crossword) that reveal the word in that specific block.</li>
+        <li><strong>Alternative Connections (Digital Only):</strong> In online implementations, players can click on a normal connection to reveal an alternative, often simpler, relationship bridging the same two words.</li>
+    </ul>
+
+    <h2>5. License & Attribution</h2>
+    <p>The Crosslink puzzle format is open for anyone to use. Everyone is completely free to adapt this format and create their own Crosslink puzzles!</p>
+    <p>However, any published puzzles or adaptations must mention the inventor, <strong>Simon Allmer</strong>, somewhere in the credits or rules.</p>
+
+    <div class="footer">
+        Crosslink &copy; 2026 Simon Allmer. Inspired by the World Wide Web & Crossword Puzzles.<br>
+        <a href="https://simonallmer.com/crosslink" style="color: #7f8c8d; text-decoration: none;">simonallmer.com/crosslink</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>__TITEL__ — Crosslink</title>
+<style>
+@page { size: A4 landscape; margin: 9mm 10mm; }
+:root { --ink:#111; --soft:#4a4a44; --faint:#8b8880; --rule:#bdb9ab;
+        --wire:#8f8f86; --bar:#b8b4a8; --gold:#8a5f00; --link:#1b2a8c;
+        --serif:"Times New Roman",Times,serif; --sans:Verdana,Geneva,Arial,sans-serif;
+        --rot:#C00000; }
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body { font-family:var(--serif); color:var(--ink); background:#fff; }
+
+.seite { width:277mm; height:190mm; page-break-after:always; position:relative;
+         display:flex; flex-direction:column; overflow:hidden; }
+.seite:last-child { page-break-after:auto; }
+
+/* ---- Kopf --------------------------------------------------------- */
+.kopf { display:flex; align-items:baseline; justify-content:space-between;
+        border-bottom:2px solid var(--ink); padding-bottom:2mm; margin-bottom:3.5mm; }
+.kopf .links { display:flex; align-items:baseline; gap:4mm; }
+.kopf h1 { font-size:15pt; font-weight:400; margin:0; letter-spacing:.01em; }
+.kopf .marke { font-family:var(--sans); font-size:6pt; letter-spacing:.24em;
+               text-transform:uppercase; color:var(--soft); }
+.kopf .rechts { font-family:var(--sans); font-size:6pt; letter-spacing:.16em;
+                text-transform:uppercase; color:var(--faint); text-align:right; }
+.kopf .stern { color:var(--gold); font-size:8pt; letter-spacing:.08em; }
+
+/* ---- das Gitter ---------------------------------------------------- */
+.brett { display:grid; gap:.6mm;
+  grid-template-columns:__COLS__;
+  grid-template-rows:__ROWS__;
+  margin:0 auto; }
+.brett > div { display:flex; align-items:center; justify-content:center; text-align:center;
+               position:relative; }
+
+.z { border:.35mm solid var(--ink); background:#fff; }
+.z .tick { position:absolute; top:.6mm; right:1.2mm; font-family:var(--sans);
+           font-size:5pt; color:var(--soft); }
+.z .tick::before { content:"["; } .z .tick::after { content:"]"; }
+.z .kaest { display:flex; gap:.5mm; justify-content:center; width:88%; margin-top:1.5mm; }
+.z .kaest i { flex:1 1 0; border-bottom:.3mm solid var(--faint); height:4.6mm; }
+.z .wort { font-size:__WORTPT__pt; letter-spacing:.06em; color:var(--link); }
+
+.g::before { content:""; position:absolute; background:var(--wire); }
+.g.an.h::before { left:0; right:0; top:50%; height:.25mm; }
+.g.an.v::before { top:0; bottom:0; left:50%; width:.25mm; }
+.g.bar.h::before { left:26%; right:26%; top:50%; height:.7mm; background:var(--bar); }
+.g.bar.v::before { top:26%; bottom:26%; left:50%; width:.7mm; background:var(--bar); }
+.g.level.h::before { height:.6mm; background:var(--soft); }
+.g.level.v::before { width:.6mm; background:var(--soft); }
+.g .lab { position:relative; z-index:1; background:#fff; font-family:var(--sans);
+          font-size:__LABPT__pt; line-height:1.32; color:var(--ink); padding:0 .6mm; }
+.g.h .lab { max-width:calc(100% - 3.4mm); }
+.g.v .lab { max-width:calc(100% - 1mm); }
+/* die Pfeilspitzen */
+.g .lab::after, .g .lab::before { content:""; position:absolute; width:0; height:0;
+                                  border:1.2mm solid transparent; }
+.g.to-right .lab::after { right:-4.2mm; top:50%; margin-top:-1.2mm; border-right-width:0; border-left-color:var(--ink); }
+.g.to-left  .lab::before { left:-4.2mm; top:50%; margin-top:-1.2mm; border-left-width:0; border-right-color:var(--ink); }
+.g.to-down  .lab::after { bottom:-3.4mm; left:50%; margin-left:-1.2mm; border-bottom-width:0; border-top-color:var(--ink); }
+.g.to-up    .lab::before { top:-3.4mm; left:50%; margin-left:-1.2mm; border-top-width:0; border-bottom-color:var(--ink); }
+
+/* Rot: ein Satz, der noch zur Überarbeitung ansteht. ("neu": true im brett.json) */
+.g.neu .lab { color:var(--rot); }
+.g.neu.an::before { background:var(--rot); }
+.g.neu.to-right .lab::after { border-left-color:var(--rot); }
+.g.neu.to-left  .lab::before { border-right-color:var(--rot); }
+.g.neu.to-down  .lab::after { border-top-color:var(--rot); }
+.g.neu.to-up    .lab::before { border-bottom-color:var(--rot); }
+.liste li.neu .s1, .liste li.neu .paar { color:var(--rot); }
+
+/* ---- Titelblock auf Seite 1 ---------------------------------------- */
+.einleitung { display:flex; gap:7mm; font-size:7.8pt; line-height:1.45; margin-bottom:2.5mm; }
+.einleitung div { flex:1; }
+.einleitung b { font-weight:700; }
+.einleitung .weit { flex:1.3; }
+
+/* ---- die Satzliste -------------------------------------------------- */
+.liste { columns:__SPALTEN__; column-gap:7mm; font-size:7.4pt; line-height:1.42; margin:0; padding:0;
+         list-style:none; }
+.liste li { break-inside:avoid; margin-bottom:2.4mm; }
+.liste .paar { display:block; font-family:var(--sans); font-size:6.2pt; letter-spacing:.1em;
+               color:var(--soft); text-transform:uppercase; }
+.liste .pf { color:var(--gold); }
+.liste .s1 { display:block; }
+.liste .s2 { display:block; color:var(--soft); font-style:italic; }
+.liste i { font-style:normal; }
+.liste .s2 i { font-style:italic; }
+
+.fuss { position:absolute; bottom:0; left:0; right:0; border-top:.3mm solid var(--rule);
+        padding-top:1.6mm; font-family:var(--sans); font-size:5.6pt; letter-spacing:.14em;
+        text-transform:uppercase; color:var(--faint); display:flex; justify-content:space-between; }
+.widmung { text-align:center; font-style:italic; font-size:9.5pt; color:var(--soft); margin-top:4mm; }
+.hinweis { font-size:8pt; line-height:1.5; margin:3mm auto 0; max-width:210mm; text-align:center; color:var(--soft); }
+</style>
+</head>
+<body>
+
+<section class="seite">
+  <div class="kopf">
+    <div class="links">
+      <span class="marke">Crosslink · Allmer Games</span>
+      <h1>__TITEL__</h1>
+      <span class="stern">__STERNE__</span>
+    </div>
+    <div class="rechts">__NUMMER__ · Deutsch<br>Erstellt von Simon</div>
+  </div>
+  <div class="einleitung">
+    <div><b>In den Feldern stehen Tiere, dazwischen steht, was sie verbindet.</b>
+      Fang in der Mitte an: __MITTE__.</div>
+    <div><b>Ein Pfeil zeigt, wer etwas tut</b>; ein Strich ohne Spitze gilt in beide
+      Richtungen.<!--BALKEN--> Ein grauer Balken heißt: hier wird nichts behauptet.<!--/BALKEN--></div>
+    <div class="weit"><b>Die Zahl in der Ecke sagt, wie viele Buchstaben fehlen.</b>
+      <!--RUECK-->Jede der __KANTEN__ Verbindungen hat eine Rückseite — die stehen auf Seite 2.<!--/RUECK--></div>
+  </div>
+  <div class="brett">__BRETT_LEER__</div>
+  <div class="fuss"><span>__FUSS1__</span><span>__ANZAHL__</span></div>
+</section>
+
+<!--MEHRSEITIG--><!--RUECK--><section class="seite">
+  <div class="kopf">
+    <div class="links">
+      <span class="marke">Dieselbe Seite, andersherum</span>
+      <h1>Die Rückseiten</h1>
+    </div>
+    <div class="rechts">__RUECKSEITEN__</div>
+  </div>
+  <p class="hinweis">Dasselbe Brett, dieselben __KANTEN__ Verbindungen — nur steht jetzt
+     der zweite Satz da. Wer feststeckt, liest hier nach; wer fertig ist, liest hier weiter.
+     Umgedreht zu lösen ist kein bisschen weniger gelöst.</p>
+  <div class="brett">__BRETT_RUECK__</div>
+  <div class="fuss"><span>Seite 2 · Die Rückseiten</span><span>Vorne die Szene, hinten der Satz, den man kaum glaubt</span></div>
+</section><!--/RUECK-->
+
+<section class="seite">
+  <div class="kopf">
+    <div class="links">
+      <span class="marke">Nicht zu früh aufschlagen</span>
+      <h1>Die Lösung</h1>
+    </div>
+    <div class="rechts">__TITEL__</div>
+  </div>
+  <div class="brett">__BRETT_LOESUNG__</div>
+  <p class="widmung">__SCHLUSS__ <b>__WIDMUNG__</b></p>
+  <div class="fuss"><span>Seite __NR_LOESUNG__ · Die Lösung</span><span>__FUER__</span></div>
+</section>
+
+<section class="seite">
+  <div class="kopf">
+    <div class="links">
+      <span class="marke">Zum Nachlesen</span>
+      <h1>__SATZTITEL__</h1>
+    </div>
+    <div class="rechts">__SATZKOPF__</div>
+  </div>
+  <ul class="liste">__SAETZE__</ul>
+  <div class="fuss"><span>Seite __NR_SAETZE__ · Die Sätze</span><span>Crosslink · Allmer Games</span></div>
+</section><!--/MEHRSEITIG-->
+
+</body>
+</html>

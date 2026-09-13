@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crosslink</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="cursors.css">
+</head>
+<body>
+<div class="desktop">
+
+<main>
+  <div class="win-bar main-bar">
+    <span class="win-title" id="win-name">Crosslink</span>
+    <button class="win-x" id="x-main" title="Close" aria-label="Close" data-i18n-title="win.close" data-i18n-label="win.close">&#10006;</button>
+  </div>
+
+  <div class="toolbar">
+    <!-- The arrow is drawn and not typed. U+25C0 carries an emoji presentation,
+         so a phone rendered it as a blue lozenge sitting in a 1994 toolbar. The
+         label is a span for the same reason `#lang-toggle` uses one: `data-i18n`
+         writes textContent, and textContent on the button would take the
+         drawing with it. -->
+    <button class="tool" id="nav-back"><svg class="ico-back" viewBox="0 0 4 7" aria-hidden="true"><rect x="3" y="0" width="1" height="1"/><rect x="2" y="1" width="2" height="1"/><rect x="1" y="2" width="3" height="1"/><rect x="0" y="3" width="4" height="1"/><rect x="1" y="4" width="3" height="1"/><rect x="2" y="5" width="2" height="1"/><rect x="3" y="6" width="1" height="1"/></svg><span data-i18n="nav.back">Back</span></button>
+    <button class="tool" id="nav-home" data-i18n="nav.home">Home</button>
+    <span class="loc-label" data-i18n="nav.loc">Location:</span>
+    <span class="loc" id="loc"></span>
+    <button class="tool arrow" id="loc-arrow" title="Other sites" data-i18n-title="nav.sites" aria-haspopup="true" aria-expanded="false">&#9660;</button>
+    <button class="tool" id="sound-toggle" title="Sound" data-i18n-title="nav.sound" aria-pressed="true">&#9834; On</button>
+    <button class="tool ico" id="theme-toggle" title="Light or dark" aria-pressed="false">
+      <svg class="ico-sun" viewBox="0 0 13 13" aria-hidden="true">
+        <rect x="6" y="0" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/>
+        <rect x="6" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/>
+        <rect x="2" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+        <rect x="6" y="3" width="1" height="1"/><rect x="4" y="4" width="5" height="1"/>
+        <rect x="4" y="5" width="5" height="1"/><rect x="0" y="6" width="2" height="1"/>
+        <rect x="3" y="6" width="7" height="1"/><rect x="11" y="6" width="2" height="1"/>
+        <rect x="4" y="7" width="5" height="1"/><rect x="4" y="8" width="5" height="1"/>
+        <rect x="6" y="9" width="1" height="1"/><rect x="2" y="10" width="1" height="1"/>
+        <rect x="10" y="10" width="1" height="1"/><rect x="1" y="11" width="1" height="1"/>
+        <rect x="6" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+        <rect x="6" y="12" width="1" height="1"/>
+      </svg>
+      <svg class="ico-moon" viewBox="0 0 13 13" aria-hidden="true">
+        <rect x="4" y="1" width="3" height="1"/><rect x="2" y="2" width="4" height="1"/>
+        <rect x="2" y="3" width="3" height="1"/><rect x="1" y="4" width="4" height="1"/>
+        <rect x="1" y="5" width="3" height="1"/><rect x="1" y="6" width="3" height="1"/>
+        <rect x="1" y="7" width="3" height="1"/><rect x="1" y="8" width="4" height="1"/>
+        <rect x="2" y="9" width="3" height="1"/><rect x="2" y="10" width="4" height="1"/>
+        <rect x="4" y="11" width="3" height="1"/>
+      </svg>
+    </button>
+    <button class="tool lang" id="lang-toggle" title="Language" data-i18n-title="nav.lang"
+            aria-haspopup="true" aria-expanded="false"><span id="lang-now">English</span> &#9660;</button>
+    <ul class="sitelist langlist" id="langlist" hidden></ul>
+    <ul class="sitelist" id="sitelist" hidden></ul>
+  </div>
+
+  <!-- ===================== the front page ===================== -->
+  <section class="view" id="view-menu">
+    <div class="banner">
+      <svg class="banner-art" viewBox="0 0 600 210" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#123A63"/><stop offset="0.55" stop-color="#0D2A48"/><stop offset="1" stop-color="#0A1D33"/>
+          </linearGradient>
+          <pattern id="dither" width="4" height="4" patternUnits="userSpaceOnUse">
+            <rect width="4" height="4" fill="none"/>
+            <rect x="0" y="0" width="1" height="1" fill="#FFFFFF" opacity="0.10"/>
+            <rect x="2" y="2" width="1" height="1" fill="#FFFFFF" opacity="0.06"/>
+          </pattern>
+          <radialGradient id="glow" cx="0.5" cy="0.62" r="0.62">
+            <stop offset="0" stop-color="#2E7FA8" stop-opacity="0.85"/>
+            <stop offset="1" stop-color="#2E7FA8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <rect width="600" height="210" fill="url(#sky)"/>
+        <g class="rays">
+          <path d="M300 205 L120 0 L180 0 Z"/><path d="M300 205 L228 0 L262 0 Z"/>
+          <path d="M300 205 L318 0 L352 0 Z"/><path d="M300 205 L410 0 L470 0 Z"/>
+          <path d="M300 205 L20 40 L20 74 Z"/><path d="M300 205 L580 40 L580 74 Z"/>
+        </g>
+        <rect width="600" height="210" fill="url(#glow)"/>
+        <rect width="600" height="210" fill="url(#dither)"/>
+
+
+      </svg>
+
+      <div class="banner-type">
+        <p class="banner-kicker" data-i18n="banner.kicker">Simon Allmer Presents</p>
+        <h1 class="banner-name">Crosslink</h1>
+        <p class="banner-sub" data-i18n="banner.sub">A Game of Connections</p>
+      </div>
+    </div>
+
+    <div class="frontispiece">
+      <div class="tile-col">
+        <a class="tile t-red" href="#daily" data-go="daily">
+          <span class="tile-art" aria-hidden="true">
+            <svg viewBox="0 0 44 44"><rect class="s" x="3" y="3" width="14" height="10"/><rect class="s" x="27" y="3" width="14" height="10"/><rect class="s f" x="15" y="17" width="14" height="10"/><rect class="s" x="3" y="31" width="14" height="10"/><rect class="s" x="27" y="31" width="14" height="10"/><path class="w" d="M10 13v18M34 13v18M17 8h10M17 36h10"/></svg>
+          </span>
+          <span class="tile-name" data-i18n="tile.daily">Play Daily</span>
+        </a>
+        <a class="tile t-green" href="#words" data-go="words">
+          <span class="tile-art" aria-hidden="true">
+            <svg viewBox="0 0 44 44"><path class="w" d="M6 9h32M6 16h32M6 23h20M6 30h32M6 37h24"/><rect class="s f" x="28" y="20" width="10" height="7"/></svg>
+          </span>
+          <span class="tile-name" data-i18n="tile.words">Word List</span>
+        </a>
+      </div>
+
+      <div class="hero" id="hero">
+        <svg viewBox="0 0 200 150" aria-label="A three by three lattice. Click it for the board numbers." data-i18n-label="hero.label">
+          <path class="w" d="M56 19h13M126 19h13M56 75h13M126 75h13M56 131h13M126 131h13M30 32v25M100 32v25M170 32v25M30 88v25M100 88v25M170 88v25"/>
+          <path class="h" d="M69 19l-6-3v6zM139 19l-6-3v6zM69 75l-6-3v6zM139 75l-6-3v6zM100 57l3-6h-6zM30 57l3-6h-6zM170 113l3 6h-6zM100 113l3 6h-6z"/>
+          <g class="cell" data-n="1"><rect class="p red"   x="4"   y="6"   width="52" height="26"/><text x="30"  y="24">1</text></g>
+          <g class="cell" data-n="2"><rect class="p navy"  x="74"  y="6"   width="52" height="26"/><text x="100" y="24">2</text></g>
+          <g class="cell" data-n="3"><rect class="p gold"  x="144" y="6"   width="52" height="26"/><text x="170" y="24">3</text></g>
+          <g class="cell" data-n="4"><rect class="p green" x="4"   y="62"  width="52" height="26"/><text x="30"  y="80">4</text></g>
+          <g class="cell" data-n="5"><rect class="p f"     x="74"  y="62"  width="52" height="26"/><text x="100" y="80">5</text></g>
+          <g class="cell" data-n="6"><rect class="p red"   x="144" y="62"  width="52" height="26"/><text x="170" y="80">6</text></g>
+          <g class="cell" data-n="7"><rect class="p gold"  x="4"   y="118" width="52" height="26"/><text x="30"  y="136">7</text></g>
+          <g class="cell" data-n="8"><rect class="p green" x="74"  y="118" width="52" height="26"/><text x="100" y="136">8</text></g>
+          <g class="cell" data-n="9"><rect class="p navy"  x="144" y="118" width="52" height="26"/><text x="170" y="136">9</text></g>
+        </svg>
+        <p class="hero-note" id="hero-note">Click the board.</p>
+      </div>
+
+      <div class="tile-col">
+        <a class="tile t-navy" href="#puzzles" data-go="puzzles">
+          <span class="tile-art" aria-hidden="true">
+            <svg viewBox="0 0 44 44"><rect class="s" x="4" y="5" width="36" height="9"/><rect class="s f" x="4" y="18" width="36" height="9"/><rect class="s" x="4" y="31" width="36" height="9"/></svg>
+          </span>
+          <span class="tile-name" data-i18n="tile.puzzles">Puzzles</span>
+        </a>
+        <a class="tile t-gold" href="#rules" data-go="rules">
+          <span class="tile-art" aria-hidden="true">
+            <svg viewBox="0 0 44 44"><path class="s f" d="M8 6h13a4 4 0 0 1 4 4v28a4 4 0 0 0-4-4H8z"/><path class="s" d="M36 6H23a4 4 0 0 0-4 4v28a4 4 0 0 1 4-4h13z"/></svg>
+          </span>
+          <span class="tile-name" data-i18n="tile.rules">Rulebook</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="front-note" data-i18n="front.note">Welcome to the Crosslink Home Page on the World Wide Web.</p>
+    <p class="front-out"><span class="dot" aria-hidden="true">&#9679;</span> <a href="https://simonallmer.com" class="out" data-i18n="front.out">Back to Simon Allmer</a></p>
+  </section>
+
+  <!-- ===================== the board ===================== -->
+  <section class="view" id="view-play" hidden>
+    <header>
+      <p class="eyebrow" id="eyebrow">Crosslink</p>
+      <h1 id="title">The Centre Is a Fish</h1>
+      <p class="standfirst" id="standfirst"></p>
+    </header>
+
+    <div class="controls">
+      <label class="toggle"><input type="checkbox" id="check" checked> <span data-i18n="play.check">Error check</span></label>
+      <button id="restart" class="ghost" data-i18n="play.restart">Restart</button>
+      <!-- No `data-i18n`: this one names itself, and which name it is wearing
+           depends on which way it is pointing. `fit` writes it. -->
+      <button id="zoom" class="ghost" hidden></button>
+    </div>
+
+    <div class="board-scroll">
+      <div id="board" class="board" role="grid" aria-label="Crosslink board" data-i18n-label="play.board"></div>
+    </div>
+
+    <input id="ghost-input" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" enterkeyhint="go" aria-hidden="true">
+
+    <section id="panel" class="panel">
+      <p class="panel-empty" id="panel-empty">Pick any square and begin. The middle is the usual way in.</p>
+      <div id="panel-body" hidden>
+        <p class="panel-head"><span id="panel-count"></span></p>
+        <ul id="routes" class="routes"></ul>
+        <div class="hint-row">
+          <button id="enter" class="ghost solid">Enter word</button>
+          <button id="hint" class="ghost"></button>
+          <span id="hint-note" class="note"></span>
+        </div>
+      </div>
+      <p id="message" class="message"></p>
+    </section>
+
+    <section id="finish" class="finish" hidden>
+      <h2 data-i18n="finish.head">The board closes.</h2>
+      <p class="finish-sub" id="finish-sub"></p>
+      <ul id="sentences" class="sentences"></ul>
+    </section>
+  </section>
+
+  <!-- ===================== the index of boards ===================== -->
+  <section class="view" id="view-puzzles" hidden>
+    <h1 class="page-title" data-i18n="puzzles.title">Puzzles</h1>
+    <p class="page-sub" data-i18n-html="puzzles.sub">Every Crosslink so far. A word may be set in more than one of them.</p>
+    <table class="index" id="puzzle-index"></table>
+    <p class="page-foot" id="puzzle-foot"></p>
+  </section>
+
+  <!-- ===================== the word list ===================== -->
+  <section class="view" id="view-words" hidden>
+    <h1 class="page-title" data-i18n="words.title">Word List</h1>
+    <p class="page-sub" id="words-sub"></p>
+    <p class="legend">
+      <span class="key open" data-i18n="words.keyOpen">Set in a board &#8212; click the number to play it</span>
+      <span class="key none" data-i18n="words.keyNone">Waiting for a board</span>
+    </p>
+    <ul class="wordgrid" id="word-index"></ul>
+  </section>
+
+  <!-- ===================== the emblem ===================== -->
+  <!-- Shift+A from the front page, and nothing else, for now. The front page's
+       emblem with the words filled in and blown up square: a promotional image
+       that is a real board rather than a drawing of one. Built by app.js from
+       CROSSLINK.puzzles at run time, so it cannot drift from the game. -->
+  <section class="view" id="view-promo" hidden>
+    <div class="promo" id="promo"></div>
+  </section>
+
+  <!-- ===================== the note ===================== -->
+  <!-- Reached by Shift+S from the front page and by nothing else, for now.
+       Berners-Lee drew his 1989 proposal as a graph of labelled relations,
+       which is a Crosslink board four years before there was one, so the
+       manifesto is set the same way and in this game's own dress.
+
+       There is no prose. The figure IS the argument, and a paragraph restating
+       it underneath was the page conceding the drawing had not worked. The
+       whole case is now readable in one screen without scrolling. What a
+       sighted reader gets from the layout, a screen reader gets from the
+       figure's `aria-label`, which carries every relation in order — that is
+       the only place the argument exists in sentences, and it has to. -->
+  <section class="view" id="view-intro" hidden>
+    <h1 class="page-title" data-i18n="intro.title">Crosslink Introduction</h1>
+
+    <!-- No byline. His name is a square in the figure below, with an arrow off
+         it reading "invented" — printing it again above the drawing said the
+         same thing twice, and the weaker way round. -->
+    <p class="page-sub" data-lang="de" hidden>Die Zeichnung ist englisch gesetzt. Sie ist das
+    Argument selbst und nicht seine Beschriftung, also wird sie neu gezeichnet und nicht
+    übersetzt — bis dahin steht sie hier, wie sie ist.</p>
+    <figure class="fig-wrap">
+      <div class="fig-scroll">
+      <svg class="fig" viewBox="0 0 754 606" role="img" aria-label="The argument drawn as a board. The crossword is set in a newspaper, joins its words by spelling and asks for recall. The Web is hypertext, includes hypermedia, is read in a browser, and made the Crosslink possible. The Crosslink joins its words by meaning, runs on polysemy, is built on a database and is played on a computer. BANK, for example, means the edge of a river, where money is kept, a tier of seats, and to tilt a plane. Simon Allmer invented it.">
+        <g class="wires">
+          <line x1="185.0" y1="45.0" x2="240.0" y2="45.0"/>
+          <polygon class="head" points="249.0,45.0 239.0,49.5 239.0,40.5"/>
+          <g class="lbl">
+            <rect x="190.5" y="38.5" width="44.0" height="13" rx="1"/>
+            <text x="212.5" y="48.5">asks for</text>
+          </g>
+          <line x1="103.0" y1="67.0" x2="103.0" y2="118.0"/>
+          <polygon class="head" points="103.0,127.0 98.5,117.0 107.5,117.0"/>
+          <g class="lbl">
+            <rect x="78.8" y="86.0" width="48.5" height="13" rx="1"/>
+            <text x="103.0" y="96.0">is set in</text>
+          </g>
+          <line x1="144.9" y1="67.0" x2="251.1" y2="122.8"/>
+          <polygon class="head" points="259.1,127.0 248.2,126.3 252.4,118.4"/>
+          <g class="lbl">
+            <rect x="153.5" y="88.4" width="89.0" height="13" rx="1"/>
+            <text x="198.0" y="98.4">joins its words by</text>
+          </g>
+          <line x1="533.0" y1="45.0" x2="600.0" y2="45.0"/>
+          <polygon class="head" points="609.0,45.0 599.0,49.5 599.0,40.5"/>
+          <g class="lbl">
+            <rect x="535.5" y="38.5" width="62.0" height="13" rx="1"/>
+            <text x="566.5" y="48.5">extends with</text>
+          </g>
+          <line x1="471.0" y1="127.0" x2="471.0" y2="76.0"/>
+          <polygon class="head" points="471.0,67.0 475.5,77.0 466.5,77.0"/>
+          <g class="lbl">
+            <rect x="462.5" y="95.0" width="17.0" height="13" rx="1"/>
+            <text x="471.0" y="105.0">is</text>
+          </g>
+          <line x1="533.0" y1="149.0" x2="600.0" y2="149.0"/>
+          <polygon class="head" points="609.0,149.0 599.0,153.5 599.0,144.5"/>
+          <g class="lbl">
+            <rect x="540.0" y="142.5" width="53.0" height="13" rx="1"/>
+            <text x="566.5" y="152.5">is read in</text>
+          </g>
+          <line x1="454.9" y1="171.0" x2="406.1" y2="237.7"/>
+          <polygon class="head" points="400.8,245.0 403.0,234.3 410.3,239.6"/>
+          <g class="lbl">
+            <rect x="397.2" y="197.9" width="66.5" height="13" rx="1"/>
+            <text x="430.5" y="207.9">made possible</text>
+          </g>
+          <line x1="322.0" y1="299.0" x2="177.3" y2="365.3"/>
+          <polygon class="head" points="169.1,369.0 176.3,360.7 180.0,368.9"/>
+          <g class="lbl">
+            <rect x="205.1" y="325.6" width="89.0" height="13" rx="1"/>
+            <text x="249.6" y="335.6">joins its words by</text>
+          </g>
+          <line x1="380.1" y1="299.0" x2="378.0" y2="360.0"/>
+          <polygon class="head" points="377.7,369.0 373.6,358.9 382.6,359.2"/>
+          <g class="lbl">
+            <rect x="359.3" y="323.0" width="39.5" height="13" rx="1"/>
+            <text x="379.1" y="333.0">runs on</text>
+          </g>
+          <line x1="477.0" y1="271.6" x2="548.0" y2="271.3"/>
+          <polygon class="head" points="557.0,271.3 547.0,275.8 547.0,266.8"/>
+          <g class="lbl">
+            <rect x="483.8" y="265.0" width="57.5" height="13" rx="1"/>
+            <text x="512.5" y="275.0">is built on</text>
+          </g>
+          <line x1="458.3" y1="299.0" x2="558.5" y2="334.0"/>
+          <polygon class="head" points="567.0,337.0 556.1,337.9 559.1,329.5"/>
+          <g class="lbl">
+            <rect x="477.4" y="310.0" width="62.0" height="13" rx="1"/>
+            <text x="508.4" y="320.0">is played on</text>
+          </g>
+          <line x1="377.0" y1="413.0" x2="377.0" y2="440.0"/>
+          <polygon class="head" points="377.0,449.0 372.5,439.0 381.5,439.0"/>
+          <g class="lbl">
+            <rect x="348.2" y="420.0" width="57.5" height="13" rx="1"/>
+            <text x="377.0" y="430.0">for example</text>
+          </g>
+          <line x1="314.1" y1="493.0" x2="196.7" y2="534.0"/>
+          <polygon class="head" points="188.2,537.0 196.2,529.5 199.1,537.9"/>
+          <g class="lbl">
+            <rect x="240.1" y="507.0" width="30.5" height="13" rx="1"/>
+            <text x="255.4" y="517.0">means</text>
+          </g>
+          <line x1="360.6" y1="493.0" x2="333.3" y2="529.8"/>
+          <polygon class="head" points="327.9,537.0 330.2,526.3 337.5,531.7"/>
+          <g class="lbl">
+            <rect x="331.7" y="504.9" width="30.5" height="13" rx="1"/>
+            <text x="346.9" y="514.9">means</text>
+          </g>
+          <line x1="403.9" y1="493.0" x2="450.6" y2="531.3"/>
+          <polygon class="head" points="457.6,537.0 447.0,534.1 452.7,527.2"/>
+          <g class="lbl">
+            <rect x="412.0" y="505.6" width="30.5" height="13" rx="1"/>
+            <text x="427.2" y="515.6">means</text>
+          </g>
+          <line x1="441.0" y1="492.2" x2="568.0" y2="534.2"/>
+          <polygon class="head" points="576.5,537.0 565.6,538.1 568.5,529.6"/>
+          <g class="lbl">
+            <rect x="489.2" y="506.7" width="30.5" height="13" rx="1"/>
+            <text x="504.5" y="516.7">means</text>
+          </g>
+          <line x1="597.2" y1="417.0" x2="428.7" y2="304.0"/>
+          <polygon class="head" points="421.3,299.0 432.1,300.8 427.1,308.3"/>
+          <g class="lbl">
+            <rect x="491.0" y="354.0" width="44.0" height="13" rx="1"/>
+            <text x="513.0" y="364.0">invented</text>
+          </g>
+        </g>
+        <g class="cells">
+          <g class="cell">
+            <rect x="24" y="26" width="158" height="38"/>
+            <text x="103.0" y="50.0">THE CROSSWORD</text>
+          </g>
+          <g class="cell">
+            <rect x="24" y="130" width="158" height="38"/>
+            <text x="103.0" y="154.0">A NEWSPAPER</text>
+          </g>
+          <g class="cell">
+            <rect x="252" y="26" width="98" height="38"/>
+            <text x="301.0" y="50.0">RECALL</text>
+          </g>
+          <g class="cell">
+            <rect x="252" y="130" width="98" height="38"/>
+            <text x="301.0" y="154.0">SPELLING</text>
+          </g>
+          <g class="cell">
+            <rect x="412" y="26" width="118" height="38"/>
+            <text x="471.0" y="50.0">HYPERTEXT</text>
+          </g>
+          <g class="cell">
+            <rect x="612" y="26" width="122" height="38"/>
+            <text x="673.0" y="50.0">HYPERMEDIA</text>
+          </g>
+          <g class="cell">
+            <rect x="412" y="130" width="118" height="38"/>
+            <text x="471.0" y="154.0">THE WEB</text>
+          </g>
+          <g class="cell">
+            <rect x="612" y="130" width="122" height="38"/>
+            <text x="673.0" y="154.0">A BROWSER</text>
+          </g>
+          <g class="cell hub">
+            <rect x="288" y="248" width="186" height="48"/>
+            <text x="381.0" y="277.0">THE CROSSLINK</text>
+          </g>
+          <g class="cell">
+            <rect x="60" y="372" width="122" height="38"/>
+            <text x="121.0" y="396.0">MEANING</text>
+          </g>
+          <g class="cell">
+            <rect x="316" y="372" width="122" height="38"/>
+            <text x="377.0" y="396.0">POLYSEMY</text>
+          </g>
+          <g class="cell">
+            <rect x="316" y="452" width="122" height="38"/>
+            <text x="377.0" y="476.0">BANK</text>
+          </g>
+          <g class="cell">
+            <rect x="48" y="540" width="166" height="34"/>
+            <text x="131.0" y="562.0">THE EDGE OF A RIVER</text>
+          </g>
+          <g class="cell">
+            <rect x="230" y="540" width="166" height="34"/>
+            <text x="313.0" y="562.0">WHERE MONEY IS KEPT</text>
+          </g>
+          <g class="cell">
+            <rect x="412" y="540" width="140" height="34"/>
+            <text x="482.0" y="562.0">A TIER OF SEATS</text>
+          </g>
+          <g class="cell">
+            <rect x="568" y="540" width="138" height="34"/>
+            <text x="637.0" y="562.0">TO TILT A PLANE</text>
+          </g>
+          <g class="cell">
+            <rect x="560" y="252" width="140" height="38"/>
+            <text x="630.0" y="276.0">A DATABASE</text>
+          </g>
+          <g class="cell">
+            <rect x="560" y="340" width="140" height="38"/>
+            <text x="630.0" y="364.0">A COMPUTER</text>
+          </g>
+          <g class="cell">
+            <rect x="560" y="420" width="140" height="38"/>
+            <text x="630.0" y="444.0">SIMON ALLMER</text>
+          </g>
+        </g>
+      </svg>
+      </div>
+    </figure>
+  </section>
+
+  <!-- ===================== the rulebook ===================== -->
+  <section class="view" id="view-rules" hidden>
+    <h1 class="page-title" data-i18n="rules.title">Rulebook</h1>
+    <blockquote class="epigraph">
+      <p>&#8220;The dictionary defines words only in terms of other words. What matters is not
+      the words themselves which are a collection of mostly arbitrary sounds, but the
+      <em>relationships</em> between one word to the next.&#8221;</p>
+      <cite><span class="n" data-lex="BERNERS-LEE">Tim Berners-Lee</span>, CERN, 1994</cite>
+    </blockquote>
+    <div class="rules" data-lang="en">
+      <h2>The Concept</h2>
+      <p>Crosslink is a node-based word puzzle where every word is defined by its relationship to the words around it. By reading the connections between empty squares, you deduce what words belong there. The whole network is visible from the start, and you can fill in squares in any order you like.</p>
+
+      <h2>Grids and Shapes</h2>
+      <p>Puzzles come in various shapes and sizes, from standard grids like the Mini (3x3), Midi (4x4), and Maxi (5x5), to unique thematic forms. No matter the shape, the goal remains the same: deduce the words based on how they connect.</p>
+
+      <h2>Reading Connections</h2>
+      <p>Between the squares lie the connections that form sentences. There are a few different types you will encounter:</p>
+      <ul>
+        <li><strong>Standard Arrows:</strong> Read in the direction of the arrow (e.g., A &rarr; B means "A is the father of B").</li>
+        <li><strong>Mutual Lines:</strong> A two-way relationship where the order does not matter (e.g., C &mdash; D means "C is the cousin of D").</li>
+        <li><strong>Colored Chains:</strong> These connections continue a single sentence across three squares. Follow the colored arrows or lines to read the complete statement.</li>
+      </ul>
+
+      <h2>Polysemy & Wordplay</h2>
+      <p>Expect elegant misdirection. Many puzzles employ polysemy—words with multiple meanings. A board might use one definition of a word for an incoming connection, and a completely different definition for an outgoing one. The more difficulty stars a board has, the more likely you are to encounter words wearing two coats.</p>
+
+      <h2>Assistance & Tools</h2>
+      <p>If you get stuck, the board offers a few ways to help:</p>
+      <ul>
+        <li><strong>Alternative Connections:</strong> Connections with a dotted line underneath can be clicked to flip them over. This reveals a different clue for the same relationship. It costs nothing to peek!</li>
+        <li><strong>Error Check:</strong> Turned on by default, wrong words turn red immediately. You can turn this off if you prefer a classic, unassisted solving experience.</li>
+        <li><strong>Hints:</strong> You can reveal a single letter or an entire word if you are truly stuck, though the board will remember that you asked for help.</li>
+      </ul>
+
+      <h2>Create Your Own</h2>
+      <p>Want to create your own Crosslink puzzles? You are completely free to adapt the format and design your own! We only ask that you mention the inventor, Simon Allmer, and provide a link back to this page.</p>
+    </div>
+
+    <div class="rules" data-lang="de" hidden>
+      <h2>Das Konzept</h2>
+      <p>Crosslink ist ein wortbasiertes Rätsel aus Knoten, in dem jedes Wort durch seine Beziehung zu den Wörtern in seiner Umgebung definiert wird. Indem du die Verbindungen zwischen leeren Feldern liest, erschließt du, welche Wörter dort hingehören. Das gesamte Netzwerk ist von Anfang an sichtbar, und du kannst die Felder in beliebiger Reihenfolge ausfüllen.</p>
+
+      <h2>Gitter und Formen</h2>
+      <p>Rätsel gibt es in verschiedenen Formen und Größen: von gewöhnlichen Gittern wie Mini (3x3), Midi (4x4) und Maxi (5x5) bis hin zu einzigartigen thematischen Formen. Unabhängig von der Form bleibt das Ziel gleich: Erschließe die Wörter anhand ihrer Verbindungen.</p>
+
+      <h2>Verbindungen lesen</h2>
+      <p>Zwischen den Feldern liegen die Verbindungen, die Sätze bilden. Du wirst auf einige verschiedene Typen stoßen:</p>
+      <ul>
+        <li><strong>Gewöhnliche Pfeile:</strong> Lies sie in Richtung des Pfeils (zum Beispiel bedeutet A &rarr; B: „A ist der Vater von B“).</li>
+        <li><strong>Gegenseitige Linien:</strong> Eine Beziehung in beide Richtungen, bei der die Reihenfolge keine Rolle spielt (zum Beispiel bedeutet C &mdash; D: „C ist der Cousin von D“).</li>
+        <li><strong>Farbige Ketten:</strong> Diese Verbindungen führen einen einzelnen Satz über drei Felder hinweg fort. Folge den farbigen Pfeilen oder Linien, um die vollständige Aussage zu lesen.</li>
+      </ul>
+
+      <h2>Polysemie und Wortspiele</h2>
+      <p>Erwarte elegante Irreführung. Viele Rätsel verwenden Polysemie, also Wörter mit mehreren Bedeutungen. Ein Brett kann für eine eingehende Verbindung eine Bedeutung eines Wortes und für eine ausgehende Verbindung eine völlig andere verwenden. Je mehr Schwierigkeitssterne ein Brett hat, desto wahrscheinlicher triffst du auf Wörter mit zwei Seiten.</p>
+
+      <h2>Hilfe und Werkzeuge</h2>
+      <p>Wenn du feststeckst, bietet dir das Brett einige Möglichkeiten zur Hilfe:</p>
+      <ul>
+        <li><strong>Alternative Verbindungen:</strong> Verbindungen mit einer gepunkteten Linie darunter kannst du anklicken, um sie umzudrehen. Dadurch wird ein anderer Hinweis auf dieselbe Beziehung sichtbar. Das Nachsehen kostet nichts!</li>
+        <li><strong>Fehlerprüfung:</strong> Sie ist standardmäßig aktiviert; falsche Wörter werden sofort rot. Du kannst sie ausschalten, wenn du lieber ohne Unterstützung löst.</li>
+        <li><strong>Hinweise:</strong> Du kannst einen einzelnen Buchstaben oder ein ganzes Wort aufdecken, wenn du wirklich feststeckst. Das Brett merkt sich jedoch, dass du Hilfe angefordert hast.</li>
+      </ul>
+
+      <h2>Eigene Rätsel erstellen</h2>
+      <p>Du möchtest eigene Crosslink-Rätsel erstellen? Du darfst das Format frei anpassen und deine eigenen Rätsel entwerfen! Wir bitten dich nur, den Erfinder Simon Allmer zu nennen und einen Link auf diese Seite bereitzustellen.</p>
+    </div>
+
+    <!-- The figure is not repeated in the markup: app.js clones the one on the
+         note into here at startup, so `tools/make-figure.py` stays the single
+         source and a regenerated drawing cannot land on one page and not the
+         other. -->
+    <figure class="fig-wrap" id="rules-fig"><div class="fig-scroll"></div></figure>
+
+    <p class="credit" data-i18n="rules.credit">Game Design: Simon Allmer</p>
+  </section>
+
+  <!-- Two panes, the way a status bar of the period had them. The left one is
+       live — engine.js writes hints into `footer p` and puts the idle line back
+       afterwards, and it takes the FIRST p, so the notice on the right is never
+       touched by it. -->
+  <footer>
+    <p data-i18n="foot.idle">Words in the cells. Connections in the gutters. Any square, any order.</p>
+    <p class="notice" data-i18n="foot.notice">&#169; 2026 Simon Allmer Entertainment</p>
+  </footer>
+</main>
+
+<div class="wrap-break" aria-hidden="true"></div>
+
+<aside class="win" id="win-script" hidden>
+  <div class="win-bar">
+    <span class="win-title" data-i18n="script.title">Written form</span>
+    <button class="win-x" id="x-script" title="Close" aria-label="Close" data-i18n-title="win.close" data-i18n-label="win.close">&#10006;</button>
+  </div>
+  <div class="win-body">
+    <ul id="script-list" class="script"></ul>
+  </div>
+</aside>
+
+<aside class="win" id="win-lex" hidden>
+  <div class="win-bar">
+    <span class="win-title" data-i18n="lex.title">Lexicon</span>
+    <button class="win-x" id="x-lex" title="Close" aria-label="Close" data-i18n-title="win.close" data-i18n-label="win.close">&#10006;</button>
+  </div>
+  <div class="win-body">
+    <p class="lex-word" id="lex-word"></p>
+    <p class="lex-pos" id="lex-pos"></p>
+    <ol class="lex-senses" id="lex-senses"></ol>
+    <p class="lex-note" id="lex-note"></p>
+    <p class="lex-where" id="lex-where"></p>
+    <p class="lex-head" data-i18n="lex.head">Words on this board</p>
+    <ul class="lex-list" id="lex-list"></ul>
+  </div>
+</aside>
+
+</div>
+
+<script src="sound.js"></script>
+<script src="lang.js"></script>
+<script src="registry.js"></script>
+<script src="vocabulary.js"></script>
+<script src="spelling.js"></script>
+<script src="lexicon.js"></script>
+<script src="lexicon-de.js"></script>
+<script src="puzzles/puzzle-01-nile.js"></script>
+<script src="puzzles/puzzle-02-landfall.js"></script>
+<script src="puzzles/puzzle-03-bread.js"></script>
+<script src="puzzles/puzzle-04-orchard.js"></script>
+<script src="puzzles/puzzle-05-press.js"></script>
+<script src="puzzles/puzzle-06-steam.js"></script>
+<script src="puzzles/puzzle-07-americana.js"></script>
+<script src="puzzles/puzzle-08-rebel-land.js"></script>
+<script src="puzzles/puzzle-09-general-command.js"></script>
+<script src="puzzles/puzzle-de-01-tiere.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITEL__ — Crosslink</title>
+<style>
+:root {
+  --page:#8E8E86; --sheet:#C9C6B4; --card:#FFFFFF; --face:#C0C0C0;
+  --bevel-hi:#FFFFFF; --bevel-lo:#808080;
+  --ink:#000000; --ink-soft:#333333; --ink-faint:#767676;
+  --link:#0000EE; --visited:#551A8B; --active:#EE0000; --hl:#FFFFCC;
+  --rule:#B4B4AC; --barred:#9A9A92; --wrong:#CC0000; --wrong-bg:#FFDEDE;
+  --wire:#8F8F86; --gold:#A97400;
+  --serif:"Times New Roman",Times,Georgia,serif;
+  --mono:"Courier New",Courier,monospace;
+  --sans:Verdana,Geneva,Tahoma,Arial,Helvetica,sans-serif;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--page); color:var(--ink); font-family:var(--serif);
+       -webkit-text-size-adjust:100%; }
+.sheet { max-width:1120px; margin:0 auto; background:var(--sheet); min-height:100vh;
+         padding:18px 22px 40px; border-left:1px solid var(--rule); border-right:1px solid var(--rule); }
+
+/* ---- masthead --------------------------------------------------- */
+.masthead { text-align:center; border-bottom:3px double var(--ink); padding-bottom:8px; }
+.masthead h1 { font-size:40px; letter-spacing:.10em; margin:2px 0 4px; font-weight:400; }
+.masthead .rule { font-family:var(--sans); font-size:9.5px; letter-spacing:.22em;
+                  text-transform:uppercase; color:var(--ink-soft); }
+.head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px;
+        justify-content:center; margin:14px 0 4px; }
+.head h2 { font-size:27px; font-weight:400; margin:0; letter-spacing:.01em; }
+.head .no { font-family:var(--sans); font-size:10px; letter-spacing:.2em;
+            text-transform:uppercase; color:var(--ink-soft); }
+.head .stars { color:var(--gold); font-size:14px; letter-spacing:.1em; }
+.standfirst { text-align:center; font-style:italic; color:var(--ink-soft); font-size:14px; margin:0 0 16px; }
+
+/* ---- the board -------------------------------------------------- */
+.board-wrap { display:flex; justify-content:center; overflow-x:auto; }
+.board { display:grid; gap:2px; width:max-content; transform-origin:top left; }
+.board > div { display:flex; align-items:center; justify-content:center; text-align:center; }
+.dead { }
+
+.noun { position:relative; background:var(--card); border:2px solid;
+        border-color:var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+        cursor:pointer; }
+.noun.selected { background:var(--hl);
+        border-color:var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+.noun .slots { font-family:var(--mono); font-size:13px; font-weight:700; color:var(--link); line-height:1.1; }
+.noun .slots span { display:inline-block; width:8px; margin:0 1px; border-bottom:1px solid var(--link); }
+.noun .slots .rev { color:var(--active); border-bottom-color:var(--active); }
+.noun .slots .caret { border-bottom-color:var(--active); animation:caret .9s steps(1) infinite; }
+@keyframes caret { 50% { border-bottom-color:transparent; } }
+.noun .word { font-family:var(--serif); font-size:13px; line-height:1.1; }
+.noun .word span { display:inline-block; width:8px; margin:0 1px; text-align:center; }
+.noun.done .word { color:var(--visited); border-bottom:1px solid var(--visited); }
+.noun.given .word { color:var(--ink-faint); font-style:italic; }
+.noun.wrong { background:var(--wrong-bg); }
+.noun.wrong .word { color:var(--wrong); border-bottom-color:var(--wrong); text-decoration:line-through; }
+.noun .tick { position:absolute; top:2px; right:4px; font-family:var(--mono);
+              font-size:10px; color:var(--ink-soft); }
+.noun .tick::before { content:"["; } .noun .tick::after { content:"]"; }
+
+.gut { border:none; position:relative; padding:0 2px; }
+.gut.barred::before { content:""; position:absolute; background:var(--barred); }
+.gut.barred.h::before { left:22%; right:22%; top:50%; height:2px; }
+.gut.barred.v::before { top:22%; bottom:22%; left:50%; width:2px; }
+.gut.shown::before { content:""; position:absolute; background:var(--wire); }
+.gut.shown.h::before { left:0; right:0; top:50%; height:1px; }
+.gut.shown.v::before { top:0; bottom:0; left:50%; width:1px; }
+.gut.shown .arrow { position:absolute; width:0; height:0; border:5px solid transparent; }
+.gut.to-right .arrow { right:0; top:50%; margin-top:-5px; border-right-width:0; border-left-color:var(--link); }
+.gut.to-left  .arrow { left:0;  top:50%; margin-top:-5px; border-left-width:0;  border-right-color:var(--link); }
+.gut.to-down  .arrow { bottom:0; left:50%; margin-left:-5px; border-bottom-width:0; border-top-color:var(--link); }
+.gut.to-up    .arrow { top:0;    left:50%; margin-left:-5px; border-top-width:0;    border-bottom-color:var(--link); }
+.gut.level .arrow { display:none; }
+.gut.shown.level::before { background:var(--ink-faint); }
+.gut.shown.level.h::before { height:2px; margin-top:-1px; }
+.gut.shown.level.v::before { width:2px; margin-left:-1px; }
+.gut .label { position:relative; z-index:1; background:var(--sheet); font-family:var(--sans);
+              font-size:10px; line-height:1.25; color:var(--ink); padding:0 3px; }
+.gut.h .label { max-width:calc(100% - 20px); }
+.gut.v .label { max-width:calc(100% - 4px); }
+.gut.spent { opacity:.55; }
+.gut.turnable .label { text-decoration:underline dotted var(--ink-faint); cursor:pointer; }
+/* Rot: ein Satz, der noch zur Überarbeitung ansteht. ("neu": true im brett.json) */
+.gut.neu .label { color:var(--wrong); }
+.gut.neu.shown::before { background:var(--wrong); }
+.gut.neu.to-right .arrow, .gut.neu.to-down .arrow { border-left-color:var(--wrong); border-top-color:var(--wrong); }
+.gut.neu.to-left .arrow, .gut.neu.to-up .arrow { border-right-color:var(--wrong); border-bottom-color:var(--wrong); }
+.gut.over .label { color:var(--gold); text-decoration-color:var(--gold); }
+
+/* ---- tools ------------------------------------------------------ */
+.tools { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:20px 0 6px; }
+button { font-family:var(--sans); font-size:11px; padding:4px 12px; background:var(--face);
+         color:var(--ink); border:2px solid; border-color:var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+         cursor:pointer; }
+button:active { border-color:var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+button.solid { font-weight:700; }
+button:disabled { color:var(--ink-faint); font-weight:400; cursor:default; }
+button:disabled:active { border-color:var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi); }
+button[aria-pressed="true"] { border-color:var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); font-weight:700; }
+.status { font-family:var(--mono); font-size:11px; color:var(--ink-soft); text-align:center;
+          border-top:1px solid var(--rule); margin-top:10px; padding-top:6px; min-height:18px; }
+
+/* ---- the note --------------------------------------------------- */
+.note { max-width:760px; margin:26px auto 0; font-size:14px; line-height:1.6; }
+.note h3 { font-family:var(--sans); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+           color:var(--ink-soft); border-bottom:1px solid var(--rule); padding-bottom:4px; margin:22px 0 8px; }
+.note p { margin:0 0 9px; }
+.note ul { margin:0 0 9px; padding-left:20px; } .note li { margin-bottom:5px; }
+.note b { font-weight:700; }
+.dedication { text-align:center; font-style:italic; font-size:15px; color:var(--ink-soft);
+              border-top:1px solid var(--rule); margin-top:26px; padding-top:14px; }
+
+/* ---- the win ---------------------------------------------------- */
+.won { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
+       align-items:center; justify-content:center; padding:20px; z-index:9; }
+.won.on { display:flex; }
+.won .box { background:var(--sheet); border:2px solid; max-width:520px;
+            border-color:var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi); padding:26px 30px; text-align:center; }
+.won h2 { font-size:30px; font-weight:400; margin:0 0 10px; }
+.won p { font-size:15px; line-height:1.6; margin:0 0 14px; }
+.won .weiter { border-top:1px solid var(--rule); padding-top:12px; }
+.won a { color:var(--link); }
+.won a:visited { color:var(--visited); }
+.won .wontools { display:flex; gap:8px; justify-content:center; }
+@media (max-width:720px) { .sheet { padding:12px 10px 30px; } .masthead h1 { font-size:28px; } .head h2 { font-size:22px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="masthead">
+    <div class="rule">Ein Spiel der Verbindungen</div>
+    <h1>CROSSLINK</h1>
+    <div class="rule">Allmer Games &nbsp;·&nbsp; Sonderdruck</div>
+  </div>
+
+  <div class="head">
+    <span class="no">__NUMMER__ &nbsp;·&nbsp; Deutsch</span>
+    <h2>__TITEL__</h2>
+    <span class="stars" id="stars"></span>
+  </div>
+  <p class="standfirst">Erstellt von Simon</p>
+
+  <div class="board-wrap"><div id="board" class="board" role="grid"></div></div>
+
+  <div class="tools">
+    <button id="eingeben" class="solid" disabled>Wort eintragen</button>
+    <button id="verb">Buchstabe zeigen</button>
+    <button id="wort">Wort zeigen</button>
+    <!--RUECK--><button id="umdrehen" aria-pressed="false">Alle umdrehen</button><!--/RUECK-->
+    <button id="neu">Von vorn</button>
+  </div>
+  <div class="status" id="status" data-idle="__TIPPZEILE__">__TIPPZEILE__</div>
+
+  <div class="note">
+    <h3>Wie es geht</h3>
+    <p><b>In den Feldern stehen Tiere, zwischen den Feldern steht, was sie verbindet.</b>
+       In der Mitte steht ein Wort mit __MITTE__.
+       Von dort wächst das Brett nach außen: jedes Tier, das du hast, macht seine Nachbarn leichter.</p>
+    <ul>
+      <li><b>Wort eintragen</b> setzt das Getippte ins Feld — oder drück Enter.
+          <b>Wieder wegnehmen</b> hebt es auf. Nichts ist endgültig, und ein Feld, das
+          du wieder wegnimmst, behält die Buchstaben, die es schon verraten hat.</li>
+      <li>Ein <b>Pfeil</b> zeigt, wer etwas tut. Ein <b>Strich ohne Spitze</b> gilt in beide
+          Richtungen.</li>
+      <!--BALKEN--><li>Ein <b>flacher grauer Balken</b> heißt: hier wird nichts behauptet, wie ein
+          schwarzes Feld im Kreuzworträtsel.</li><!--/BALKEN-->
+      <!--RUECK--><li>Jeder Satz, der gepunktet unterstrichen ist, <b>lässt sich umdrehen</b>. Klick darauf:
+          dann steht dieselbe Verbindung noch einmal da, anders gesagt. Das kostet nichts.
+          Vorne die Szene, hinten der Satz, den man kaum glaubt.</li><!--/RUECK-->
+      <li>Die Zahl in der Ecke sagt, wie viele Buchstaben fehlen.<!--UMLAUT--> <b>Ä darfst du als A
+          tippen</b>, Ö als O, Ü als U — das Brett setzt die Punkte selbst.<!--/UMLAUT--></li>
+      <li>Kein Tier steht zweimal auf dem Brett.</li>
+      <li><b>Shift + S</b> löst das ganze Brett auf einmal. Zwei Tasten, weil es der eine
+          Zug ist, den man nicht zurücknehmen kann — danach hilft nur <b>Von vorn</b>.</li>
+    </ul>
+    <!--NOTIZ--><h3>__NOTIZ_TITEL__</h3>
+    <p>__NOTIZ__</p><!--/NOTIZ-->
+    <!--WIDMUNG--><p class="dedication" id="widmung">__WIDMUNG__</p><!--/WIDMUNG-->
+  </div>
+</div>
+
+<div class="won" id="won"><div class="box">
+  <h2>Gelöst.</h2>
+  <p id="wontext"></p>
+  <p class="weiter">Gratulation! Mehr Rätsel gibt es auf
+     <a href="https://simonallmer.com/crosslink">simonallmer.com/crosslink</a>.</p>
+  <div class="wontools">
+    <button id="ansehen">Brett ansehen</button>
+    <button id="nochmal">Von vorn</button>
+  </div>
+</div></div>
+
+<script type="application/json" id="brett">
+__BRETT__
+</script>
+<script>
+__SPIEL__
+</script>
+</body>
+</html>

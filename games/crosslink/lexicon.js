@@ -1,0 +1,45 @@
+// The lexicon. Written by hand, in the house voice — the second sense is often
+// the one the board is using, which is what makes this a helper and not a crib.
+window.CROSSLINK = window.CROSSLINK || {};
+window.CROSSLINK.lex = {
+  FISH:     { pos: "n.",       senses: ["A cold-blooded animal living in water and breathing through gills.", "v. To search patiently, and often hopefully, for something out of sight."] },
+  SALMON:   { pos: "n.",       senses: ["A large silver fish that returns from the sea to the stream it hatched in.", "The pink-orange of its flesh."] },
+  ROE:      { pos: "n.",       senses: ["The eggs of a fish, taken in a mass from the female."] },
+  JAPAN:    { pos: "n. prop.", senses: ["An island country in the western Pacific.", "japan: a hard black lacquer, named for the country it came from."] },
+  OCEAN:    { pos: "n.",       senses: ["The body of salt water covering most of the earth; any of its named divisions."] },
+  NET:      { pos: "n.",       senses: ["An open mesh of knotted cord, used for catching.", "What is left after deductions have been made.", "A network of connected things: a rail net, a telephone net, the Net."] },
+  PACIFIC:  { pos: "n. prop.", senses: ["The largest of the oceans.", "adj. Peaceable. Magellan named the first for the second."] },
+  PISCES:   { pos: "n. prop.", senses: ["The twelfth sign of the zodiac, drawn as two fishes bound at the tail.", "Latin: fishes."] },
+  ZODIAC:   { pos: "n.",       senses: ["The belt of twelve constellations the sun appears to travel through in a year."] },
+
+  MOUNTAIN: { pos: "n.",       senses: ["A mass of land rising steeply above everything around it."] },
+  TUNNEL:   { pos: "n.",       senses: ["A passage driven horizontally through rock, or beneath water."] },
+  SUN:      { pos: "n.",       senses: ["The star the earth goes round; its light and its heat.", "v. To lie in that heat on purpose."] },
+  VINEGAR:  { pos: "n.",       senses: ["A sour liquid of fermented wine or cider, used to dress and to preserve.", "From the French vin aigre — sour wine."] },
+  OLIVE:    { pos: "n.",       senses: ["The small bitter fruit of a Mediterranean tree, pressed for its oil.", "A dull yellow-green."] },
+  ROCK:     { pos: "n.",       senses: ["Solid mineral matter, in the mass or in a piece.", "v. To move steadily to and fro."] },
+  PICK:     { pos: "n.",       senses: ["A hand tool with a pointed iron head, swung to break ground.", "v. To choose.", "v. To open a lock without its key."] },
+  SEA:      { pos: "n.",       senses: ["Salt water; a body of it smaller than an ocean.", "The state of that water: a heavy sea, a following sea."] },
+  LETTUCE:  { pos: "n.",       senses: ["A leaf crop grown to be eaten raw."] },
+  OIL:      { pos: "n.",       senses: ["A liquid fat that will not mix with water.", "v. To make something run more smoothly than it deserves to."] },
+  CRYSTAL:  { pos: "n.",       senses: ["A solid whose atoms stand in a regular repeating order, often showing flat faces.", "Salt's is a cube, which is why the grains are square."] },
+  MINE:     { pos: "n.",       senses: ["An excavation from which minerals are taken.", "A charge laid to be trodden on.", "pron. That which belongs to me."] },
+  SALT:     { pos: "n.",       senses: ["Sodium chloride, drawn from the sea or cut from the rock; used to season and to preserve.", "An old sailor.", "v. To scatter with salt — or to plant false evidence in a mine."] },
+  SALAD:    { pos: "n.",       senses: ["A cold dish of raw leaves, dressed."] },
+  SAUCE:    { pos: "n.",       senses: ["A liquid dressing served with food.", "From the Latin salsus — salted."] },
+  CUBE:     { pos: "n.",       senses: ["A solid with six equal square faces.", "A number multiplied twice by itself."] },
+  WAGE:     { pos: "n.",       senses: ["Payment for work done, reckoned by the hour or the day.", "v. To carry on a war."] },
+  SALARY:   { pos: "n.",       senses: ["A fixed payment for employment, paid at intervals.", "From the Latin salarium — the allowance a Roman soldier drew for salt."] },
+  LATIN:    { pos: "n. prop.", senses: ["The language of ancient Rome, kept alive everywhere except in conversation.", "adj. Of the peoples whose languages descend from it."] },
+  TONGUE:   { pos: "n.",       senses: ["The muscular organ of the mouth.", "A language.", "Anything shaped like one: the tongue of a shoe, of a bell, of land."] },
+  MINT:     { pos: "n.",       senses: ["An aromatic herb, and the sweet made to taste of it.", "A place where coin is struck.", "adj. Unused — as it left the press."] },
+  COIN:     { pos: "n.",       senses: ["A piece of stamped metal used as money.", "v. To invent a word, and have it stick."] },
+  SOLDIER:  { pos: "n.",       senses: ["One who serves in an army.", "From the Latin solidus, the gold coin they were paid in."] },
+  ROME:     { pos: "n. prop.", senses: ["The city on the Tiber.", "The empire governed from it, and the church that outlived that."] },
+  EMPIRE:   { pos: "n.",       senses: ["A group of territories held under one supreme authority."] },
+
+  RIVER:    { pos: "n.",       senses: ["A large natural stream of water running to the sea.", "Any flow of that shape: a river of people, a river of ink."] },
+  VAULT:    { pos: "n.",       senses: ["An arched roof of stone, and the space it covers.", "A strongroom, for what a bank will not leave lying about.", "v. To clear a thing by leaning on it."] },
+  BED:      { pos: "n.",       senses: ["What you sleep in.", "The floor of a river or a sea.", "A patch of ground given over to one crop."] },
+  WIRE:     { pos: "n.",       senses: ["Metal drawn out into a thread.", "A telegram, and the sending of one.", "v. To send money as though it were a telegram, which it once was."] }
+};
