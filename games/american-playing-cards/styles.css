@@ -2597,6 +2597,18 @@ body.asian-portrait .landing-logo-text {
             margin: 0;
         }
 
+        .card-mini-suit-icon {
+            display: block;
+            width: 14px;
+            height: 14px;
+            margin-top: 2px;
+        }
+
+        .card-mini-suit-icon .suit-icon {
+            width: 100%;
+            height: 100%;
+        }
+
         #controls-area {
             display: flex;
             flex-wrap: wrap;
@@ -2839,34 +2851,76 @@ body.asian-portrait .landing-logo-text {
             display: flex;
         }
 
-        .mulligan-btn {
-            background: none;
-            border: 1px solid #444;
-            color: #888;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 8px 16px;
-            border-radius: 4px;
-            margin-top: 15px;
-            transition: all 0.3s;
+        /* Frontier: Table Cards above the player's own cards */
+        .frontier-row {
+            flex-basis: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
-        .mulligan-btn:hover {
-            color: #ccc;
-            border-color: #888;
-            background: rgba(255, 255, 255, 0.05);
+        .frontier-row-label {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--gold);
         }
 
-        .mulligan-btn:disabled {
-            color: #333;
-            border-color: #333;
-            cursor: not-allowed;
-            background: transparent;
-            text-decoration: line-through;
+        .frontier-row-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 20px; /* room for selected cards, which lift by 20px */
         }
+
+        .frontier-row .card.selected {
+            box-shadow: 0 0 0 3px var(--gold-bright), 0 10px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .frontier-row-empty {
+            color: #555;
+            padding: 20px;
+        }
+
+        .card.table-card {
+            width: 104px;
+            height: 144px;
+        }
+
+        .card-mini.from-table {
+            outline: 1px dashed #888;
+            outline-offset: 1px;
+        }
+
+        .dealer-tag {
+            font-size: 0.6rem;
+            background: var(--gold);
+            color: #111;
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-left: 5px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .wager-stepper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wager-stepper .action-btn {
+            padding: 8px 14px;
+        }
+
+        .wager-value {
+            min-width: 48px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--gold-bright);
+        }
+
     
         /* Frontier Burger Menu */
         #frontier-menu-btn {
@@ -4552,622 +4606,213 @@ body:has(#president-quiz.active) #permanent-demo-timer {
     display: block !important;
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   DUEL GAME
-   ══════════════════════════════════════════════════════════════════════════ */
 
-#duel {
-    background: radial-gradient(ellipse at 50% 20%, #1a0a0a 0%, #060606 70%);
-    color: var(--text-color);
-    font-family: inherit;
-    overflow: hidden;
+/* ============================================================
+   STATE QUIZ — city markers, pan/zoom controls, touch guessing
+   ============================================================ */
+
+/* The HUD sits in normal flow with a 32px margin, which used to push the map
+   container down far enough to clip Florida, Alaska and Hawaii off the bottom.
+   Take the map out of flow so it always fills the section. */
+#quiz-map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
-/* All sub-screens fill the duel section */
-#duel > div {
+#map-svg-wrapper {
+    overflow: hidden;
+    touch-action: none;          /* we drive pan/zoom ourselves */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#quiz-map-svg { display: block; }
+
+/* --- City markers ------------------------------------------------------ */
+/* Sizes below are in map units; state-quiz.js counter-scales each marker so
+   the rendered result is a constant number of CSS pixels at any zoom. */
+
+#quiz-city-layer .city-dot {
+    fill: rgba(226, 232, 240, 0.9);
+    stroke: rgba(10, 10, 11, 0.9);
+    stroke-width: 0.6;
+}
+
+#quiz-city-layer .city-dot.is-capital {
+    fill: var(--gold-bright, #d4af37);
+    stroke: rgba(10, 10, 11, 0.9);
+    stroke-width: 0.7;
+}
+
+#quiz-city-layer .city-label {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;             /* must match FONT_UNITS in state-quiz.js */
+    font-weight: 600;
+    letter-spacing: 0.15px;
+    fill: #dbe2ea;
+    stroke: rgba(8, 8, 10, 0.85);
+    stroke-width: 2.6;
+    paint-order: stroke fill;
+    dominant-baseline: middle;
+    /* No text-anchor here on purpose: a CSS declaration outranks the
+       presentation attribute, and layoutCities() flips the anchor per label. */
+}
+
+#quiz-city-layer .city-label.is-major {
+    fill: #ffffff;
+    font-weight: 700;
+}
+
+/* --- Zoom controls ----------------------------------------------------- */
+
+#quiz-zoom-controls {
     position: absolute;
-    inset: 0;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;               /* touch / small screens only */
+    flex-direction: column;
+    gap: 8px;
+    z-index: 20;
+}
+
+#quiz-zoom-controls button {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    background: rgba(20, 20, 25, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: var(--gold-bright, #d4af37);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+#quiz-zoom-controls button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* --- Tap-then-confirm bar (touch only) --------------------------------- */
+
+#quiz-confirm-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Lives in #state-quiz, not the map container, so it paints above the
+       target card rather than inside the map's stacking context. */
+    z-index: 60;
     display: none;
     align-items: center;
-    justify-content: center;
-    overflow-y: auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* ── Shared layout boxes ── */
-.dg-overlay-box,
-.dg-setup-box,
-.dg-reveal-box,
-.dg-rules-box {
-    width: 100%;
-    max-width: 560px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 40px 30px;
-    background: rgba(10,5,5,0.85);
-    border: 1px solid rgba(212,175,55,0.18);
-    border-radius: 16px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-}
-
-.dg-card-select-box {
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-
-/* ── Typography ── */
-.dg-title {
-    font-size: 3.5rem;
-    font-weight: 900;
-    letter-spacing: 8px;
-    color: var(--gold-bright);
-    margin: 0;
-    text-transform: uppercase;
-}
-
-.dg-subtitle {
-    font-size: 0.8rem;
-    color: #666;
-    letter-spacing: 2px;
-    text-align: center;
-    margin: 0;
-    text-transform: uppercase;
-}
-
-.dg-phase-tag {
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    border: 1px solid rgba(212,175,55,0.2);
-    padding: 4px 14px;
-    border-radius: 20px;
-}
-
-.dg-big-name {
-    font-size: 2.4rem;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: #fff;
-    text-align: center;
-}
-
-.dg-winner-name {
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: var(--gold-bright);
-    text-align: center;
-}
-
-.dg-prompt {
-    font-size: 0.85rem;
-    color: #aaa;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: center;
-    margin: 0;
-}
-
-.dg-prompt-sm {
-    font-size: 0.8rem;
-    color: #888;
-    letter-spacing: 1px;
-    text-align: center;
-    margin: 0;
-}
-
-.dg-prompt-xs {
-    font-size: 0.72rem;
-    color: #666;
-    letter-spacing: 1px;
-    text-align: center;
-    margin: 0;
-}
-
-.dg-label-sm {
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: #555;
-    text-transform: uppercase;
-}
-
-/* ── Color classes ── */
-.dg-col-red   { color: #f87171; }
-.dg-col-blue  { color: #60a5fa; }
-.dg-col-black { color: #d1d5db; }
-
-/* ── Setup controls ── */
-.dg-setup-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 10px;
-    width: 100%;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgba(12, 12, 14, 0.94);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(212, 175, 55, 0.25);
 }
 
-.dg-setup-label {
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: #555;
-    text-transform: uppercase;
-}
-
-.dg-btn-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.dg-pill {
-    padding: 8px 18px;
-    border: 1px solid #333;
-    background: transparent;
-    color: #777;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    transition: all 0.2s;
-}
-
-.dg-pill.active,
-.dg-pill:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(212,175,55,0.08);
-}
-
-.dg-names-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    max-width: 320px;
-}
-
-.dg-name-input {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid #2a2a2a;
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.dg-name-input:focus { border-color: var(--gold-dim); }
-.dg-name-input:disabled { color: #555; }
-
-.dg-start-btn {
-    padding: 14px 50px;
-    background: var(--gold);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 8px;
-}
-
-.dg-start-btn:hover { background: var(--gold-bright); transform: translateY(-1px); }
-
-.dg-ready-btn {
-    padding: 12px 40px;
-    background: var(--gold);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.dg-ready-btn:hover { background: var(--gold-bright); }
-
-.dg-skip-btn {
-    padding: 12px 30px;
-    background: transparent;
-    color: #666;
-    border: 1px solid #333;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.dg-skip-btn:hover { border-color: #666; color: #aaa; }
-
-.dg-link-btn {
-    background: transparent;
-    border: none;
-    color: #555;
-    font-family: inherit;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    padding: 4px 0;
-}
-
-.dg-link-btn:hover { color: #aaa; }
-
-/* ── Challenge / Target ── */
-.dg-target-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 360px;
-}
-
-.dg-target-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 20px;
-    border: 1px solid #2a2a2a;
-    background: rgba(255,255,255,0.03);
-    color: #fff;
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-}
-
-.dg-target-btn:hover {
-    border-color: var(--gold-dim);
-    background: rgba(212,175,55,0.06);
-}
-
-.dg-card-count {
-    font-size: 0.7rem;
-    color: #666;
-    letter-spacing: 2px;
-}
-
-/* ── Mini board / influence bar ── */
-.dg-mini-board {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 4px;
-}
-
-.dg-mini-chip {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 4px 12px;
-    border: 1px solid #222;
-    border-radius: 20px;
-    font-size: 0.72rem;
-    color: #888;
-    letter-spacing: 1px;
-}
-
-.dg-influence-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(212,175,55,0.1);
-    border-radius: 8px;
-}
-
-/* ── Card hand ── */
-.dg-hand {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px 0;
-}
-
-.dg-hand-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    border-radius: 8px;
-    overflow: visible;
-}
-
-.dg-hand-card:hover { transform: translateY(-8px); }
-
-.dg-hand-card img {
-    width: 90px;
-    height: 124px;
-    object-fit: fill;
-    border-radius: 8px;
-    display: block;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-    transition: box-shadow 0.2s;
-}
-
-.dg-hand-card:hover img { box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
-
-.dg-pwr {
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    font-weight: 700;
-}
-
-.dg-final-notice {
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    border: 1px solid rgba(212,175,55,0.2);
-    padding: 6px 16px;
-    border-radius: 20px;
-}
-
-/* ── Reveal ── */
-.dg-reveal-row {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.dg-reveal-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    padding: 12px;
+#quiz-cancel-btn {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
     border-radius: 12px;
-    border: 1px solid transparent;
-    transition: all 0.3s;
-}
-
-.dg-reveal-card.win  { border-color: #10b981; background: rgba(16,185,129,0.06); }
-.dg-reveal-card.lose { border-color: #ef4444; background: rgba(239,68,68,0.06); }
-.dg-reveal-card.tie  { border-color: #f59e0b; background: rgba(245,158,11,0.06); }
-
-.dg-reveal-name {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: #888;
-    text-transform: uppercase;
-}
-
-.dg-reveal-img {
-    width: 100px;
-    height: 138px;
-    object-fit: fill;
-    border-radius: 8px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-}
-
-.dg-badge {
-    font-size: 0.65rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    padding: 3px 10px;
-    border-radius: 20px;
-}
-
-.dg-badge.win  { background: #10b981; color: #000; }
-.dg-badge.lose { background: #ef4444; color: #fff; }
-
-.dg-vs {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
     font-size: 1.5rem;
-    font-weight: 900;
-    color: #444;
-    letter-spacing: 4px;
+    line-height: 1;
+    cursor: pointer;
 }
 
-.dg-new-influence {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 20px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid #222;
-    border-radius: 10px;
-    margin-top: 8px;
-}
-
-.dg-influence-thumb {
-    width: 50px;
-    height: 69px;
-    object-fit: fill;
-    border-radius: 5px;
-}
-
-.dg-gamble-prompt {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 16px;
-    border: 1px solid #333;
-    border-radius: 10px;
-    margin-top: 8px;
-    width: 100%;
-    max-width: 360px;
-}
-
-/* ── Board ── */
-.dg-board {
-    width: 100%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-}
-
-.dg-board-hud {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    width: 100%;
-}
-
-.dg-board-center-row {
-    display: flex;
-    gap: 30px;
-    align-items: flex-end;
-}
-
-.dg-board-influence-wrap,
-.dg-board-draw-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.dg-influence-img {
-    width: 70px;
-    height: 97px;
-    object-fit: fill;
-    border-radius: 7px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-}
-
-.dg-bonus-label {
-    font-size: 0.72rem;
+#quiz-confirm-btn {
+    flex: 1 1 auto;
+    height: 46px;
+    border: none;
+    border-radius: 12px;
+    background: var(--gold-bright, #d4af37);
+    color: #0a0a0b;
+    font-weight: 800;
+    font-size: 1rem;
     letter-spacing: 2px;
-    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
-.dg-draw-count {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #444;
-    letter-spacing: 2px;
+@media (pointer: coarse), (max-width: 900px) {
+    #quiz-zoom-controls { display: flex; }
 }
 
-.dg-player-chips {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
+/* --- Phone layout ------------------------------------------------------ */
+
+@media (max-width: 768px) {
+    /* The back-to-menu button is pinned top-left and used to sit on top of the
+       HUD pill; drop the pill below it. */
+    #quiz-hud {
+        top: 56px !important;
+    }
+
+    #quiz-map-container {
+        padding: 108px 6px 92px 6px !important;
+    }
+
+    #map-svg-wrapper {
+        height: 100% !important;
+        max-width: none !important;
+    }
+
+    #quiz-zoom-controls {
+        right: 8px;
+        top: auto;
+        bottom: 10px;
+        transform: none;
+    }
+
+    #quiz-zoom-controls button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    #quiz-card-display {
+        bottom: 10px !important;
+        left: 10px !important;
+        transform: scale(0.46);
+        transform-origin: bottom left;
+    }
+
+    /* Whose turn it is moves up under the HUD, which leaves the bottom strip
+       to the card, the confirm bar and the zoom buttons. */
+    #quiz-player-turn {
+        top: 128px !important;
+        bottom: auto !important;
+    }
+
+    #quiz-current-player-name {
+        font-size: 1.05rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* A floating bar that clears the card on the left and the zoom stack on
+       the right, instead of a full-bleed strip on top of both. */
+    #quiz-confirm-bar {
+        left: 74px;
+        right: 56px;
+        bottom: 10px;
+        padding: 0;
+        gap: 8px;
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    #quiz-cancel-btn { width: 42px; height: 42px; border: none; border-radius: 0; }
+    #quiz-confirm-btn { height: 42px; border-radius: 0; letter-spacing: 1.5px; font-size: 0.9rem; }
 }
-
-.dg-chip {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 10px 18px;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    min-width: 90px;
-    transition: all 0.3s;
-}
-
-.dg-chip.out { opacity: 0.3; border-color: #1a1a1a; }
-.dg-chip.fought { border-color: rgba(212,175,55,0.25); background: rgba(212,175,55,0.04); }
-
-.dg-chip-name { font-size: 0.8rem; letter-spacing: 1px; color: #ccc; }
-.dg-chip-cards { font-size: 0.7rem; letter-spacing: 2px; color: #666; }
-
-.dg-bystander {
-    font-size: 0.6rem;
-    letter-spacing: 2px;
-    color: #f59e0b;
-    text-transform: uppercase;
-    margin-top: 2px;
-}
-
-/* ── History row ── */
-.dg-history-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-}
-
-.dg-history-row {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding: 6px 0;
-    max-width: 100%;
-    justify-content: flex-start;
-}
-
-.dg-hist-card {
-    width: 40px;
-    height: 55px;
-    object-fit: fill;
-    border-radius: 4px;
-    flex-shrink: 0;
-    opacity: 0.7;
-}
-
-/* ── Rules ── */
-.dg-rules-box {
-    max-width: 640px;
-    align-items: flex-start;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.dg-rules-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    color: #bbb;
-    font-size: 0.88rem;
-    line-height: 1.65;
-}
-
-.dg-rules-body h3 {
-    color: var(--gold-bright);
-    font-size: 0.72rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin: 16px 0 4px;
-    border-bottom: 1px solid #1a1a1a;
-    padding-bottom: 6px;
-}
-
-.dg-rules-body p  { margin: 0; }
-.dg-rules-body ul,
-.dg-rules-body ol { margin: 4px 0; padding-left: 20px; }
-.dg-rules-body li { margin-bottom: 4px; }
-.dg-rules-body strong { color: #fff; }
